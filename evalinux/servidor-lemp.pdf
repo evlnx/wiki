@@ -1,0 +1,390 @@
+%PDF-1.4
+%“Œ‹ž ReportLab Generated PDF document http://www.reportlab.com
+1 0 obj
+<< /F1 2 0 R /F2 3 0 R /F3 4 0 R >>
+endobj
+2 0 obj
+<< /BaseFont /Helvetica /Encoding /WinAnsiEncoding /Name /F1 /Subtype /Type1 /Type /Font >>
+endobj
+3 0 obj
+<< /BaseFont /Helvetica-Bold /Encoding /WinAnsiEncoding /Name /F2 /Subtype /Type1 /Type /Font >>
+endobj
+4 0 obj
+<< /BaseFont /Helvetica-Oblique /Encoding /WinAnsiEncoding /Name /F3 /Subtype /Type1 /Type /Font >>
+endobj
+5 0 obj
+<< /Contents 16 0 R /MediaBox [ 0 0 595.2756 841.8898 ] /Parent 15 0 R /Resources << /Font 1 0 R /ProcSet [ /PDF /Text /ImageB /ImageC /ImageI ] >> /Rotate 0 /Trans <<  >> 
+  /Type /Page >>
+endobj
+6 0 obj
+<< /Contents 17 0 R /MediaBox [ 0 0 595.2756 841.8898 ] /Parent 15 0 R /Resources << /Font 1 0 R /ProcSet [ /PDF /Text /ImageB /ImageC /ImageI ] >> /Rotate 0 /Trans <<  >> 
+  /Type /Page >>
+endobj
+7 0 obj
+<< /Outlines 9 0 R /PageLabels 18 0 R /PageMode /UseNone /Pages 15 0 R /Type /Catalog >>
+endobj
+8 0 obj
+<< /Author () /CreationDate (D:20160716142005+06'00') /Creator (\(unspecified\)) /Keywords () /ModDate (D:20160716142005+06'00') /Producer (ReportLab PDF Library - www.reportlab.com) 
+  /Subject (\(unspecified\)) /Title (Servidor LEMP) /Trapped /False >>
+endobj
+9 0 obj
+<< /Count 5 /First 10 0 R /Last 14 0 R /Type /Outlines >>
+endobj
+10 0 obj
+<< /Dest [ 5 0 R /XYZ 62.69291 699.0236 0 ] /Next 11 0 R /Parent 9 0 R /Title (Descripci\363n) >>
+endobj
+11 0 obj
+<< /Dest [ 5 0 R /XYZ 62.69291 636.0236 0 ] /Next 12 0 R /Parent 9 0 R /Prev 10 0 R /Title (NginX) >>
+endobj
+12 0 obj
+<< /Dest [ 5 0 R /XYZ 62.69291 573.0236 0 ] /Next 13 0 R /Parent 9 0 R /Prev 11 0 R /Title (PHP-FPM) >>
+endobj
+13 0 obj
+<< /Dest [ 5 0 R /XYZ 62.69291 510.0236 0 ] /Next 14 0 R /Parent 9 0 R /Prev 12 0 R /Title (MariaDB) >>
+endobj
+14 0 obj
+<< /Dest [ 5 0 R /XYZ 62.69291 321.0236 0 ] /Parent 9 0 R /Prev 13 0 R /Title (Atajos y notas de utilidad) >>
+endobj
+15 0 obj
+<< /Count 2 /Kids [ 5 0 R 6 0 R ] /Type /Pages >>
+endobj
+16 0 obj
+<< /Length 7413 >>
+stream
+1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+q
+1 0 0 1 62.69291 741.0236 cm
+q
+0 0 0 rg
+BT 1 0 0 1 0 4 Tm /F2 20 Tf 24 TL 163.8149 0 Td (Servidor LEMP) Tj T* -163.8149 0 Td ET
+Q
+Q
+q
+1 0 0 1 62.69291 711.0236 cm
+q
+0 0 0 rg
+BT 1 0 0 1 0 3 Tm /F2 15 Tf 18 TL 147.8399 0 Td (Componentes generales) Tj T* -147.8399 0 Td ET
+Q
+Q
+q
+1 0 0 1 62.69291 678.0236 cm
+q
+BT 1 0 0 1 0 3.5 Tm 21 TL /F2 17.5 Tf 0 0 0 rg (Descripci\363n) Tj T* ET
+Q
+Q
+q
+1 0 0 1 62.69291 648.0236 cm
+q
+0 0 0 rg
+BT 1 0 0 1 0 14 Tm /F1 10 Tf 12 TL 2.497633 Tw (Se le llama LEMP al tipo de configuraci\363n que tiene \351ste tipo de servidores que es utilizado para) Tj T* 0 Tw (almacenar y administrar un servidor web.) Tj T* ET
+Q
+Q
+q
+1 0 0 1 62.69291 615.0236 cm
+q
+BT 1 0 0 1 0 3.5 Tm 21 TL /F2 17.5 Tf 0 0 0 rg (NginX) Tj T* ET
+Q
+Q
+q
+1 0 0 1 62.69291 585.0236 cm
+q
+BT 1 0 0 1 0 14 Tm .176412 Tw 12 TL /F1 10 Tf 0 0 0 rg (\311ste es el servidor web, b\341sicamente el mandadero, s\363lo lleva y trae cosas. En /etc/nginx/fastcgi_params) Tj T* 0 Tw (agregar el comando: ) Tj /F3 10 Tf 0 0 0 rg (fastcgi_param SCRIPT_FILENAME $request_filename;) Tj T* ET
+Q
+Q
+q
+1 0 0 1 62.69291 552.0236 cm
+q
+BT 1 0 0 1 0 3.5 Tm 21 TL /F2 17.5 Tf 0 0 0 rg (PHP-FPM) Tj T* ET
+Q
+Q
+q
+1 0 0 1 62.69291 522.0236 cm
+q
+0 0 0 rg
+BT 1 0 0 1 0 14 Tm /F1 10 Tf 12 TL .073876 Tw (\311ste es el lenguaje de programaci\363n base con un administrador de procesos en el script, es el que dentro) Tj T* 0 Tw (del servidor hace todos los procesos.) Tj T* ET
+Q
+Q
+q
+1 0 0 1 62.69291 489.0236 cm
+q
+BT 1 0 0 1 0 3.5 Tm 21 TL /F2 17.5 Tf 0 0 0 rg (MariaDB) Tj T* ET
+Q
+Q
+q
+1 0 0 1 62.69291 459.0236 cm
+q
+BT 1 0 0 1 0 14 Tm .439398 Tw 12 TL /F1 10 Tf 0 0 0 rg (\311sta es la base de datos de nuestro servidor. #. ) Tj /F2 10 Tf (CREATE DATABASE) Tj /F1 10 Tf (: Crear una nueva base de datos,) Tj T* 0 Tw (es importante cambiar la configuraci\363n de entrada de texto, todo con el) Tj T* ET
+Q
+Q
+q
+1 0 0 1 62.69291 453.0236 cm
+Q
+q
+1 0 0 1 62.69291 441.0236 cm
+0 0 0 rg
+BT /F1 10 Tf 12 TL ET
+BT 1 0 0 1 0 2 Tm  T* ET
+q
+1 0 0 1 20 0 cm
+q
+BT 1 0 0 1 0 2 Tm 12 TL /F1 10 Tf 0 0 0 rg (siguiente formato: "CREATE DATABASE ) Tj /F3 10 Tf 0 0 0 rg (<) Tj (t\355tulo-de-la-base-de-datos) Tj (> ) Tj /F1 10 Tf 0 0 0 rg (DEFAULT CHARSET utf8;".) Tj T* ET
+Q
+Q
+q
+Q
+Q
+q
+1 0 0 1 62.69291 441.0236 cm
+Q
+q
+1 0 0 1 62.69291 435.0236 cm
+Q
+q
+1 0 0 1 62.69291 435.0236 cm
+Q
+q
+1 0 0 1 62.69291 387.0236 cm
+0 0 0 rg
+BT /F1 10 Tf 12 TL ET
+q
+1 0 0 1 6 33 cm
+q
+0 0 0 rg
+BT 1 0 0 1 0 2 Tm /F1 10 Tf 12 TL 5.66 0 Td (1.) Tj T* -5.66 0 Td ET
+Q
+Q
+q
+1 0 0 1 23 -3 cm
+q
+BT 1 0 0 1 0 38 Tm 1.930651 Tw 12 TL /F2 10 Tf 0 0 0 rg (CREATE USER) Tj /F1 10 Tf (: Una vez en la configuraci\363n de MariaDB\(a la cual se accesa con el comando) Tj T* 0 Tw 3.521318 Tw /F3 10 Tf (mysql) Tj /F1 10 Tf (\) se utiliza \351ste comando para crear un nuevo usuario en la case de datos, agregar) Tj T* 0 Tw 5.12748 Tw /F3 10 Tf (IDENTIFIED BY ) Tj /F1 10 Tf (si se desea con contrase\361a con el siguiente formato: "CREATE USER) Tj T* 0 Tw (') Tj (<) Tj (usuario) Tj (>) Tj ('@'localhost' IDENTIFIED BY ') Tj (<) Tj (contrase\361a) Tj (>) Tj (';".) Tj T* ET
+Q
+Q
+q
+Q
+Q
+q
+1 0 0 1 62.69291 381.0236 cm
+Q
+q
+1 0 0 1 62.69291 333.0236 cm
+0 0 0 rg
+BT /F1 10 Tf 12 TL ET
+q
+1 0 0 1 6 33 cm
+q
+0 0 0 rg
+BT 1 0 0 1 0 2 Tm /F1 10 Tf 12 TL 5.66 0 Td (2.) Tj T* -5.66 0 Td ET
+Q
+Q
+q
+1 0 0 1 23 -3 cm
+q
+BT 1 0 0 1 0 38 Tm 4.95998 Tw 12 TL /F2 10 Tf 0 0 0 rg (GRANT) Tj /F1 10 Tf (: Comando utilizado para otorgar permisos a los usuarios sobre bases de datos) Tj T* 0 Tw .690751 Tw (especificadas, usaremos el siguiente formato: "GRANT ALL PRIVILEGES ON ) Tj /F3 10 Tf 0 0 0 rg (<) Tj (t\355tulo de la base de) Tj T* 0 Tw 1.80152 Tw (datos) Tj (>) Tj /F1 10 Tf 0 0 0 rg (.* TO ') Tj (<) Tj (usuario) Tj (>) Tj ('@'localhost';" en el cual el asterisco es utilizado para expresar ) Tj /F3 10 Tf (todas las) Tj T* 0 Tw (tablas) Tj /F1 10 Tf (.) Tj T* ET
+Q
+Q
+q
+Q
+Q
+q
+1 0 0 1 62.69291 333.0236 cm
+Q
+q
+1 0 0 1 62.69291 300.0236 cm
+q
+BT 1 0 0 1 0 3.5 Tm 21 TL /F2 17.5 Tf 0 0 0 rg (Atajos y notas de utilidad) Tj T* ET
+Q
+Q
+q
+1 0 0 1 62.69291 288.0236 cm
+Q
+q
+1 0 0 1 62.69291 288.0236 cm
+Q
+q
+1 0 0 1 62.69291 264.0236 cm
+0 0 0 rg
+BT /F1 10 Tf 12 TL ET
+q
+1 0 0 1 6 9 cm
+q
+0 0 0 rg
+BT 1 0 0 1 0 2 Tm /F1 10 Tf 12 TL 5.66 0 Td (1.) Tj T* -5.66 0 Td ET
+Q
+Q
+q
+1 0 0 1 23 -3 cm
+q
+BT 1 0 0 1 0 14 Tm .834985 Tw 12 TL /F2 10 Tf 0 0 0 rg (Comando curl) Tj /F1 10 Tf (: Ver si hay respuesta de una p\341gina web, nos permite hacer un request al puesrto) Tj T* 0 Tw (que queramos y nos permite conocer el estado de nuestra p\341gina.) Tj T* ET
+Q
+Q
+q
+Q
+Q
+q
+1 0 0 1 62.69291 258.0236 cm
+Q
+q
+1 0 0 1 62.69291 186.0236 cm
+0 0 0 rg
+BT /F1 10 Tf 12 TL ET
+q
+1 0 0 1 6 57 cm
+q
+0 0 0 rg
+BT 1 0 0 1 0 2 Tm /F1 10 Tf 12 TL 5.66 0 Td (2.) Tj T* -5.66 0 Td ET
+Q
+Q
+q
+1 0 0 1 23 -3 cm
+q
+BT 1 0 0 1 0 62 Tm 2.18784 Tw 12 TL /F2 10 Tf 0 0 0 rg (Configurar sockets en PHP-FPM) Tj /F1 10 Tf (: \311sto se lleva a cabo en la configuraci\363n de PHP-FPM que) Tj T* 0 Tw .342651 Tw (siempre se encuentra ubicada en los ficheros con terminaci\363n ".d" y que generalmente y por default) Tj T* 0 Tw .222765 Tw (se llama "ww.conf", hay un apartado que es espec\355fico para \351ste tipo de configuraci\363n y a \351ste se le) Tj T* 0 Tw .522927 Tw (modifica la parte de ) Tj /F3 10 Tf (Listen ) Tj /F1 10 Tf (que, en lugar de tener una direcci\363n IP vamos a establecer una especie) Tj T* 0 Tw .77229 Tw (de ) Tj /F3 10 Tf (link ) Tj /F1 10 Tf (respetando el Filesystem Hierarchy Standard en la carpeta: /run/php-fpm/. Para guardar los) Tj T* 0 Tw (cambios reiniciamos el servicio con el comando ) Tj /F2 10 Tf (systemctl) Tj /F1 10 Tf (.) Tj T* ET
+Q
+Q
+q
+Q
+Q
+q
+1 0 0 1 62.69291 180.0236 cm
+Q
+q
+1 0 0 1 62.69291 156.0236 cm
+0 0 0 rg
+BT /F1 10 Tf 12 TL ET
+q
+1 0 0 1 6 9 cm
+q
+0 0 0 rg
+BT 1 0 0 1 0 2 Tm /F1 10 Tf 12 TL 5.66 0 Td (3.) Tj T* -5.66 0 Td ET
+Q
+Q
+q
+1 0 0 1 23 -3 cm
+q
+BT 1 0 0 1 0 14 Tm .439461 Tw 12 TL /F2 10 Tf 0 0 0 rg (Para toda duda) Tj /F1 10 Tf (: En caso de duda lo primero que se debe hacer es buscarlo en el navegador y ver) Tj T* 0 Tw (preferentemente el manual oficial.) Tj T* ET
+Q
+Q
+q
+Q
+Q
+q
+1 0 0 1 62.69291 150.0236 cm
+Q
+q
+1 0 0 1 62.69291 126.0236 cm
+0 0 0 rg
+BT /F1 10 Tf 12 TL ET
+q
+1 0 0 1 6 9 cm
+q
+0 0 0 rg
+BT 1 0 0 1 0 2 Tm /F1 10 Tf 12 TL 5.66 0 Td (4.) Tj T* -5.66 0 Td ET
+Q
+Q
+q
+1 0 0 1 23 -3 cm
+q
+BT 1 0 0 1 0 14 Tm .378651 Tw 12 TL /F2 10 Tf 0 0 0 rg (Errores en la p\341gina) Tj /F1 10 Tf (: Para cualquier error habido en la p\341gina hay un apartado en "/var/log/nginx/") Tj T* 0 Tw (para errores en el cual especifica el error.) Tj T* ET
+Q
+Q
+q
+Q
+Q
+q
+1 0 0 1 62.69291 120.0236 cm
+Q
+q
+1 0 0 1 62.69291 96.02362 cm
+0 0 0 rg
+BT /F1 10 Tf 12 TL ET
+q
+1 0 0 1 6 9 cm
+q
+0 0 0 rg
+BT 1 0 0 1 0 2 Tm /F1 10 Tf 12 TL 5.66 0 Td (5.) Tj T* -5.66 0 Td ET
+Q
+Q
+q
+1 0 0 1 23 -3 cm
+q
+BT 1 0 0 1 0 14 Tm .222651 Tw 12 TL /F1 10 Tf 0 0 0 rg (Es necesario que tenga permisos aquel usuario encargado de \351ste tipo de tareas sobre ellos, jam\341s) Tj T* 0 Tw (root, y debe, por cuestiones gramaticales tambi\351n tener el permiso el grupo ) Tj /F3 10 Tf (webdev) Tj /F1 10 Tf (.) Tj T* ET
+Q
+Q
+q
+Q
+Q
+q
+1 0 0 1 62.69291 90.02362 cm
+Q
+ 
+endstream
+endobj
+17 0 obj
+<< /Length 869 >>
+stream
+1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+q
+1 0 0 1 62.69291 717.0236 cm
+0 0 0 rg
+BT /F1 10 Tf 12 TL ET
+q
+1 0 0 1 6 33 cm
+q
+0 0 0 rg
+BT 1 0 0 1 0 2 Tm /F1 10 Tf 12 TL 5.66 0 Td (6.) Tj T* -5.66 0 Td ET
+Q
+Q
+q
+1 0 0 1 23 -3 cm
+q
+BT 1 0 0 1 0 38 Tm .141235 Tw 12 TL /F1 10 Tf 0 0 0 rg (Al instalar wordpress y haber creado el sitio se deben reconfigurar las etiquetas de los permisos que) Tj T* 0 Tw 1.832339 Tw (llevan \351stas por ser utilizadas por las aplicaciones de manejo web, \351sto se lleva a cabo con el) Tj T* 0 Tw .660888 Tw (comando: ) Tj /F3 10 Tf 0 0 0 rg (restorecon -Rv <) Tj (path-al-directorio-web) Tj (>) Tj /F1 10 Tf 0 0 0 rg (. \311sta acci\363n se ejecuta basado en el Filesystem) Tj T* 0 Tw (Hierarchy Standard y sin eso no vamos ni siquiera a poder leer los archivos.) Tj T* ET
+Q
+Q
+q
+Q
+Q
+q
+1 0 0 1 62.69291 717.0236 cm
+Q
+ 
+endstream
+endobj
+18 0 obj
+<< /Nums [ 0 19 0 R 1 20 0 R ] >>
+endobj
+19 0 obj
+<< /S /D /St 1 >>
+endobj
+20 0 obj
+<< /S /D /St 2 >>
+endobj
+xref
+0 21
+0000000000 65535 f
+0000000075 00000 n
+0000000129 00000 n
+0000000239 00000 n
+0000000354 00000 n
+0000000472 00000 n
+0000000681 00000 n
+0000000890 00000 n
+0000000997 00000 n
+0000001271 00000 n
+0000001347 00000 n
+0000001464 00000 n
+0000001585 00000 n
+0000001708 00000 n
+0000001831 00000 n
+0000001960 00000 n
+0000002029 00000 n
+0000009499 00000 n
+0000010424 00000 n
+0000010477 00000 n
+0000010514 00000 n
+trailer
+<< /ID 
+ % ReportLab generated PDF document -- digest (http://www.reportlab.com)
+ [(=\270B\360\277\257@T\355\027e\322\317b\227*) (=\270B\360\277\257@T\355\027e\322\317b\227*)]
+ /Info 8 0 R /Root 7 0 R /Size 21 >>
+startxref
+10551
+%%EOF
