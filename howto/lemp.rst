@@ -5,6 +5,7 @@ Servidor LEMP
 HowTo de como instalar; en Linux, NginX, MariaDB y PHP-FPM
 ----------------------------------------------------------
 
+[[_TOC_]]
 
 Descripción
 ===========
