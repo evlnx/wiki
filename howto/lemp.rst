@@ -16,20 +16,7 @@ aleatoriamente y de 30 caracteres.
 Prerrequisitos
 ==============
 
-.. code:: bash
-
-    # instalar repositorio necesario
-    yum -y install epel-release
-
-    # instalar paquetes necesarios
-    yum -y install nginx mariadb-server mariadb php-fpm php-mysql apg
-
-
-    # activar servicios
-    systemctl enable nginx.service mariadb.service php-fpm.service
-
-    # iniciar servicios
-    systemctl start nginx.service mariadb.service php-fpm.service
+```bash:/howto/lemp/prerrequisitos```
 
 .. note::
 
@@ -68,39 +55,7 @@ En el caso de PHP, es necesario solamente incluir el archivo `include.d/php.conf
 MariaDB
 =======
 
-.. code:: bash
-
-    # generar password para mysql
-    password=$( apg -M CLN -m 30 -n 1 )
-    echo "El password para mysql será: $password"
-
-    # instalación segura de MariaDB
-    mysql_secure_installation
-
-    # crear archivo .my.cnf
-    cat << EOF > /root/.my.cnf
-    [client]
-    user = root
-    password = $password
-    host = localhost
-
-    EOF
-
-    # crear usuario y contraseña para base de datos
-    user=$( apg -M CLN -m 15 -n 1 )
-    password=$( apg -M CLN -m 30 -n 1 )
-    cat << EOF
-    Base de datos
-
-    Usuario:  $user
-    Password: $password
-
-    EOF
-
-    # crear base de datos
-    mysql -e 'CREATE DATABASE `mst_tld-site` DEFAULT CHARSET utf8;'
-    mysql -e "CREATE USER '$user'@'localhost' IDENTIFIED BY '$password';"
-    mysql -e "GRANT ALL PRIVILEGES ON \`mst_tld-site\`.* TO '$user'@'localhost';"
+```bash:/howto/lemp/mariadb```
 
 .. warning::
 
@@ -113,15 +68,7 @@ MariaDB
 PHP-FPM
 =======
 
-.. code:: bash
-
-    # configurar PHP-FPM para usar sockets
-    sed -ri 's@^listen =.*$@listen = /run/php-fpm/php-fpm.sock@' /etc/php-fpm.d/www.conf
-
-    # arreglar dueño, grupo y modo
-    sed -ri 's@^;listen.owner =.*$@listen.owner = nginx@' /etc/php-fpm.d/www.conf
-    sed -ri 's@^;listen.group =.*$@listen.group = nginx@' /etc/php-fpm.d/www.conf
-    sed -ri 's@^;listen.mode =.*$@listen.mode = 660@' /etc/php-fpm.d/www.conf
+```bash:/howto/lemp/php-fpm```
 
 .. note::
 
@@ -131,21 +78,13 @@ PHP-FPM
 Servicios
 =========
 
-.. code:: bash
-
-    # reiniciar servicios
-    systemctl restart nginx.service mariadb.service php-fpm.service
+```bash:/howto/lemp/servicios```
 
 
 Seguridad
 =========
 
-.. code:: bash
-
-    # abrir puertos de firewall para nginx
-    firewall-cmd --set-default-zone=public
-    firewall-cmd --permanent --add-port=80/tcp --add-port=443/tcp
-    firewall-cmd --reload
+```bash:/howto/lemp/seguridad```
 
 
 Troubleshooting
