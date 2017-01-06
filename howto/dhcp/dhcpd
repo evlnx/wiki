@@ -1,0 +1,21 @@
+option domain-name "example.tld";
+option domain-name-servers 8.8.8.8, 8.8.4.4;
+option time-offset -18000;
+
+default-lease-time 600;
+max-lease-time 7200;
+
+authoritative;
+
+log-facility local7;
+
+subnet 10.0.0.0 netmask 255.255.255.0 {
+option routers 10.0.0.254;
+range 10.0.0.128 10.0.0.253;
+}
+
+host test-dhcp {
+hardware ethernet `LAN privada del usuario`;
+fixed-address
+10.0.0.254;
+}
