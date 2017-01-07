@@ -12,22 +12,51 @@ Descripción
 Prerrequisitos
 ==============
 
-yum install dhcp.
-yum install NetworkManager
+#. Tener una red pública en "eth0".
+#. Tener una red privada en "eth1".
+#. Es necesario tener una red privada.
+#. Instalar los paquetes necesarios.
+
+    yum install dhcp NetworkManager
+
+
+Activar la red privada
+======================
+
+```bash
+# Entrar al configurador de redes.
+nmtui
+```
+
+Modificar una conexión
+______________________
+#. Seleccionar la red "eth1".
+#. Establecerla como manual.
+#. Añadir la dirección deseada.
+#. Agregar la búsqueda de dominios requerida.
+#. Activar la opción de "nunca usar...".
+#. Activar la opción de "ignorar rutas obtenidas automáticamente"
+
+Activar una conexión
+____________________
+#. Activar la red "eth1".
 
 
 DHCP
 ====
-# configurar el archivo /etc/dhcp/dhcpd.conf.
+
 ```bash:/howto/dhcp/dhcpd```
-# "ip a" es para verificar las direcciones IP con las que se cuenta.
-# "journalctl -u dhcpd" es para revisar el estado continuamente de la aplicación.
-# "nmtui" un gestor gráfico para configurar redes.
-# MODIFICAR UNA CONEXIÓN
-#     Establecerla como manual
-#     Añadir la dirección deseada, yo utilicé 10.0.0.10/24.
-#     Añadir la búsqueda de dominios requerida.
-#     Activar la opción de "nunca usar...".
-#     Activar la opción de "ignorar rutas obtenidas automáticamente.
-# ACTIVAR LA CONEXIÓN
-# NUNCA ESTABLECER LA CONEXIÓN EN BASE A DHCP AL PORVEEDOR DE INTERNET (eth0)
+
+.. note::
+
+    "ip a" es para verificar las conexiones con las que se cuenta.
+    "journalctl -u dhcpd" es para revisar el estado constante de la aplicación.
+
+.. warning::
+
+    NUNCA ESTABLECER LA CONEXIÓN EN BASE A DHCP AL PORVEEDOR DE INTERNET (eth0)
+
+
+Referencias
+===========
+* https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/7/html/Networking_Guide/ch-DHCP_Servers.html
