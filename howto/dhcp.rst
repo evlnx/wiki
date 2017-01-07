@@ -24,9 +24,17 @@ Instalación
 DHCP
 ====
 
+Configuración
+-------------
 ```bash:/howto/dhcp/dhcpd```
 
+Servicios
+---------
 ```bash:/howto/dhcp/servicios```
+
+TODO
+----
+Hace falta explicar los elementos de la configuración de DHCP.
 
 .. note::
 
