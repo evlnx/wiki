@@ -11,12 +11,11 @@ authoritative;
 log-facility local7;
 
 subnet 10.0.0.0 netmask 255.255.255.0 {
-option routers 10.0.0.254;
-range 10.0.0.128 10.0.0.253;
+    option routers 10.0.0.254;
+    range 10.0.0.128 10.0.0.254;
 }
 
 host test-dhcp {
-hardware ethernet `LAN privada del usuario`;
-fixed-address
-10.0.0.254;
+    hardware ethernet 00:19:57:74:20:3a;
+    fixed-address 10.0.0.11;
 }

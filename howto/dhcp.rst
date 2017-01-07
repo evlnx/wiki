@@ -28,6 +28,11 @@ Configuración
 -------------
 ```bash:/howto/dhcp/dhcpd```
 
+.. note::
+
+    la dirección MAC; declarada en `hardware-ethernet` es solo un ejemplo. Debes incluir la dirección de la interfaz de red del
+    cliente a asignar.
+
 Servicios
 ---------
 ```bash:/howto/dhcp/servicios```
