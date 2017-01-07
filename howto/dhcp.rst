@@ -7,7 +7,9 @@ HowTo de como instalar; en Linux, DHCP
 
 Descripción
 ===========
-Éste es un servidor instalado en CentOS 7. Consta de una red privada previamente conectada.
+Éste es un servidor DHCP; instalado en CentOS 7.
+
+El servidor DHCP sirve, entre otras cosas, para asignar direcciones IP; automáticamente.
 
 
 Prerrequisitos
