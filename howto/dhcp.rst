@@ -26,6 +26,8 @@ DHCP
 
 ```bash:/howto/dhcp/dhcpd```
 
+```bash:/howto/dhcp/servicios```
+
 .. note::
 
     `ip address` es para verificar las conexiones con las que se cuenta.
