@@ -1,3 +1,4 @@
+# editar /etc/dhcp/dhcpd.conf
 option domain-name "example.tld";
 option domain-name-servers 8.8.8.8, 8.8.4.4;
 option time-offset -18000;
