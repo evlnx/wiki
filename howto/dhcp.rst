@@ -28,12 +28,15 @@ DHCP
 
 .. note::
 
-    "ip a" es para verificar las conexiones con las que se cuenta.
-    "journalctl -u dhcpd" es para revisar el estado constante de la aplicación.
+    `ip address` es para verificar las conexiones con las que se cuenta.
+
+.. note::
+
+    `journalctl -fu dhcpd` es para revisar los logs que la aplicación registra.
 
 .. warning::
 
-    NUNCA ESTABLECER LA CONEXIÓN EN BASE A DHCP AL PORVEEDOR DE INTERNET (eth0)
+    Nunca habilitar DHCP para la interfaz pública (eth0) porque podemos causar grandes problemas para nuestro ISP.
 
 
 Referencias
