@@ -1,9 +1,9 @@
 ====
 DHCP
 ====
---------------------------------------
-HowTo de como instalar; en Linux, DHCP
---------------------------------------
+--------------------------------------------
+HowTo de como instalar; en GNU & Linux, DHCP
+--------------------------------------------
 
 Descripción
 ===========
@@ -54,7 +54,6 @@ Hace falta explicar los elementos de la configuración de DHCP.
 .. warning::
 
     Nunca habilitar DHCP para la interfaz pública (eth0) porque podemos causar grandes problemas para nuestro ISP.
-
 
 Referencias
 ===========
