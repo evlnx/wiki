@@ -1,0 +1,9 @@
+mkdir /var/example_share
+chmod 775 /var/example_share/
+cat << 'EOF' > /etc/exports
+/var/example_share/
+'`rango de clientes IP`'(rw,sync,no_root_squash,no_all_squash)
+
+EOF
+
+systemctl restart nfs-server

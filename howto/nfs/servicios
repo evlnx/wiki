@@ -1,0 +1,2 @@
+systemctl enable rpcbind nfs-server nfs-lock nfs id-map
+systemctl start rpcbind nfs-server nfs-lock nfs id-map
