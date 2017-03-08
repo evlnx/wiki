@@ -3,7 +3,22 @@ password=$( apg -M CLN -m 30 -n 1 )
 echo "El password para mysql será: $password"
 
 # instalación segura de MariaDB
-mysql_secure_installation
+mysql -u root << EOF
+
+# agregar password a usuario root
+UPDATE mysql.user SET Password = PASSWORD( '${password}' ) WHERE User = 'root';
+
+# eliminar acceso a usuario root sin password
+DELETE FROM mysql.user WHERE User = '';
+DELETE FROM mysql.user WHERE User = 'root' AND Host NOT IN ('localhost', '127.0.0.1', '::1');
+
+# remover db de pruebas
+DROP DATABASE IF EXISTS test;
+DELETE FROM mysql.db WHERE Db = 'test' OR Db = 'test\\_%';
+
+# re-cargar privilegios
+FLUSH PRIVILEGES;
+EOF
 
 # crear archivo .my.cnf
 cat << EOF > /root/.my.cnf
