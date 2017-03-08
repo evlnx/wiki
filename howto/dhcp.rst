@@ -15,12 +15,35 @@ El servidor DHCP sirve, entre otras cosas, para asignar direcciones IP; automát
 Prerrequisitos
 ==============
 
+<<<<<<< HEAD
 #. Tener una red privada en "eth1".
 
 
 Instalación
 ===========
 ```bash:/howto/dhcp/instalacion```
+
+
+Activar la red privada
+======================
+# Entrar al configurador de redes.
+
+.. code:: bash
+
+    nmtui
+
+Modificar una conexión
+______________________
+#. Seleccionar la red "eth1".
+#. Establecerla como manual.
+#. Añadir la dirección deseada.
+#. Agregar la búsqueda de dominios requerida.
+#. Activar la opción de "nunca usar...".
+#. Activar la opción de "ignorar rutas obtenidas automáticamente"
+
+Activar una conexión
+____________________
+#. Activar la red "eth1".
 
 
 DHCP
@@ -39,21 +62,24 @@ Servicios
 ---------
 ```bash:/howto/dhcp/servicios```
 
-TODO
-----
-Hace falta explicar los elementos de la configuración de DHCP.
-
-.. note::
-
-    `ip address` es para verificar las conexiones con las que se cuenta.
-
-.. note::
-
-    `journalctl -fu dhcpd` es para revisar los logs que la aplicación registra.
-
 .. warning::
 
     Nunca habilitar DHCP para la interfaz pública (eth0) porque podemos causar grandes problemas para nuestro ISP.
+
+
+Tips
+====
+`ip a`:
+    es para verificar las conexiones con las que se cuenta.
+
+`journalctl -u dhcpd`:
+    es para revisar el estado constante de la aplicación.
+
+
+TODO
+====
+Hace falta explicar los elementos de la configuración de DHCP.
+
 
 Referencias
 ===========
