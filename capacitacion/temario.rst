@@ -1,77 +1,210 @@
-Éste documento será el utilizado para establecer las pautas de lo que es necesario aprender en el grupo
+============
+Capacitación
+============
+-------------------------------------------
+Archivo de iniciación en las artes del FOSS
+-------------------------------------------
+
+Descripción
+===========
+Éste documento será el utilizado para establecer las pautas de lo que es necesario aprender en EVALinux.
 
 
-#. Establecer canales de comunicación
-   a. Email
-        i. Aprender de la etiqueta de email (netiquette)
-   b. Hangouts
-   c. IRC
-        i. Registrarse en Freenode
-       ii. Aprender de la etiqueta de IRC
-   d. Teléfonos
-        i. Celular
-       ii. Casa
+.. contents:: Temario
 
-#. Básicos de Linux
-   a. Linux Fundamentals (todos): http://www.funtoo.org/Linux_Fundamentals,_Part_1
-   b. vim
-   c. Bash (todos): http://www.funtoo.org/Bash_by_Example,_Part_1
-   d. grep
-   e. AWK
-   f. sed
-   g. OpenSSH
-   h. git
-   i. find
-   j. rsync
-   k. KVM/Qemu y libvirt
-   l. Linux (kernel)
-        i. Syscalls
-       ii. Procesos
-      iii. Networking
-       iv. Security
-        v. hardware
 
-#. Redes
-   a. TCP/IP
-   b. UDP
-   c. OSI Model
+Establecer canales de comunicación
+==================================
 
-#. Seguridad
-   a. SELinux
-   b. Iptables
-   c. Nftables
-   d. TCP wrappers
+Email
+-----
 
-#. Servicios web
-   a. NginX
-   b. PHP
-   c. Apache HTTPD
+Aprender de la etiqueta de email (netiquette)
+#############################################
 
-#. Bases de datos
-   a. MariaDB/MySQL
-   b. PostgreSQL
 
-#. Infraestructura
-   a. Salt (saltstack)
-   b. Zabbix
-   c. Puppet
-   d. MRTG
-   e. sFlow
+Hangouts
+--------
 
-#. Extras
-   a. Ruby
-   b. Python
-   c. HTML, CSS, y Javascript
-   d. Docker
-   e. Rkt
+IRC
+---
 
-#. Documentación
-   a. reStructured Text
+Registrarse en Freenode
+#######################
 
-#. Recursos
-   a. Página oficial del proyecto
-   b. Wikipedia
-   c. GNU
-   d. Red Hat (documentación)
-   e. Gentoo (documentación)
-   f. ArchLinux
+Aprender de la etiqueta de IRC
+##############################
+
+Teléfonos
+---------
+
+Celular
+#######
+
+Casa
+####
+
+
+Básicos de Linux
+================
+http://www.funtoo.org/Linux_Fundamentals,_Part_1
+
+vim
+---
+
+Bash
+----
+http://www.funtoo.org/Bash_by_Example,_Part_1
+
+grep
+----
+
+awk
+---
+
+sed
+---
+
+OpenSSH
+-------
+
+git
+---
+
+find
+----
+
+rsync
+-----
+
+KVM/Qemu y libvirt
+------------------
+
+Linux (kernel)
+--------------
+
+Syscalls
+########
+
+Procesos
+########
+
+Networking
+##########
+
+Security
+########
+
+hardware
+########
+
+
+Redes
+=====
+
+TCP/IP
+------
+
+UDP
+---
+
+OSI Model
+---------
+
+
+Seguridad
+=========
+
+SELinux
+-------
+
+iptables
+--------
+
+nftables
+--------
+
+TCP wrappers
+------------
+
+
+
+Servicios web
+=============
+
+NginX
+-----
+
+PHP
+---
+
+Apache HTTPD
+------------
+
+
+
+Bases de datos
+==============
+
+MariaDB/MySQL
+-------------
+
+PostgreSQL
+----------
+
+
+Infraestructura
+===============
+
+Salt (saltstack)
+----------------
+
+Zabbix
+------
+
+Puppet
+------
+
+MRTG
+----
+
+sFlow
+-----
+
+
+Extras
+======
+
+Ruby
+----
+
+Python
+------
+
+HTML, CSS, y Javascript
+-----------------------
+
+Docker
+------
+
+Rkt
+---
+
+
+Documentación
+=============
+
+reStructured Text
+-----------------
+
+
+Recursos válidos
+----------------
+#. ArchLinux Wiki
+#. CentOS Documentation
+#. Fedora Documentation
+#. GNU
+#. Gentoo Wiki
+#. Página oficial del proyecto
+#. Red Hat Documentation
+#. Wikipedia

@@ -1,0 +1,17 @@
+# instalar paquetes necesarios
+yum -y install NetworkManager dhcp
+
+# configurar red privada
+nmcli connection add \
+    connection.id eth1 \
+    connection.interface-name eth1 \
+    connection.type generic \
+    ipv4.addresses 10.0.0.10/24 \
+    ipv4.ignore-auto-dns yes \
+    ipv4.ignore-auto-routes yes \
+    ipv4.method manual \
+    ipv4.never-default yes \
+    ipv6.never-default yes
+
+# habilitar red privada
+nmcli connection up eth1

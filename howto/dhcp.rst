@@ -1,32 +1,36 @@
 ====
 DHCP
 ====
---------------------------------------
-HowTo de como instalar; en Linux, DHCP
---------------------------------------
+--------------------------------------------
+HowTo de como instalar; en GNU & Linux, DHCP
+--------------------------------------------
 
 Descripción
 ===========
-Éste es un servidor instalado en CentOS 7. Consta de una red privada previamente conectada.
+Éste es un servidor DHCP; instalado en CentOS 7.
+
+El servidor DHCP sirve, entre otras cosas, para asignar direcciones IP; automáticamente.
+
 
 Prerrequisitos
 ==============
 
-#. Tener una red pública en "eth0".
+<<<<<<< HEAD
 #. Tener una red privada en "eth1".
-#. Es necesario tener una red privada.
-#. Instalar los paquetes necesarios.
 
-    yum install dhcp NetworkManager
+
+Instalación
+===========
+```bash:/howto/dhcp/instalacion```
 
 
 Activar la red privada
 ======================
-
-```bash
 # Entrar al configurador de redes.
-nmtui
-```
+
+.. code:: bash
+
+    nmtui
 
 Modificar una conexión
 ______________________
@@ -45,16 +49,36 @@ ____________________
 DHCP
 ====
 
+Configuración
+-------------
 ```bash:/howto/dhcp/dhcpd```
 
 .. note::
 
-    "ip a" es para verificar las conexiones con las que se cuenta.
-    "journalctl -u dhcpd" es para revisar el estado constante de la aplicación.
+    la dirección MAC; declarada en `hardware-ethernet` es solo un ejemplo. Debes incluir la dirección de la interfaz de red del
+    cliente a asignar.
+
+Servicios
+---------
+```bash:/howto/dhcp/servicios```
 
 .. warning::
 
-    NUNCA ESTABLECER LA CONEXIÓN EN BASE A DHCP AL PORVEEDOR DE INTERNET (eth0)
+    Nunca habilitar DHCP para la interfaz pública (eth0) porque podemos causar grandes problemas para nuestro ISP.
+
+
+Tips
+====
+`ip a`:
+    es para verificar las conexiones con las que se cuenta.
+
+`journalctl -u dhcpd`:
+    es para revisar el estado constante de la aplicación.
+
+
+TODO
+====
+Hace falta explicar los elementos de la configuración de DHCP.
 
 
 Referencias
