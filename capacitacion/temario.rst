@@ -19,19 +19,22 @@ Establecer canales de comunicación
 Email
 -----
 Servicio de red que permite a los usuarios enviar y recibir mensajes y archivos rápidamente, más información en http://es.wikipedia.org/wiki/EMail
+
 Aprender de la etiqueta de email (netiquette)
 #############################################
-
 
 Hangouts
 --------
 Aplicación multiplataforma de mensajería instantánea desarrollada por Google Inc., más información en https://es.wikipedia.org/wiki/Hangouts
+
 IRC
 ---
 (Internet Relay Chat) Protocolo de comunicación en tiempo real basado en texto, más informacón en https://es.wikipedia.org/wiki/Internet_Relay_Chat
+
 Registrarse en Freenode
 #######################
 Red de servidores IRC orientado al software libre, más información en http://es.wikipedia.org/wiki/Freenode
+
 Aprender de la etiqueta de IRC
 ##############################
 
