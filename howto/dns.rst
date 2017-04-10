@@ -1,11 +1,13 @@
 =============
 Servidor DNS
 =============
-----------------------------------------------------------------
+----------------------------------------------------------
 HowTo sobre como instalar; en GNU & Linux, un servidor DNS
-----------------------------------------------------------------
+----------------------------------------------------------
+
 
 [[_TOC_]]
+
 
 Descripción
 ===========
@@ -27,11 +29,43 @@ Instalación
 Configuración
 =============
 
+/etc/rndc.key
+-------------
+Para no quedarnos con la llave pre-generada, vamos a generar una nosotros mismos.
+
+```bash:/howto/dns/rndc```
+
+De lo que resulte, vamos a obtener las funciones `key` y `controls`; y las acomodaremos en `/etc/rndc.key` y `/etc/named.conf`
+respectivamente.
+
+Ejemplo:
+
+```/howto/dns/rndc.key```
+
+.. note:: named.conf
+    ver la sección `/etc/named.conf` para el ejemplo de controls.
+
+/etc/named.conf
+---------------
+Debemos cambiar las intancias de `127.0.0.1` o `::1` en las funciones: `listen-on`, `listen-on-v6` y `allow-query` a `localnets`.
+Además, debemos incluir `localhost`.
+
+Ejemplo:
+
+```/howto/dns/named.conf```
+
+
+/var/named/example.tld.db
+-------------------------
+
+```bash:/howto/dns/zona```
+
 
 Servicios
 =========
 
 ```bash:/howto/dns/servicios```
+
 
 Seguridad
 =========
@@ -39,6 +73,14 @@ Seguridad
 
 Troubleshooting
 ===============
+
+Verificar tu configuración general
+----------------------------------
+Para hacer ésto, solo necesitas correr el comando: `named-checkconf`.
+
+.. note:: Mensaje de éxito
+    Cuando no sale nada, quiere decir que todo está bien.
+
 
 Referencias
 ===========
