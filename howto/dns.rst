@@ -40,9 +40,9 @@ respectivamente.
 
 Ejemplo:
 
-```/howto/dns/rndc.key```
+.. include:: dns/rndc.key
 
-.. note:: named.conf
+.. note::
     ver la sección `/etc/named.conf` para el ejemplo de controls.
 
 /etc/named.conf
@@ -52,7 +52,7 @@ Además, debemos incluir `localhost`.
 
 Ejemplo:
 
-```/howto/dns/named.conf```
+.. include:: dns/named.conf
 
 
 /var/named/example.tld.db
@@ -78,7 +78,7 @@ Verificar tu configuración general
 ----------------------------------
 Para hacer ésto, solo necesitas correr el comando: `named-checkconf`.
 
-.. note:: Mensaje de éxito
+.. note::
     Cuando no sale nada, quiere decir que todo está bien.
 
 
