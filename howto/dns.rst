@@ -40,7 +40,7 @@ respectivamente.
 
 Ejemplo:
 
-.. include:: dns/rndc.key
+```bash:/howto/dns/rndc.key```
 
 .. note::
     ver la sección `/etc/named.conf` para el ejemplo de controls.
@@ -52,7 +52,7 @@ Además, debemos incluir `localhost`.
 
 Ejemplo:
 
-.. include:: dns/named.conf
+```bash:/howto/dns/named.conf```
 
 
 /var/named/example.tld.db
