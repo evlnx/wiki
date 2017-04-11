@@ -90,8 +90,10 @@ Troubleshooting
 
 Verificar tu configuración general
 ----------------------------------
-Para hacer ésto, solo necesitas correr el comando: `named-checkconf`. Para verificar que tus zonas son válidas, debes usar el
-comando: `named-checkzone <dominio> <archivo>`. Por ejemplo: `named-checkzone example.tld /var/named/masters/example.tld.db`.
+Para hacer ésto, solo necesitas correr el comando: `named-checkconf`.
+
+Para verificar que tus zonas son válidas, debes usar el comando: `named-checkzone <dominio> <archivo>`. Por ejemplo:
+`named-checkzone example.tld /var/named/masters/example.tld.db`.
 
 .. note::
     Cuando no sale nada, quiere decir que todo está bien.
