@@ -60,7 +60,7 @@ Ejemplo:
 ```bash:/howto/dns/named.conf```
 
 
-/var/named/example.tld.db
+/var/named/masters/example.tld.db
 -------------------------
 Este archivo contiene varias secciones que requieren algo de explicación:
 
