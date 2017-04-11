@@ -58,7 +58,7 @@ Ejemplo:
 /var/named/example.tld.db
 -------------------------
 
-```bash:/howto/dns/zona```
+```bash:/howto/dns/example.tld.db```
 
 
 Servicios
