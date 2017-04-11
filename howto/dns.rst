@@ -19,6 +19,11 @@ Prerrequisitos
 
 * CentOS 7
 
+Vamos a asumir que tenemos dos redes. La pública y la privada. La privada es: `192.168.77.0/24`. El DNS primario, vivirá en:
+`192.168.77.10`.
+
+El dominio a configurar es: `example.tld`.
+
 
 Instalación
 ===========
@@ -81,8 +86,18 @@ Servicios
 ```bash:/howto/dns/servicios```
 
 
-Seguridad
-=========
+Pruebas
+=======
+Para probar, necesitamos hacer que `/etc/resolv.conf` luzca así:
+
+::
+
+    search example.tld
+    nameserver 192.168.77.10
+
+Una vez que esté así en nuestro cliente y nuestro servidor, podemos iniciar las pruebas:
+
+```bash:/howto/dns/pruebas```
 
 
 Troubleshooting
