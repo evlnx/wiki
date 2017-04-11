@@ -57,8 +57,22 @@ Ejemplo:
 
 /var/named/example.tld.db
 -------------------------
+Este archivo contiene varias secciones que requieren algo de explicación:
+
+La '@':
+    Este signo se substituye por el valor declarado de `$ORIGIN`. Es decir, si tienes `example.tld.` como el valor de `$ORIGIN`, cada
+    vez que pongas '@' o nada, se substituirá por `example.tld.`.
+
+Serial '2017041100':
+    El serial es un número que debe aumentar cada vez que actualizas una zona para notificarle a los esclavos de que hay cambios. Se
+    estila poner año, mes, dia e id. Así, puedes hacer hasta 99 cambios en un día.
 
 ```bash:/howto/dns/example.tld.db```
+
+Permisos
+########
+El directorio `masters` debe tener de dueño/grupo a: `root:named`. Los permisos recomendados son `2750`. Los archivos o zonas deben
+tener al mismo dueño/grupo, pero con permisos `640`.
 
 
 Servicios
@@ -76,7 +90,8 @@ Troubleshooting
 
 Verificar tu configuración general
 ----------------------------------
-Para hacer ésto, solo necesitas correr el comando: `named-checkconf`.
+Para hacer ésto, solo necesitas correr el comando: `named-checkconf`. Para verificar que tus zonas son válidas, debes usar el
+comando: `named-checkzone <dominio> <archivo>`. Por ejemplo: `named-checkzone example.tld /var/named/masters/example.tld.db`.
 
 .. note::
     Cuando no sale nada, quiere decir que todo está bien.
