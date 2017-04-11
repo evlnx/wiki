@@ -113,6 +113,11 @@ Para verificar que tus zonas son válidas, debes usar el comando: `named-checkzo
 .. note::
     Cuando no sale nada, quiere decir que todo está bien.
 
+Errores en los logs
+-------------------
+Es importante saber que en `/var/named/data/named.run` está el log de todo lo que sucede con bind. Por otro lado, tenemos el log de
+`journalctl -u named`; el cual nos muestra la información relevante al sistema.
+
 
 Referencias
 ===========
