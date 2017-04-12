@@ -26,7 +26,7 @@ Instalación
 Configuración
 =============
 
-```bash:/howto/dhcp/dhcpd```
+```bash:/howto/dhcp/dhcpd.conf```
 
 .. note::
 
