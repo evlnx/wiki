@@ -33,7 +33,7 @@ Activar la red privada
     nmtui
 
 Modificar una conexión
-______________________
+----------------------
 
 #. Seleccionar la red "eth1".
 #. Establecerla como manual.
@@ -43,7 +43,8 @@ ______________________
 #. Activar la opción de "ignorar rutas obtenidas automáticamente"
 
 Activar una conexión
-____________________
+--------------------
+
 #. Activar la red "eth1".
 
 
@@ -52,6 +53,7 @@ DHCP
 
 Configuración
 -------------
+
 ```bash:/howto/dhcp/dhcpd```
 
 .. note::
