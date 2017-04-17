@@ -7,7 +7,7 @@ Notas del proceso de instalación
 
 Descripción
 ===========
-Esta es la instalación utilizando netboot.xyz
+Esta es la instalación utilizando netboot.xyz, el cual se puede descargar en: https://boot.netboot.xyz/ipxe/netboot.xyz.iso.
 
 
 Antes del lanzador gráfico
@@ -48,6 +48,7 @@ Installation Destination
 #. Seleccionar la opción **i will configure partitioning** en la parte inferior del menú.
 #. Al presionar **Done** aparecerá otro menú, cambiar **LVM** por **Btrfs**.
 #. Dar click en **Click here to create them automatically**.
+#. Crear los subvolúmenes: **/srv**, **/var** y **/usr/local**.
 #. De nuevo dar click en **Done** en la esquina superior izquierda.
 
 .. note:: Para crear subvolúmenes en **Btrfs** antes de presionar **Done**, dar click en el signo **+** en el menú del recuadro que aparece a la izquierda e insertar el nombre de éste.
@@ -74,7 +75,12 @@ User Creation
 
 Finalizar
 =========
-Una vez finalizada la instalación dar click en el botón **Reboot** en la esquina inferior derecha.
+#. Una vez finalizada la instalación dar click en el botón **Reboot** en la esquina inferior derecha.
+#. Desmontar la imagen de netboot.xyz para que inicie CentOS.
+
+.. note:: En realidad, no es necesario desmontarla para que bootee. Si se pone, primero, el drive nuevo y, luego, el netboot.xyz, no
+          hay problema. Intentará bootear el primer drive. Si el primero ya tiene CentOS instalado, lo correrá satisfactoriamente. Dicho ésto,
+          no es lo mejor dejarla montada de todas maneras.
 
 
 Otras Operaciones
