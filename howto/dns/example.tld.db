@@ -1,0 +1,37 @@
+$ORIGIN example.tld.
+$TTL 1d
+@           IN      SOA     ns1.example.tld.    hostmaster.example.tld. (
+                    2017041100  ; serial
+                    20m         ; refresh
+                    3m          ; retry
+                    3w          ; expire
+                    5m          ; minimum
+);
+
+;
+;; NS
+            IN      NS          ns1
+
+;
+;; MX
+@           IN      MX     10   mail
+
+;
+;; A
+@           IN      A           192.168.77.10
+ns1         IN      A           192.168.77.10
+mail        IN      A           192.168.77.11
+
+;
+;; AAAA
+
+;
+;; CNAME
+*           IN      CNAME       @
+
+;
+;; SRV
+
+;
+;; TXT
+
