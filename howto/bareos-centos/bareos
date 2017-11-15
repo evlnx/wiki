@@ -1,4 +1,4 @@
-# Agregar usuario admin a BareOS
+# agregar usuario admin a BareOS
 cat << 'EOF' > /etc/bareos/bareos-dir.d/console/admin.conf
 Console {
   Name = admin
@@ -8,6 +8,6 @@ Console {
 
 EOF
 
-# Activar servicios e iniciarlos
+# activar servicios e iniciarlos
 systemctl enable bareos-dir.service bareos-sd.service bareos-fd.service 
 systemctl start bareos-dir.service bareos-sd.service bareos-fd.service 
