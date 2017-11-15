@@ -2,7 +2,7 @@
 cat << 'EOF' > /etc/bareos/bareos-dir.d/console/admin.conf
 Console {
   Name = admin
-  Password = "KemmoyrinaxWom8"
+  Password = "Gevvirt4slyttinnEdErthoobchilU"
   Profile = "webui-admin"
 }
 
