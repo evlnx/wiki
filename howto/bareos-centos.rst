@@ -17,46 +17,46 @@ Prerrequisitos
 --------------
 Para la instalación de CentOS 7.x, puedes leer el siguiente howto: http://wiki.evalinux.com/centos/instalacion
 
-```bash:/howto/```
+```bash:/howto/bareos-centos/prerrequisitos```
 
 NginX
 =====
 
-```bash:```
+```bash:/howto/bareos-centos/nginx```
 
 Instancia del servidor
 ----------------------
-`server.name` deberá ser sustituido por el nombre del servidor que se utilizará. La locación de la webui puede variar.
+`server.name` deberá ser sustituido por el nombre del servidor que se utilizará. 
 
 Php55-fpm
 =========
 
-```bash:```
+```bash:/howto/bareos-centos/php55-fpm```
 
 SELinux
 =======
 
-```bash:```
+```bash:/howto/bareos-centos/selinux```
 
 Servicios(nginx, php55)
 =======================
 
-```bash:```
+```bash:/howto/bareos-centos/servicios```
 
 Seguridad
 =========
 
-```bash:```
+```bash:/howto/bareos-centos/seguridad```
 
 Postgresql
 ==========
 
-```bash:```
+```bash:/howto/bareos-centos/postgresql```
 
 Bareos
 ======
 
-```bash:```
+```bash:/howto/bareos-centos/bareos```
 
 .. note::
     
