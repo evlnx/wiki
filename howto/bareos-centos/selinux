@@ -1,0 +1,2 @@
+# Autorización SELinux, permitir a scripts y modulos HTTPD realizar conexiones de red
+setsebool -P httpd_can_network_connect on

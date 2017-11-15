@@ -1,0 +1,26 @@
+# Instalación de repositorios necesarios.
+yum -y install epel-release centos-release-scl
+
+# Instalación de paquetes necesarios
+yum -y install php55-php-fpm nginx
+
+# Instalación de postgresql
+yum -y install postgresql postgresql-server
+postgresql-setup initdb
+
+# Instalación de bareos
+yum -y install wget
+URL=http://download.bareos.org/bareos/release/latest/CentOS_7
+wget -O /etc/yum.repos.d/bareos.repo $URL/bareos.repo
+yum -y install bareos bareos-database-postgresql
+
+# Instalación de bareos-webui
+yum -y install bareos-webui
+
+# Activar servicios
+systemctl enable nginx.service postgresql.service php55-php-fpm.service 
+
+# Iniciar servicios
+systemctl start nginx.service postgresql.service php55-php-fpm.service 
+
+

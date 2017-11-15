@@ -1,0 +1,2 @@
+# Recargar configuración de php y nginx
+systemctl restart nginx.service php55-php-fpm.service
