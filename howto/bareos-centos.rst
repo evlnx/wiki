@@ -14,47 +14,55 @@ Servidor para respaldos automatizados en Centos 7. Los respaldos automatizados s
 Nginx, Postgresql y PHP55-fpm.
 
 Prerrequisitos
---------------
+==============
+
+Instalación del sistema operativo
+---------------------------------
 Para la instalación de CentOS 7.x, puedes leer el siguiente howto: http://wiki.evalinux.com/centos/instalacion
 
+Instalación de herramientas escenciales
+---------------------------------------
 ```bash:/howto/bareos-centos/prerrequisitos```
 
+Procedimiento
+=============
+
 NginX
-=====
+-----
 
 ```bash:/howto/bareos-centos/nginx```
 
 Instancia del servidor
-----------------------
+``````````````````````
 `server.name` deberá ser sustituido por el nombre del servidor que se utilizará. 
 
-Php55-fpm
-=========
+PHP55-FPM
+---------
 
 ```bash:/howto/bareos-centos/php55-fpm```
 
 SELinux
-=======
+-------
 
 ```bash:/howto/bareos-centos/selinux```
 
-Servicios(nginx, php55)
-=======================
+Servicios (nginx, php55)
+-----------------------
 
 ```bash:/howto/bareos-centos/servicios```
 
-Seguridad
-=========
+Firewall
+--------
 
 ```bash:/howto/bareos-centos/seguridad```
 
 Postgresql
-==========
+----------
 
 ```bash:/howto/bareos-centos/postgresql```
 
 Bareos
-======
+------
 
 ```bash:/howto/bareos-centos/bareos```
 
