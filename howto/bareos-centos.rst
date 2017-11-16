@@ -32,9 +32,11 @@ NginX
 
 ```bash:/howto/bareos-centos/nginx```
 
-Instancia del servidor
-``````````````````````
-`server.name` deberá ser sustituido por el nombre del servidor que se utilizará. 
+
+.. note::
+
+   server.name deberá ser sustituido por el nombre del servidor que se utilizará. 
+
 
 PHP55-FPM
 ---------
