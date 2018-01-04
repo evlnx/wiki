@@ -61,7 +61,7 @@ artículos están muy completos e incluyen muchos ejemplos. Es muy importante qu
 vim
 ---
 Vim es el editor que vamos a usar para todo. Para aprenderlo, tienes que correr el comando `vimtutor` y seguir las instrucciones.
-Para aprender más sobre vim, visita: https://en.wikipedia.org/wiki/Vim_(text_editor).
+Para aprender más sobre vim, visita: [[https://en.wikipedia.org/wiki/Vim_(text_editor)]].
 
 man
 ---
@@ -87,7 +87,7 @@ Para aprender grep, utiliza el comando `info grep` y sigue las instrucciones.
 
 sed
 ---
-Para aprender sed, vamos a usar la wiki de funtoo:
+Para aprender sed, vamos a usar la wiki de Funtoo:
 
 * https://www.funtoo.org/Sed_by_Example,_Part_1
 * https://www.funtoo.org/Sed_by_Example,_Part_2
