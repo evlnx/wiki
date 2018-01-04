@@ -60,16 +60,16 @@ artículos están muy completos e incluyen muchos ejemplos. Es muy importante qu
 
 vim
 ---
-Vim es el editor que vamos a usar para todo. Para aprenderlo, tienes que correr el comando `vimtutor` y seguir las instrucciones.
+Vim es el editor que vamos a usar para todo. Para aprenderlo, tienes que correr el comando ``vimtutor`` y seguir las instrucciones.
 Para aprender más sobre vim, visita: [[https://en.wikipedia.org/wiki/Vim_(text_editor)]].
 
 man
 ---
-El manual, por excelencia, en GNU & Linux es man. Es muy importante aprender a usarlo. Para hacerlo, utiliza el comando `man man`.
+El manual, por excelencia, en GNU & Linux es man. Es muy importante aprender a usarlo. Para hacerlo, utiliza el comando ``man man``.
 
 info
 ----
-Info es un complemento para para man; leer documentación sobre muchos de los comandos. Para aprener info, escribe `info` en tu línea
+Info es un complemento para para man; leer documentación sobre muchos de los comandos. Para aprener info, escribe ``info`` en tu línea
 de comando y sigue las instrucciones.
 
 Bash
@@ -83,7 +83,7 @@ https://en.wikipedia.org/wiki/Daniel_Robbins_(computer_programmer)]]
 
 grep
 ----
-Para aprender grep, utiliza el comando `info grep` y sigue las instrucciones.
+Para aprender grep, utiliza el comando ``info grep`` y sigue las instrucciones.
 
 sed
 ---
