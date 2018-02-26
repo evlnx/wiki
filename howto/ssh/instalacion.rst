@@ -174,10 +174,9 @@ Para asegurarnos que solo los usuarios que queremos que tengan acceso lo tengan,
 
 .. code:: ssh-config
 
-    ...
     AllowUsers root renich
 
- .. note::
+.. note::
 
     La lista es separada por espacios. Se pueden agregar grupos tambień usando %grupo. Más información en el manual de sshd_config.
 
