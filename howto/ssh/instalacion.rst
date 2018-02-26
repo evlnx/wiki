@@ -11,6 +11,10 @@ El SSH, o "Secure Shell", se utiliza para conectarse a otros servidores.
 
 Lo puedes usar para copiar archivos, correr programas de manera remota y hasta para navegar la red a través de otro servidor.
 
+
+[[_TOC_]]
+
+
 Prerrequisitos
 ==============
 Cualquiera de los siguientes es suficionete:
