@@ -184,6 +184,7 @@ Servicios
 =========
 
 .. code:: bash
+
     # activar
     systemctl enable sshd.service
 
