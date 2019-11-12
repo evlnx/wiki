@@ -1,8 +1,8 @@
 # instalar repositorio necesario
-yum -y install epel-release
+dnf -y install epel-release
 
 # instalar paquetes necesarios
-yum -y install nginx mariadb-server mariadb php-fpm php-mysql apg
+dnf -y install nginx mariadb-server mariadb php-fpm php-mysql apg
 
 
 # activar servicios
