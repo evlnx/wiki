@@ -1,5 +1,5 @@
 # generar password para mysql
-password=$( apg -M CLN -m 30 -n 1 )
+password=$( cat /dev/urandom | tr -dc A-Za-z0-9 | head -c ${1:-30}; echo; )
 echo "El password para mysql será: $password"
 
 # instalación segura de MariaDB
@@ -30,8 +30,8 @@ host = localhost
 EOF
 
 # crear usuario y contraseña para base de datos
-user=$( apg -M CLN -m 15 -n 1 )
-password=$( apg -M CLN -m 30 -n 1 )
+user=$( cat /dev/urandom | tr -dc A-Za-z0-9 | head -c ${1:-15}; echo; )
+password=$( cat /dev/urandom | tr -dc A-Za-z0-9 | head -c ${1:-30}; echo; )
 cat << EOF
 Base de datos
 
