@@ -2,7 +2,7 @@
 dnf -y install epel-release
 
 # instalar paquetes necesarios
-dnf -y install nginx mariadb-server mariadb php-fpm php-mysqlnd apg
+dnf -y install nginx mariadb-server mariadb php-fpm php-mysqlnd
 
 
 # activar servicios
