@@ -72,7 +72,8 @@ chmod -R 2771 /srv/www/php
 chmod 2775 /srv/www/php/misitio.tld/default/public
 restorecon -Rv /srv/www
 
-# asignar grupo webdev a los directorios pertinentes
+# crear y asignar grupo webdev a los directorios pertinentes
+groupadd webdev
 chgrp -R webdev /srv/www/*
 
 # crear archivos de prueba
