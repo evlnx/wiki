@@ -1,0 +1,4 @@
+# creación de base de datos(Postgresql) para bareos
+su postgres -c /usr/lib/bareos/scripts/create_bareos_database
+su postgres -c /usr/lib/bareos/scripts/make_bareos_tables
+su postgres -c /usr/lib/bareos/scripts/grant_bareos_privileges
