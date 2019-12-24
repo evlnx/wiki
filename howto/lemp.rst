@@ -9,18 +9,31 @@ HowTo de como instalar; en GNU & Linux, nginx, MariaDB y PHP-FPM
 
 Descripción
 ===========
-Éste es un servidor instalado en CentOS 7. Consta de servicios HTTP, de PHP por socket y Maria DB con un password de root generado
-aleatoriamente y de 30 caracteres.
+Éste es un servidor instalado en CentOS 7. Consta de servicios HTTP, de PHP por socket y Maria DB con una contraseña de root
+generado aleatoriamente y de 30 caracteres.
 
 
 Prerrequisitos
 ==============
+Primero, tenemos que instalar algunas cosas:
 
-```bash:/howto/lemp/prerrequisitos```
+.. code:: sh
+
+    # instalar repositorio necesario
+    dnf -y install epel-release
+
+    # instalar paquetes necesarios
+    dnf -y install nginx mariadb-server mariadb php-fpm php-mysqlnd
+
+    # activar servicios
+    systemctl enable nginx.service mariadb.service php-fpm.service
+
+    # iniciar servicios
+    systemctl start nginx.service mariadb.service php-fpm.service
 
 .. note::
 
-    Iniciamos los servicios porque MariaDB lo requiere para ser configurado.
+    Iniciamos los servicios porque ``MariaDB`` lo requiere para ser configurado.
 
 
 nginx
@@ -123,19 +136,124 @@ Este servidor responderá a la URL: ``misitio.tld``. Los archivos que ofrecerá 
 
 Además, como incluimos la configuración para PHP, pues podrá servir sitios hechos en el mismo.
 
-.. warning::
+Ahora, debemos crear nuestro árbol de directorios para nuestros sitios web; siguiendo, siempre, lo que el Fylesystem Hierarchy
+Standard (FHS) más reciente nos indica: https://refspecs.linuxfoundation.org/fhs.shtml
 
-    Es muy importante que borremos el archivo: `/srv/www/php/misitio.tld/default/public/info.php` después de usarlo para verificar
-    el buen funcionamiento de PHP.
+Entonces, creémos el árbol de directorio:
 
-    El dejarlo implica el, potencialmente, mostrar mucha información; la cual, un cracker, pudiera usar para planear un ataque; por
-    alguno de los medios disponibles.
+.. code:: sh
 
+    # poner la máscara de permisos para archivos nuevos adecuada
+    umask 006
+
+    # crear los directorios
+    mkdir -p /srv/www/php/misitio.tld/default/public
+
+    # regresar la máscara de permisos para archivos nuevos a la habitual
+    umask 022
+
+Agregaremos, ahora, un archivo de ejemplo:
+
+Primero: ``/srv/www/php/misitio.tld/default/public/index.html``:
+
+.. code:: html
+
+    <html>
+        <head>
+            <title>Mi Sitio</title>
+        </head>
+
+        <body>
+            <h1>Bienvenido(a)</h1>
+
+            <p>
+                Éste es mi sitio!
+            </p>
+        </body>
+    </html>
+
+Este archivo nos ayudará a comprobar si ``nginx`` está funcionando bien.
 
 MariaDB
 =======
+MariaDB es el servidor de base de datos que vamos a usar. Es muy utilizado y sirve muy bien.
 
-```bash:/howto/lemp/mariadb```
+Primero, necesitamos generar la contraseña de root de MariaDB para utilizar el servicio. Esto es muy importante porque, de no
+hacerlo, cualquier usuario en nuestro servidor puede accesar como root.
+
+.. code:: sh
+
+    mariadb_root=$( cat /dev/urandom | tr -dc A-Za-z0-9 | head -c ${1:-30}; echo )
+
+Lo hemos puesto en una variable. Para conocer cual es la contraseña, solo hay que hacerle ``echo`` a esa variable:
+
+.. code:: sh
+
+    echo "La contraseña de root de MariaDB es: $mariadb_root"
+
+.. warning::
+    Recuerda que, si te sales de la sesión (sSH o cierras tu terminal) perderás el valor de esa variable.
+
+Lo que sigue es asegurar MariaDB para evitar que sea tan vulnerable como cuando recien se instala. Hay un script para eso llamado:
+``mysql_secure_installation``; el cual puedes correr en cualquier momento y te guiará por los siguientes pasos.
+
+En nuestro caso, vamos a correr cada comando para poder aprender, a detalle, qué es lo que hace.
+
+Primero, vamos a usar el cliente de ``MariaDB`` para iniciar una sesión para con el servidor.
+
+.. code:: sh
+
+    mysql -u root
+
+Luego, vamos a agregarle una contraseña a root de MariaDb. Recuerda consultar la contraseña de root de MariaDB que generamos
+anteriormente. Substituye "<la-contraseña-de-root-de-mariadb>":
+
+.. code:: sql
+
+    UPDATE mysql.user SET Password = PASSWORD( '<la-contraseña-de-root-de-mariadb>' ) WHERE User = 'root';
+
+Lo que sigue es eliminar el acceso para el usuario sin nombre.
+
+.. code:: sql
+
+    DELETE FROM mysql.user WHERE User = '';
+
+Eliminar el acceso a root de manera remota:
+
+.. code:: sql
+
+    DELETE FROM mysql.user WHERE User = 'root' AND Host NOT IN ('localhost', '127.0.0.1', '::1');
+
+Remover las bases de datos de prueba:
+
+.. code:: sql
+
+    DROP DATABASE IF EXISTS test;
+    DELETE FROM mysql.db WHERE Db = 'test' OR Db = 'test\\_%';
+
+Recargamos los privilegios:
+
+.. code:: sql
+
+    FLUSH PRIVILEGES;
+    EXIT;
+
+Ahora, si queremos volver a entrar a MariaDB, debemos usar el cliente e indicarle que queremos usar una contraseña para entrar.
+
+.. code:: sh
+
+    mysql -u root -p
+
+Para ser un poco prácticos, vamos a crear un archivo de configuración para el cliente; el cual contendrá nuestras credenciales.
+
+El archivo se llamará: ``/root/.my.cnf``.
+
+.. code:: ini
+
+    [client]
+    hostname = localhost
+    user = root
+    password = <la-contraseña-de-root-de-mariadb>
 
 .. warning::
 
@@ -144,11 +262,105 @@ MariaDB
 
     Dicho ésto, si algún usuario no autorizado adquiere root en nuestro servidor, estaremos perdidos.
 
+Sigue crear la base de datos de prueba. Para hacer eso, necesitamos, primero, un nombre de usuario y una contraseña. Vamos a
+generarlos:
+
+.. code:: sh
+
+    mariadb_usuario=$( cat /dev/urandom | tr -dc A-Za-z0-9 | head -c ${1:-15}; echo; )
+    mariadb_contra=$( cat /dev/urandom | tr -dc A-Za-z0-9 | head -c ${1:-30}; echo; )
+
+Tanto el usuario como la contraseña están en las variables:
+
+* $mariadb_usuario
+* $mariadb_contra
+
+Para verlas, podemos hacer ``echo``; como en el ejemplo anterior, o podemos, también, hacer lo siguiente:
+
+.. code:: sh
+
+    cat << EOF
+    Base de datos
+
+    Usuario:    $mariadb_usuario
+    Contraseña: $mariadb_contra
+
+    EOF
+
+Para iniciar una sesión para con ``MariaDB`` a través de su cliente, ahora solo debemos escribir el nombre del cliente. Todos los
+datos están en el archivo de configuración:
+
+.. code:: sh
+
+    mysql
+
+Bueno, ahora, estamos listos para crear una base de datos de prueba. No olvides substituir: "<mariadb_usuario>" y "<mariadb_contra>"
+por los actuales.
+
+La base de datos de prueba solamente debe poder ser accesada por root y por un usuario sin privilegios. Debemos crear tal usuario y
+otorgarle privilegios sobre la base de datos también.
+
+.. code:: sql
+
+    CREATE DATABASE `mst_tld-site` DEFAULT CHARSET utf8;
+    CREATE USER '<mariadb_usuario>'@'localhost' IDENTIFIED BY '<mariadb_contraseña>';
+    GRANT ALL PRIVILEGES ON \`mst_tld-site\`.* TO '<mariadb_usuario>'@'localhost';
+
+La base de datos que hemos creado necesita una tabla. Vamos a crearla:
+
+.. code:: sql
+
+    DROP TABLE IF EXISTS `mst_tld-site`.visitas;
+
+    CREATE TABLE `mst_tld-site`.visitas (
+        total INT NOT NULL AUTO_INCREMENT,
+        ultima TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        navegador VARCHAR(100) NOT NULL,
+        PRIMARY KEY (total)
+    );
 
 PHP-FPM
 =======
+Este servicio es el que procesa el código PHP y lo envía a ``nginx`` para ser enviado como respuesta a una petición. Es uno de los
+lenguajes de programación más usados en todo el mundo.
 
-```bash:/howto/lemp/php-fpm```
+Para configurarlo, debemos editar su archivo de configuración en: ``/etc/php-fpm.d/www.conf``:
+
+.. code:: ini
+
+    [www]
+    ; User and group
+    user = apache
+    group = apache
+
+    ; socket
+    listen = /run/php-fpm/www.sock
+    listen.owner = nginx
+    listen.group = nginx
+    listen.mode = 0660
+    listen.acl_users = apache,nginx
+    listen.allowed_clients = 127.0.0.1
+
+    ; processes
+    pm = dynamic
+    pm.max_children = 50
+    pm.start_servers = 5
+    pm.min_spare_servers = 5
+    pm.max_spare_servers = 35
+
+    ; logs
+    slowlog = /var/log/php-fpm/www-slow.log
+    php_admin_value[error_log] = /var/log/php-fpm/www-error.log
+    php_admin_flag[log_errors] = on
+
+    ; sessions
+    php_value[session.save_handler] = files
+    php_value[session.save_path] = /var/lib/php/session
+
+    ; cache
+    php_value[soap.wsdl_cache_dir] = /var/lib/php/wsdlcache
+
+Esta configuración es suficiente para que nos dé servicio como queremos.
 
 .. note::
 
@@ -156,34 +368,44 @@ PHP-FPM
 
 Servicios
 =========
+Ahora, vamos a reiniciar los servicios para ver si la configuración está correcta y no impidió que iniciaran los servidores.
 
+.. code:: sh
 
-```bash:/howto/lemp/servicios```
+    systemctl restart nginx.service mariadb.service php-fpm.service
 
+Y revisaremos su estado:
+
+.. code:: sh
+
+    systemctl status nginx.service mariadb.service php-fpm.service
+
+Si no hay lineas coloreadas de rojo, tenemos muy buena probabilidad de que todo funcione bien.
 
 Seguridad
 =========
+En esta sección veremos como abrir puertos y configurar permisos para que todo funcione como debe y de manera segura.
 
-```bash:/howto/lemp/seguridad```
+Primero vamos a darle acceso al mundo a nuestro servicio de HTTP y HTTPS; que son los servicios que otorga ``nginx``.
+
+.. code:: sh
+
+    firewall-cmd --set-default-zone=public
+    firewall-cmd --permanent --add-port=80/tcp --add-port=443/tcp
+    firewall-cmd --reload
+
+Ahora, vamos a asegurarnos de que ``root`` sea dueño de todo  en ``/etc/nginx``; de que ``nginx`` sea el grupo y que solo tenga
+permiso de lectura. El mundo no debe tener permisos de nada ahí:
+
+.. code:: sh
+
+    chown -R root:nginx /etc/nginx
+    find /etc/nginx -type d -exec chmod 2750 {} \;
+    find /etc/nginx -type f -exec chmod 640 {} \;
 
 
 Pruebas
 =======
-Ahora, vamos a crear una tabla para probar que la conexión a MariaDb funciona bien.
-
-Primero, creamos una tabla con algo de información:
-
-.. code:: sh
-
-    mysql -e 'DROP TABLE IF EXISTS `mst_tld-site`.visitas;'
-    mysql -e '
-    CREATE TABLE `mst_tld-site`.visitas(
-        total int not null auto_increment,
-        ultima timestamp default current_timestamp,
-        navegador varchar(100) not null,
-        primary key(total)
-    );'
-
 Ahora, vamos a crear un pequeño script de PHP que actualice el campo ``navegador`` y nos muestre cuantas veces hemos visitado:
 
 .. code:: php
@@ -198,13 +420,13 @@ Ahora, vamos a crear un pequeño script de PHP que actualice el campo ``navegado
                 <?php
 
                 # datos
-                # usa el usuario y password que generamos al momento de crear la base de datos
-                $user = 'QCdsXh9MT5yGN5h';
-                $password = 'jS9y4i9nPaFNwuXa2KX4R2XwVWK8NR';
+                # usa el usuario y contraseña que generamos al momento de crear la base de datos
+                $usuario = 'QCdsXh9MT5yGN5h';
+                $contra = 'jS9y4i9nPaFNwuXa2KX4R2XwVWK8NR';
 
                 # verificar conexión
                 try {
-                    $db = new PDO( 'mysql:host=localhost;dbname=mst_tld-site', $user, $password );
+                    $db = new PDO( 'mysql:host=localhost;dbname=mst_tld-site', $user, $contra );
                     echo( "\nEstatus: conectado!\n" );
 
                 } catch ( PDOException $e ) {
