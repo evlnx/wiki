@@ -2,7 +2,7 @@
 Servidor LEMP
 =============
 ----------------------------------------------------------------
-HowTo de como instalar; en GNU & Linux, NginX, MariaDB y PHP-FPM
+HowTo de como instalar; en GNU & Linux, nginx, MariaDB y PHP-FPM
 ----------------------------------------------------------------
 
 [[_TOC_]]
@@ -23,11 +23,11 @@ Prerrequisitos
     Iniciamos los servicios porque MariaDB lo requiere para ser configurado.
 
 
-NginX
+nginx
 =====
-Primero hay que instalar ``NginX``. Éste es un servidor web bastante rápido y ligero. Es muy eficiente y por eso lo usamos.
+Primero hay que instalar ``nginx``. Éste es un servidor web bastante rápido y ligero. Es muy eficiente y por eso lo usamos.
 
-Como NginX va a usar ``PHP-FPM`` por medio de FastCGI, debemos proveerle de algunos parametros para que funcione bien.
+Como nginx va a usar ``PHP-FPM`` por medio de FastCGI, debemos proveerle de algunos parametros para que funcione bien.
 
 Edita el archivo ``/etc/nginx/fastcgi_params`` para que se vea así:
 
@@ -60,14 +60,14 @@ Edita el archivo ``/etc/nginx/fastcgi_params`` para que se vea así:
     fastcgi_param  REDIRECT_STATUS    200;
 
 Ahora, para facilitar el manejo de "servidores" o sitios, vamos a crear un directorio llamando ``/etc/nginx/server.d`` y vamos a
-pedirle a ``NginX`` que incluya, de ahí, todos los archivos que terminen en '.conf'.
+pedirle a ``nginx`` que incluya, de ahí, todos los archivos que terminen en '.conf'.
 
 .. code:: sh
 
     # crear directorio
     mkdir /etc/nginx/server.d
 
-Para pedirle a ``Nginx`` que los incluya, agregaremos el siguiente archivo en ``/etc/nginx/conf.d/server.conf``:
+Para pedirle a ``nginx`` que los incluya, agregaremos el siguiente archivo en ``/etc/nginx/conf.d/server.conf``:
 
 .. code:: nginx
 
@@ -82,7 +82,7 @@ directorio será: ``/etc/nginx/include.d``:
 
 Ahora, vamos a poner la configuración mínima para PHP ahí. Ésta configuración hace varias cosas:
 
-* indica que los archivos index son: index.html, index.htm e index.php.
+* indica que los archivos index son: index.php, index.html e index.htm.
 * activa la configuración preferida para usar controlador frontal.
 * incluye los parámetros para fastcgi.
 * indica que el socket para usar ``PHP-FPM`` está en: ``/run/php-fpm/www.sock``.
@@ -93,7 +93,7 @@ El archivo se llamará: ``/etc/nginx/include.d/php.conf``:
 
 .. code:: nginx
 
-    index index.html index.htm index.php;
+    index index.php index.html index.htm;
 
     location / {
         try_files $uri $uri/ =404;
@@ -101,10 +101,10 @@ El archivo se llamará: ``/etc/nginx/include.d/php.conf``:
 
     location ~ \.php$ {
         include /etc/nginx/fastcgi_params;
-        fastcgi_pass unix:/run/php-fpm/php-fpm.sock;
+        fastcgi_pass unix:/run/php-fpm/www.sock;
     }
 
-Habiendo terminado la configuración de ``NginX``, vamos a crear un sitio de ejemplo. El sitio será ``misitio.tld``. Es un sitio
+Habiendo terminado la configuración de ``nginx``, vamos a crear un sitio de ejemplo. El sitio será ``misitio.tld``. Es un sitio
 ficticio pero nos sirve para probar.
 
 El archivo va en: ``/etc/nginx/server.d/misitio.tld.conf``
