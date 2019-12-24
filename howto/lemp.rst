@@ -48,7 +48,7 @@ Edita el archivo ``/etc/nginx/fastcgi_params`` para que se vea así:
     fastcgi_param  SERVER_PROTOCOL    $server_protocol;
 
     fastcgi_param  GATEWAY_INTERFACE  CGI/1.1;
-    fastcgi_param  SERVER_SOFTWARE    nginx/$nginx_version;
+    fastcgi_param  SERVER_SOFTWARE    nginx;
 
     fastcgi_param  REMOTE_ADDR        $remote_addr;
     fastcgi_param  REMOTE_PORT        $remote_port;
