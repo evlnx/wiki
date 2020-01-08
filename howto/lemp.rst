@@ -466,6 +466,43 @@ Ahora, vamos a crear un pequeño script de PHP que actualice el campo ``navegado
 
 Ahora, solo ve a: http://misitio.tld/test.php y verás si se puede conectar o no.
 
+Trucos
+======
+
+Archivo de hosts
+----------------
+Muchas veces; como en este caso, el dominio que quieres usar no existe o no está apuntado todavía. Tenemos un truco para decirle a
+tu computadora en donde puede encontrar tal dominio. En cierta forma, la engañaremos para que así lo crea.
+
+Esta forma es usar el archivo ``/etc/hosts``.
+
+Para poder agregar un sitio, solo debes agregar una entrada que luzca así:
+
+::
+
+    <ip-de-tu-servidor> dominio-que-quieres-usar
+
+O, por ejemplo:
+
+::
+
+    123.123.123.123 midominio.tld
+
+Ésto le dice a tu computadora (y a los navegadores que uses) que, cuando busquen el sitio ``midominio.tld``, lo encuentren en la IP
+``123.123.123.123``.
+
+Obviamente, ésto solo funciona en tu computadora. Si quieres que otra computadora accese al sitio, debes editar el archivo de hosts
+de esa otra computadora.
+
+.. note::
+    Para poder editar el archivo de ``/etc/hosts``, debes hacerlo como root.
+
+.. warning::
+    Es muy importante que remuevas las entradas de ``/etc/hosts`` una vez que ya no las necesites. Puede causarte muchos problemas
+    inesperados y confusión.
+
+
+
 
 Troubleshooting
 ===============
