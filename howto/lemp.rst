@@ -251,7 +251,7 @@ El archivo se llamará: ``/root/.my.cnf``.
 .. code:: ini
 
     [client]
-    hostname = localhost
+    host = localhost
     user = root
     password = <la-contraseña-de-root-de-mariadb>
 
