@@ -304,7 +304,7 @@ otorgarle privilegios sobre la base de datos también.
 
     CREATE DATABASE `mst_tld-site` DEFAULT CHARSET utf8;
     CREATE USER '<mariadb_usuario>'@'localhost' IDENTIFIED BY '<mariadb_contraseña>';
-    GRANT ALL PRIVILEGES ON \`mst_tld-site\`.* TO '<mariadb_usuario>'@'localhost';
+    GRANT ALL PRIVILEGES ON `mst_tld-site`.* TO '<mariadb_usuario>'@'localhost';
 
 La base de datos que hemos creado necesita una tabla. Vamos a crearla:
 
