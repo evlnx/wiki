@@ -403,6 +403,12 @@ permiso de lectura. El mundo no debe tener permisos de nada ahí:
     find /etc/nginx -type d -exec chmod 2750 {} \;
     find /etc/nginx -type f -exec chmod 640 {} \;
 
+También, hay que reestablecer las etiquetas de SELinux:
+
+.. code:: sh
+
+    restorecon -Rv /srv
+
 
 Pruebas
 =======
@@ -465,6 +471,13 @@ Ahora, vamos a crear un pequeño script de PHP que actualice el campo ``navegado
     </html>
 
 Ahora, solo ve a: http://misitio.tld/test.php y verás si se puede conectar o no.
+
+Una vez creado este archivo, hay que volver a reestablecer las etiquetas de SELinux:
+
+.. code:: sh
+
+    restorecon -Rv /srv
+
 
 Trucos
 ======
