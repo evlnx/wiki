@@ -432,7 +432,7 @@ Ahora, vamos a crear un pequeño script de PHP que actualice el campo ``navegado
 
                 # verificar conexión
                 try {
-                    $db = new PDO( 'mysql:host=localhost;dbname=mst_tld-site', $user, $contra );
+                    $db = new PDO( 'mysql:host=localhost;dbname=mst_tld-site', $usuario, $contra );
                     echo( "\nEstatus: conectado!\n" );
 
                 } catch ( PDOException $e ) {
