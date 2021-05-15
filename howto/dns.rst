@@ -28,7 +28,7 @@ El dominio a configurar es: `example.tld`.
 Instalación
 ===========
 
-```bash:/howto/dns/prerrequisitos```
+```bash:/howto/dns/prerrequisitos.bash```
 
 
 Configuración
@@ -38,7 +38,7 @@ Configuración
 -------------
 Para no quedarnos con la llave pre-generada, vamos a generar una nosotros mismos.
 
-```bash:/howto/dns/rndc```
+```bash:/howto/dns/rndc.bash```
 
 De lo que resulte, vamos a obtener las funciones `key` y `controls`; y las acomodaremos en `/etc/rndc.key` y `/etc/named.conf`
 respectivamente.
@@ -83,21 +83,21 @@ tener al mismo dueño/grupo, pero con permisos `640`.
 Servicios
 =========
 
-```bash:/howto/dns/servicios```
+```bash:/howto/dns/servicios.bash```
 
 
 Pruebas
 =======
 Para probar, necesitamos hacer que `/etc/resolv.conf` luzca así:
 
-::
+.. code-block:: bash
 
     search example.tld
     nameserver 192.168.77.10
 
 Una vez que esté así en nuestro cliente y nuestro servidor, podemos iniciar las pruebas:
 
-```bash:/howto/dns/pruebas```
+```bash:/howto/dns/pruebas.bash```
 
 
 Troubleshooting
