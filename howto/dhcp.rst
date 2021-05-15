@@ -20,10 +20,7 @@ Prerrequisitos
 Instalación
 ===========
 
-.. code-block:: bash
-
-    # instalar paquetes necesarios
-    yum -y install dhcp
+```bash:/howto/dhcp/instalacion```
 
 
 Configuración
