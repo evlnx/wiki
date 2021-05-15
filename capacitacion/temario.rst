@@ -18,8 +18,8 @@ Email
 Servicio de red que permite a los usuarios enviar y recibir mensajes y archivos rápidamente, más información en
 http://es.wikipedia.org/wiki/EMail
 
-Aprender de la etiqueta de email (netiquette)
-#############################################
+Es importante saber que hay una etiqueta a seguir, en general, en el mundo de la tecnología:
+https://en.wikipedia.org/wiki/Etiquette_in_technology
 
 Google Chat
 -----------
