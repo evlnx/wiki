@@ -61,12 +61,12 @@ Ejemplo:
 
 
 /var/named/masters/example.tld.db
--------------------------
+---------------------------------
 Este archivo contiene varias secciones que requieren algo de explicación:
 
 La '@':
-    Este signo se substituye por el valor declarado de `$ORIGIN`. Es decir, si tienes `example.tld.` como el valor de `$ORIGIN`, cada
-    vez que pongas '@' o nada, se substituirá por `example.tld.`.
+    Este signo se substituye por el valor declarado de `$ORIGIN`. Es decir, si tienes `example.tld.` como el valor de `$ORIGIN`,
+    cada vez que pongas '@' o nada, se substituirá por `example.tld.`.
 
 Serial '2017041100':
     El serial es un número que debe aumentar cada vez que actualizas una zona para notificarle a los esclavos de que hay cambios. Se
