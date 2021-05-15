@@ -86,8 +86,8 @@ Seguridad
 ```bash:/howto/lemp/seguridad```
 
 
-Troubleshooting
-===============
+Problemática
+============
 
 Referencias
 ===========
