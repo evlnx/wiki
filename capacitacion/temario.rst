@@ -10,9 +10,6 @@ Descripción
 Un intento de delimitar cuál es el conocimiento necesario para trabajar en la industria con GNU & Linux; y FOSS en general.
 
 
-.. contents:: Temario
-
-
 Establecer canales de comunicación
 ==================================
 
