@@ -98,28 +98,3 @@ Para probar, necesitamos hacer que ``/etc/resolv.conf`` luzca así:
 Una vez que esté así en nuestro cliente y nuestro servidor, podemos iniciar las pruebas:
 
 ```bash:/howto/dns/pruebas.bash```
-
-
-Troubleshooting
-===============
-
-Verificar tu configuración general
-----------------------------------
-Para hacer ésto, solo necesitas correr el comando: ``named-checkconf``.
-
-Para verificar que tus zonas son válidas, debes usar el comando: ``named-checkzone <dominio> <archivo>``. Por ejemplo:
-``named-checkzone example.tld /var/named/masters/example.tld.db``.
-
-.. note::
-    Cuando no sale nada, quiere decir que todo está bien.
-
-Errores en los logs
--------------------
-Es importante saber que en ``/var/named/data/named.run`` está el log de todo lo que sucede con bind. Por otro lado, tenemos el log
-de ``journalctl -u named``; el cual nos muestra la información relevante al sistema.
-
-
-Referencias
-===========
-* https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/7/html/Networking_Guide/sec-BIND.html
-
