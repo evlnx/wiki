@@ -25,6 +25,7 @@ Prerrequisitos
 NginX
 =====
 
+```bash:/howto/lemp/nginx```
 
 server.d
 --------
