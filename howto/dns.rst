@@ -97,7 +97,17 @@ Para probar, necesitamos hacer que ``/etc/resolv.conf`` luzca así:
 
 Una vez que esté así en nuestro cliente y nuestro servidor, podemos iniciar las pruebas:
 
-```bash:/howto/dns/pruebas.bash```
+.. code-block:: sh
+
+    # buscar el dominio principal
+    dig example.tld
+
+    # buscar los subdominios
+    dig ns1.example.tld
+    dig mail1.example.tld
+
+    # buscar uno no existente y verificar que lo envía a 192.168.77.10
+    dig chuchuwa.example.tld
 
 
 Problemática
