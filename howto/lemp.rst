@@ -5,7 +5,6 @@ Servidor LEMP
 HowTo de como instalar; en GNU & Linux, NginX, MariaDB y PHP-FPM
 ----------------------------------------------------------------
 
-
 Descripción
 ===========
 Éste es un servidor instalado en CentOS 7. Consta de servicios HTTP, de PHP por socket y Maria DB con un password de root generado
@@ -40,7 +39,7 @@ NginX
 .. code-block:: sh
 
     # editar fastcgi_params
-    cat <<- 'EOF' > /etc/nginx/fastcgi_params
+    cat << 'EOF' > /etc/nginx/fastcgi_params
     fastcgi_param  CONTENT_LENGTH     $content_length;
     fastcgi_param  CONTENT_TYPE       $content_type;
     fastcgi_param  QUERY_STRING       $query_string;
@@ -70,7 +69,7 @@ NginX
     EOF
 
     # activar configuración independiente de servidores
-    cat <<- 'EOF' > /etc/nginx/conf.d/servers.conf
+    cat << 'EOF' > /etc/nginx/conf.d/servers.conf
     include server.d/*.conf;
 
     EOF
@@ -79,7 +78,7 @@ NginX
     mkdir /etc/nginx/{server,include}.d
 
     # crear configuración /include.d/php.conf
-    cat <<- 'EOF' > /etc/nginx/include.d/php.conf
+    cat << 'EOF' > /etc/nginx/include.d/php.conf
     index index.html index.htm index.php;
 
     location / {
@@ -94,7 +93,7 @@ NginX
     EOF
 
     # crear primera instancia de servidor
-    cat <<- 'EOF' > /etc/nginx/server.d/misitio.tld.conf
+    cat << 'EOF' > /etc/nginx/server.d/misitio.tld.conf
     server {
         listen 80;
         server_name misitio.tld;
@@ -117,13 +116,13 @@ NginX
     chgrp -R webdev /srv/www/*
 
     # crear archivos de prueba
-    cat <<- 'EOF' > /srv/www/php/misitio.tld/default/public/index.php
+    cat << 'EOF' > /srv/www/php/misitio.tld/default/public/index.php
     bienvenid@
 
     EOF
 
     ## éste archivo es de uso exclusivo de prueba y debemos borrarlo inmediatamente después de usarlo
-    cat <<- 'EOF' > /srv/www/php/misitio.tld/default/public/info.php
+    cat << 'EOF' > /srv/www/php/misitio.tld/default/public/info.php
     <?php
 
     phpinfo();
@@ -163,7 +162,7 @@ MariaDB
     echo "El password para mysql será: $password"
 
     # instalación segura de MariaDB
-    mysql -u root <<- EOF
+    mysql -u root << EOF
 
     # agregar password a usuario root
     UPDATE mysql.user SET Password = PASSWORD( '${password}' ) WHERE User = 'root';
@@ -181,7 +180,7 @@ MariaDB
     EOF
 
     # crear archivo .my.cnf
-    cat <<- EOF > /root/.my.cnf
+    cat << EOF > /root/.my.cnf
     [client]
     user = root
     password = $password
@@ -192,7 +191,7 @@ MariaDB
     # crear usuario y contraseña para base de datos
     user=$( apg -M CLN -m 15 -n 1 )
     password=$( apg -M CLN -m 30 -n 1 )
-    cat <<- EOF
+    cat << EOF
     Base de datos
 
     Usuario:  $user
