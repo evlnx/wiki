@@ -20,7 +20,7 @@ Prerrequisitos
 Instalación
 ===========
 
-```bash:/howto/dhcp/instalacion```
+```bash:/howto/dhcp/instalacion.bash```
 
 
 Configuración
@@ -36,7 +36,7 @@ Configuración
 Servicios
 =========
 
-```bash:/howto/dhcp/servicios```
+```bash:/howto/dhcp/servicios.bash```
 
 .. warning::
     Nunca habilitar DHCP para la interfaz pública (eth0) porque podemos causar grandes problemas para nuestro ISP.
