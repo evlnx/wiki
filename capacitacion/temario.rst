@@ -127,10 +127,6 @@ iptables
 nftables
 --------
 
-TCP wrappers
-------------
-
-
 
 Servicios web
 =============
