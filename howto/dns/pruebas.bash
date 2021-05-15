@@ -6,6 +6,5 @@ dig ns1.example.tld
 dig mail.example.tld
 
 # buscar uno no existente y verificar que lo envía a 192.168.77.10
-dig laskdj.example.tld
-
+dig chuchuwa.example.tld
 
