@@ -97,11 +97,10 @@ Para probar, necesitamos hacer que ``/etc/resolv.conf`` luzca así:
 
 Una vez que esté así en nuestro cliente y nuestro servidor, podemos iniciar las pruebas:
 
-```bash:/howto/dns/pruebas.bash```
 
 
-Troubleshooting
-===============
+Problemática
+============
 
 Verificar tu configuración general
 ----------------------------------
