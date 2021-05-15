@@ -6,9 +6,6 @@ HowTo sobre como instalar; en GNU & Linux, un servidor DNS
 ----------------------------------------------------------
 
 
-[[_TOC_]]
-
-
 Descripción
 ===========
 Es un servidor que nos ayuda a traducir nombres de dominio a IP. Hay dos tipos de servidores: autoritativo y recursivo.
