@@ -61,7 +61,10 @@ que es importante estar en contacto y no siempre vemos las notificaicones de la 
 
 Fundamentales de Linux
 ======================
-http://www.funtoo.org/Linux_Fundamentals,_Part_1
+* https://www.funtoo.org/Linux_Fundamentals,_Part_1
+* https://www.funtoo.org/Linux_Fundamentals,_Part_2
+* https://www.funtoo.org/Linux_Fundamentals,_Part_3
+* https://www.funtoo.org/Linux_Fundamentals,_Part_4
 
 vim
 ---
@@ -71,18 +74,24 @@ Como recurso adicional, pudieras probar: https://www.openvim.com/ o buscar algú
 
 Bash
 ----
-http://www.funtoo.org/Bash_by_Example,_Part_1
+* https://www.funtoo.org/Bash_by_Example,_Part_1
+* https://www.funtoo.org/Bash_by_Example,_Part_2
+* https://www.funtoo.org/Bash_by_Example,_Part_3
 
 grep
 ----
 
 awk
 ---
-https://www.funtoo.org/Awk_by_Example,_Part_1
+* https://www.funtoo.org/Awk_by_Example,_Part_1
+* https://www.funtoo.org/Awk_by_Example,_Part_2
+* https://www.funtoo.org/Awk_by_Example,_Part_3
 
 sed
 ---
-https://www.funtoo.org/Sed_by_Example,_Part_1
+* https://www.funtoo.org/Sed_by_Example,_Part_1
+* https://www.funtoo.org/Sed_by_Example,_Part_2
+* https://www.funtoo.org/Sed_by_Example,_Part_3
 
 OpenSSH
 -------
@@ -111,9 +120,13 @@ Podman
 
 Linux (kernel)
 ==============
+* https://www.kernel.org/doc/html/latest/
 
 cgroups v1 y v2
 ---------------
+* man cgroups
+* https://www.kernel.org/doc/html/latest/admin-guide/cgroup-v2.html
+* https://www.kernel.org/doc/html/latest/admin-guide/cgroup-v1
 
 Syscalls
 --------
@@ -139,6 +152,9 @@ UDP
 
 Modelo OSI
 ----------
+Es un modelo para conceptualizar redes muy común y muy usado. Hay que estar bien familiarizados con él.
+
+* https://en.wikipedia.org/wiki/OSI_model
 
 
 Seguridad
@@ -208,6 +224,12 @@ Zabbix
 Extras
 ======
 
+Crystal
+-------
+Lenguaje de programación compilado y fuertemente tipado. Muy rápido y muy útil. Nuestro favorito.
+
+* https://crystal-lang.org/
+
 HTML, CSS, y Javascript
 -----------------------
 
@@ -223,10 +245,16 @@ Documentación
 
 Markdown
 --------
+Es el markup principalmente usado en la comunidad al rededor de GitHub y GitLab. No es libre y no lo preferimos, pero lo usamos de
+todos modos cuando el proyecto lo requiere.
+
+* https://www.markdownguide.org/
 
 reStructured Text
 -----------------
+Es el markup preferido por ser software libre y ser bastante convertible a varios formatos; incluyendo PDF, html, man y demás.
 
+* https://docutils.sourceforge.io/rst.html
 
 Recursos válidos
 ----------------
