@@ -14,7 +14,7 @@ aleatoriamente y de 30 caracteres.
 Prerrequisitos
 ==============
 
-.. code-block:: sh
+.. code:: sh
 
     # instalar repositorio necesario
     yum -y install epel-release
@@ -36,7 +36,7 @@ Prerrequisitos
 NginX
 =====
 
-.. code-block:: sh
+.. code:: sh
 
     # editar fastcgi_params
     cat << 'EOF' > /etc/nginx/fastcgi_params
@@ -155,7 +155,7 @@ En el caso de PHP, es necesario solamente incluir el archivo ``include.d/php.con
 MariaDB
 =======
 
-.. code-block:: sh
+.. code:: sh
 
     # generar password para mysql
     password=$( apg -M CLN -m 30 -n 1 )
@@ -214,7 +214,7 @@ MariaDB
 PHP-FPM
 =======
 
-.. code-block:: sh
+.. code:: sh
 
     # configurar PHP-FPM para usar sockets
     sed -ri 's@^listen =.*$@listen = /run/php-fpm/php-fpm.sock@' /etc/php-fpm.d/www.conf
@@ -231,7 +231,7 @@ PHP-FPM
 Servicios
 =========
 
-.. code-block:: sh
+.. code:: sh
 
     # reiniciar servicios
     systemctl restart nginx.service mariadb.service php-fpm.service
@@ -240,7 +240,7 @@ Servicios
 Seguridad
 =========
 
-.. code-block:: sh
+.. code:: sh
 
     # abrir puertos de firewall para nginx
     firewall-cmd --set-default-zone=public

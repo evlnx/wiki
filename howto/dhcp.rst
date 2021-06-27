@@ -57,25 +57,25 @@ Estos comandos son para revisar configuraciones y ver información de logs.
 
 Verificar la dirección de nuestras interfaces de red.
 
-.. code-block:: sh
+.. code:: sh
 
     ip address
 
 Activar la interfaz de red eth1.
 
-.. code-block:: sh
+.. code:: sh
 
     ip link set dev eth1 up
 
 Desactivar la interfaz de red eth1.
 
-.. code-block:: sh
+.. code:: sh
 
     ip link set dev eth1 down
 
 Revisar el estado constante de la aplicación.
 
-.. code-block:: sh
+.. code:: sh
 
     journalctl -u dhcpd
 
