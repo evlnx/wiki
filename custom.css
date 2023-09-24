@@ -3,7 +3,7 @@
 /* attention */
 div.attention {
     background: rgba(255, 0, 0, 0.5);
-    box-shadow: 0 6px 20px #ccc;
+    box-shadow: 0 6px 8px #ccc;
     margin-top: 1ex;
     padding:    0.1ex 2ex;
 }
@@ -18,7 +18,7 @@ div.attention p.admonition-title {
 /* note */
 div.note {
     background: rgba(255, 223, 0, 0.6);
-    box-shadow: 0 6px 20px #ccc;
+    box-shadow: 0 6px 8px #ccc;
     margin-top: 1ex;
     padding:    0.1ex 2ex;
 }
@@ -57,7 +57,7 @@ div.warning p.admonition-title {
 /* important */
 div.important {
     background: rgba(245,245, 245, 1);
-    box-shadow: 0 6px 20px #ccc;
+    box-shadow: 0 6px 8px #ccc;
     margin-top: 1ex;
     padding:    0.1ex 2ex;
 }
