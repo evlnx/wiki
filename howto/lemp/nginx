@@ -1,0 +1,90 @@
+# editar fastcgi_params
+cat << 'EOF' > /etc/nginx/fastcgi_params
+fastcgi_param  CONTENT_LENGTH     $content_length;
+fastcgi_param  CONTENT_TYPE       $content_type;
+fastcgi_param  QUERY_STRING       $query_string;
+fastcgi_param  REQUEST_METHOD     $request_method;
+
+fastcgi_param  DOCUMENT_ROOT      $document_root;
+fastcgi_param  DOCUMENT_URI       $document_uri;
+fastcgi_param  HTTPS              $https if_not_empty;
+fastcgi_param  REQUEST_SCHEME     $scheme;
+fastcgi_param  REQUEST_URI        $request_uri;
+fastcgi_param  SCRIPT_FILENAME    $request_filename;
+fastcgi_param  SCRIPT_NAME        $fastcgi_script_name;
+fastcgi_param  SERVER_PROTOCOL    $server_protocol;
+
+fastcgi_param  GATEWAY_INTERFACE  CGI/1.1;
+fastcgi_param  SERVER_SOFTWARE    nginx;
+
+fastcgi_param  REMOTE_ADDR        $remote_addr;
+fastcgi_param  REMOTE_PORT        $remote_port;
+fastcgi_param  SERVER_ADDR        $server_addr;
+fastcgi_param  SERVER_NAME        $server_name;
+fastcgi_param  SERVER_PORT        $server_port;
+
+# PHP only, required if PHP was built with --enable-force-cgi-redirect
+fastcgi_param  REDIRECT_STATUS    200;
+
+EOF
+
+# activar configuración independiente de servidores
+cat << 'EOF' > /etc/nginx/conf.d/servers.conf
+include server.d/*.conf;
+
+EOF
+
+# crear directorios server.d e include.d
+mkdir /etc/nginx/{server,include}.d
+
+# crear configuración /include.d/php.conf
+cat << 'EOF' > /etc/nginx/include.d/php.conf
+index index.html index.htm index.php;
+
+location / {
+    try_files $uri $uri/ =404;
+}
+
+location ~ \.php$ {
+    include /etc/nginx/fastcgi_params;
+    fastcgi_pass unix:/run/php-fpm/php-fpm.sock;
+}
+
+EOF
+
+# crear primera instancia de servidor
+cat << 'EOF' > /etc/nginx/server.d/misitio.tld.conf
+server {
+    listen 80;
+    server_name misitio.tld;
+    root /srv/www/php/misitio.tld/default/public;
+
+    include include.d/php.conf;
+}
+
+EOF
+
+# crear directorios contenedores del sitio
+mkdir -p /srv/www/php/misitio.tld/default/public
+
+# arreglar permisos
+chmod -R 2771 /srv/www/php
+chmod 2775 /srv/www/php/misitio.tld/default/public
+restorecon -Rv /srv/www
+
+# asignar grupo webdev a los directorios pertinentes
+chgrp -R webdev /srv/www/*
+
+# crear archivos de prueba
+cat << 'EOF' > /srv/www/php/misitio.tld/default/public/index.php
+bienvenid@
+
+EOF
+
+## éste archivo es de uso exclusivo de prueba y debemos borrarlo inmediatamente después de usarlo
+cat << 'EOF' > /srv/www/php/misitio.tld/default/public/info.php
+<?php
+
+phpinfo();
+
+EOF

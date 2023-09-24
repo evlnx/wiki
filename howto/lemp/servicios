@@ -1,0 +1,2 @@
+# reiniciar servicios
+systemctl restart nginx.service mariadb.service php-fpm.service

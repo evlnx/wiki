@@ -1,0 +1,7 @@
+# configurar PHP-FPM para usar sockets
+sed -ri 's@^listen =.*$@listen = /run/php-fpm/php-fpm.sock@' /etc/php-fpm.d/www.conf
+
+# arreglar dueño, grupo y modo
+sed -ri 's@^;listen.owner =.*$@listen.owner = nginx@' /etc/php-fpm.d/www.conf
+sed -ri 's@^;listen.group =.*$@listen.group = nginx@' /etc/php-fpm.d/www.conf
+sed -ri 's@^;listen.mode =.*$@listen.mode = 660@' /etc/php-fpm.d/www.conf
