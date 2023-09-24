@@ -33,7 +33,7 @@ div.note p.admonition-title {
 /* warning */
 div.warning {
     background: rgba(0, 0, 0, 1);
-    box-shadow: 0 6px 20px #ccc;
+    box-shadow: 0 6px 8 #312;
     margin-top: 1ex;
     padding:    0.1ex 2ex;
 }
