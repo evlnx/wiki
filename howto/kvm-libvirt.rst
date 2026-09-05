@@ -64,12 +64,13 @@ Habilitación e Inicio de Servicios (Monolítico vs Modular)
 ----------------------------------------------------------
 En CentOS Stream 10 y Fedora 44, se puede optar por el demonio tradicional monolítico o por la arquitectura moderna de demonios modulares activados por socket de systemd.
 
-Opción A: Demonio monolítico tradicional (recomendado para despliegues estándar directos):
+Opción A: Demonio monolítico tradicional mediante activación por socket (recomendado):
+Al activar el socket en lugar del servicio continuo, systemd instancia el demonio bajo demanda ante peticiones de gestión (``virsh``, virt-manager, API RPC) y permite que se suspenda de forma limpia tras inactividad (``--timeout 120``), optimizando el uso de memoria:
 
 .. code:: bash
 
-   # Habilitar e iniciar atómicamente el servicio libvirtd
-   systemctl enable --now libvirtd.service
+   # Habilitar e iniciar socket del demonio monolítico (activa automáticamente libvirtd-ro y libvirtd-admin)
+   systemctl enable --now libvirtd.socket
 
 Opción B: Arquitectura modular split-daemon (recomendado en entornos de alta densidad o mínimos privilegios):
 En la arquitectura modular, cada subsistema de virtualización corre en un proceso aislado. Systemd escucha en los sockets UNIX y levanta los servicios bajo demanda:
