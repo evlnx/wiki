@@ -131,7 +131,7 @@ body {
     padding-bottom: 3rem !important;
 }
 
-/* Headings */
+/* Headings & Page Header */
 h1, h2, h3, h4, h5, h6,
 .header-title,
 .markdown-body h1,
@@ -145,18 +145,98 @@ h1, h2, h3, h4, h5, h6,
 }
 
 .header-title {
-    font-size: 2.25rem !important;
+    font-size: 2rem !important;
     border-bottom: 1px solid var(--eval-border) !important;
     padding-bottom: 0.75rem !important;
     margin-top: 1.25rem !important;
-    margin-bottom: 1.75rem !important;
+    margin-bottom: 1.5rem !important;
     color: var(--eval-text-primary) !important;
 }
 
-.markdown-body h2 {
+/* When a page has an explicit H1 document title, hide redundant slug header */
+#wiki-content:has(.markdown-body h1.title) > .header-title {
+    display: none !important;
+}
+
+/* Document Title & Subtitle in Content (Docutils) */
+.markdown-body h1.title {
+    font-size: 2.15rem !important;
+    font-weight: 800 !important;
+    line-height: 1.25 !important;
+    margin-top: 0.75rem !important;
+    margin-bottom: 0.35rem !important;
+    padding-bottom: 0 !important;
+    border-bottom: none !important;
+    color: var(--eval-text-primary) !important;
+    letter-spacing: -0.025em !important;
+}
+
+.markdown-body h2.subtitle {
+    font-size: 1.15rem !important;
+    font-weight: 500 !important;
+    line-height: 1.45 !important;
+    color: var(--eval-text-muted) !important;
     border-bottom: 1px solid var(--eval-border) !important;
-    padding-bottom: 0.35rem !important;
-    margin-top: 2rem !important;
+    margin-top: 0.35rem !important;
+    margin-bottom: 1.75rem !important;
+    padding-bottom: 0.85rem !important;
+    letter-spacing: normal !important;
+}
+
+/* Section Headings in Content */
+.markdown-body h2:not(.subtitle) {
+    font-size: 1.55rem !important;
+    font-weight: 700 !important;
+    border-bottom: 1px solid var(--eval-border) !important;
+    padding-bottom: 0.45rem !important;
+    margin-top: 2.25rem !important;
+    margin-bottom: 1rem !important;
+    color: var(--eval-text-primary) !important;
+}
+
+.markdown-body h3 {
+    font-size: 1.25rem !important;
+    font-weight: 600 !important;
+    margin-top: 1.75rem !important;
+    margin-bottom: 0.75rem !important;
+    color: var(--eval-text-primary) !important;
+}
+
+.markdown-body h4 {
+    font-size: 1.05rem !important;
+    font-weight: 600 !important;
+    margin-top: 1.25rem !important;
+    margin-bottom: 0.5rem !important;
+    color: var(--eval-text-primary) !important;
+}
+
+/* Lists & Typographic Flow (Fixes Gollum inline-block baseline bug) */
+.markdown-body ul,
+.markdown-body ol {
+    padding-left: 1.75rem !important;
+    margin-top: 0.5rem !important;
+    margin-bottom: 1rem !important;
+}
+
+.markdown-body li {
+    margin-top: 0.35rem !important;
+    margin-bottom: 0.35rem !important;
+    line-height: 1.65 !important;
+}
+
+.markdown-body li p.first,
+.markdown-body li p.last,
+.markdown-body li p {
+    display: inline !important;
+    margin: 0 !important;
+}
+
+.markdown-body li > table,
+.markdown-body li > pre,
+.markdown-body li > div {
+    display: table !important;
+    margin-top: 0.75rem !important;
+    margin-bottom: 0.75rem !important;
 }
 
 /* Links */
@@ -723,13 +803,17 @@ a.btn.btn-outline.text-mono:hover,
 }
 
 /* Code & Preformatted Blocks */
-code {
+code, tt,
+.markdown-body code,
+.markdown-body tt {
     background-color: var(--eval-code-bg) !important;
     color: var(--eval-code-text) !important;
+    border: 1px solid var(--eval-border) !important;
     font-family: var(--eval-font-mono) !important;
-    padding: 0.2em 0.45em !important;
+    padding: 0.18em 0.45em !important;
     border-radius: 4px !important;
-    font-size: 88%;
+    font-size: 87% !important;
+    word-break: break-word;
 }
 
 pre,
@@ -742,38 +826,122 @@ div.highlight {
     overflow-x: auto;
 }
 
-pre code {
+pre code, pre tt,
+.markdown-body pre code,
+.markdown-body pre tt {
     background-color: transparent !important;
     color: var(--eval-code-block-text) !important;
+    border: none !important;
     padding: 0 !important;
-    font-size: 90%;
+    font-size: 90% !important;
     line-height: 1.5;
 }
 
 /* Tables in Content */
-.markdown-body table {
-    border-collapse: collapse;
-    width: 100%;
-    margin: 1.5rem 0;
+.markdown-body table,
+table.docutils {
+    display: table !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    border-collapse: separate !important;
+    border-spacing: 0 !important;
+    margin: 1.5rem 0 !important;
     background-color: var(--eval-surface) !important;
     border: 1px solid var(--eval-border) !important;
-    border-radius: var(--eval-radius);
-    overflow: hidden;
+    border-radius: var(--eval-radius) !important;
+    overflow: hidden !important;
 }
 
-.markdown-body table th {
+.markdown-body table tr,
+table.docutils tr {
+    background-color: var(--eval-surface) !important;
+    border: none !important;
+    transition: background-color 0.15s ease-in-out !important;
+}
+
+.markdown-body table tr:nth-child(2n),
+.markdown-body table tr:nth-child(even),
+table.docutils tr:nth-child(2n),
+table.docutils tr:nth-child(even) {
+    background-color: var(--eval-surface-hover) !important;
+}
+
+.markdown-body table tr:hover,
+table.docutils tr:hover {
+    background-color: rgba(56, 189, 248, 0.06) !important;
+}
+
+.markdown-body table th,
+table.docutils th,
+table.docutils th.head {
     background-color: var(--eval-surface-hover) !important;
     color: var(--eval-text-primary) !important;
     font-family: var(--eval-font-heading) !important;
     font-weight: 600 !important;
-    border: 1px solid var(--eval-border) !important;
-    padding: 0.75rem 1rem;
+    font-size: 0.92rem !important;
+    border-top: none !important;
+    border-left: none !important;
+    border-right: 1px solid var(--eval-border) !important;
+    border-bottom: 2px solid var(--eval-border) !important;
+    padding: 0.75rem 1rem !important;
+    text-align: left !important;
+    vertical-align: middle !important;
 }
 
-.markdown-body table td {
-    border: 1px solid var(--eval-border) !important;
-    padding: 0.65rem 1rem;
+.markdown-body table th:last-child,
+table.docutils th:last-child {
+    border-right: none !important;
+}
+
+.markdown-body table td,
+table.docutils td {
+    border-top: none !important;
+    border-left: none !important;
+    border-right: 1px solid var(--eval-border) !important;
+    border-bottom: 1px solid var(--eval-border) !important;
+    padding: 0.7rem 1rem !important;
     color: var(--eval-text-body) !important;
+    font-size: 0.92rem !important;
+    vertical-align: middle !important;
+    background-color: transparent !important;
+}
+
+.markdown-body table td:last-child,
+table.docutils td:last-child {
+    border-right: none !important;
+}
+
+.markdown-body table tr:last-child td,
+table.docutils tr:last-child td {
+    border-bottom: none !important;
+}
+
+.markdown-body table p,
+.markdown-body table p.first,
+.markdown-body table p.last,
+.markdown-body table p.first.last,
+table.docutils p,
+table.docutils p.first,
+table.docutils p.last,
+table.docutils p.first.last {
+    margin: 0 !important;
+    padding: 0 !important;
+    line-height: 1.5 !important;
+}
+
+.markdown-body table td code,
+.markdown-body table th code,
+table.docutils td code,
+table.docutils th code {
+    background-color: var(--eval-code-bg) !important;
+    border: 1px solid var(--eval-border) !important;
+    color: var(--eval-link) !important;
+    font-family: var(--eval-font-mono) !important;
+    font-size: 0.85em !important;
+    padding: 0.15em 0.45em !important;
+    border-radius: 4px !important;
+    white-space: normal !important;
+    word-break: break-word !important;
 }
 
 /* Admonitions (Callouts) */
