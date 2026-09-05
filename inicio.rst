@@ -30,7 +30,7 @@ Guías Prácticas (HowTos)
 * [[Servidor de Archivos NFS|howto/nfs]]
 * [[Servidor de Respaldos Bareos|howto/bareos-centos]]
 * [[Simulacro de Desastre (DRP)|howto/simulacro_desastre]]
-* [[Configuración y Acceso SSH|howto/ssh/instalacion]]
+* [[Configuración y Acceso SSH|howto/ssh]]
 * [[Contenedores y Pods con Podman|howto/podman]]
 * [[Plantilla para Nuevos HowTos|howto/plantilla]]
 

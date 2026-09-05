@@ -14,16 +14,15 @@ Permite acceder a consolas de comandos remotas, transferir archivos mediante SCP
 
 Prerrequisitos
 ==============
-* Instalación mínima de **CentOS Stream 10** y/o **Fedora 44**.
+* Instalación base de **CentOS Stream 10** y/o **Fedora 44** (ver: [[Instalando CentOS Stream 10 y Fedora 44|/centos/instalacion]]).
+* Acceso como superusuario (cuenta root).
+* SELinux activo y en modo Enforcing.
 
 
 Instalación
 ===========
 
-.. code:: bash
-
-    # Instalar servidor y clientes OpenSSH
-    dnf -y install openssh-server openssh-clients
+```bash:/howto/ssh/instalacion.bash```
 
 
 Generación de Llaves de Acceso
@@ -103,22 +102,7 @@ En **CentOS Stream 10** y **Fedora 44**, la configuración personalizada debe co
 
 Crea el archivo ``/etc/ssh/sshd_config.d/01-seguridad.conf``:
 
-.. code:: ssh-config
-
-    # Deshabilitar inicio de sesión como root por contraseña (solo permitir llaves SSH)
-    PermitRootLogin prohibit-password
-
-    # Deshabilitar autenticación por contraseñas una vez verificadas las llaves
-    # PasswordAuthentication no
-
-    # Limitar acceso exclusivamente a usuarios autorizados
-    AllowUsers renich admin
-
-    # Deshabilitar contraseñas vacías
-    PermitEmptyPasswords no
-
-    # Deshabilitar reenvío X11 si no es necesario
-    X11Forwarding no
+```ssh-config:/howto/ssh/seguridad.conf```
 
 .. warning::
 
@@ -128,22 +112,7 @@ Crea el archivo ``/etc/ssh/sshd_config.d/01-seguridad.conf``:
 Servicios y Firewall
 ====================
 
-Activar y Habilitar el Servicio
--------------------------------
-
-.. code:: bash
-
-    # Habilitar e iniciar sshd inmediatamente
-    systemctl enable --now sshd.service
-
-Configuración de Firewall
--------------------------
-
-.. code:: bash
-
-    # Permitir servicio SSH en firewalld
-    firewall-cmd --permanent --add-service=ssh
-    firewall-cmd --reload
+```bash:/howto/ssh/servicios.bash```
 
 
 Verificación y Pruebas

@@ -746,32 +746,129 @@ a.btn.btn-outline.text-mono:hover,
     pointer-events: none !important;
 }
 
-/* Mobile Select Menu */
-.SelectMenu-modal {
+/* Mobile Navigation & Hamburger SelectMenu */
+.TableObject-item details.details-reset.details-overlay {
+    position: relative;
+}
+
+.TableObject-item details summary.btn.btn-invisible,
+.TableObject-item details summary.btn {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    min-width: 36px !important;
+    height: 32px !important;
+    padding: 0 8px !important;
     background-color: var(--eval-surface) !important;
     border: 1px solid var(--eval-border) !important;
     border-radius: var(--eval-radius) !important;
-    box-shadow: var(--eval-shadow) !important;
+    color: var(--eval-text-primary) !important;
+    font-size: 1.1rem !important;
+    line-height: 1 !important;
+    cursor: pointer !important;
+    transition: all 0.15s ease-in-out !important;
+}
+
+.TableObject-item details summary.btn:hover,
+.TableObject-item details summary.btn:focus {
+    background-color: var(--eval-surface-hover) !important;
+    border-color: var(--eval-border-focus) !important;
+    color: var(--eval-link) !important;
+}
+
+.TableObject-item details[open] summary.btn {
+    background-color: var(--eval-surface-hover) !important;
+    border-color: var(--eval-border-focus) !important;
+    color: var(--eval-link) !important;
+    box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.25) !important;
+}
+
+.SelectMenu {
+    position: absolute !important;
+    top: 100% !important;
+    left: 0 !important;
+    z-index: 1000 !important;
+    padding-top: 6px !important;
+}
+
+.SelectMenu::before {
+    display: none !important;
+}
+
+.SelectMenu-modal {
+    background-color: var(--eval-surface) !important;
+    border: 1px solid var(--eval-border) !important;
+    border-radius: 8px !important;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5), 0 8px 10px -6px rgba(0, 0, 0, 0.5) !important;
+    width: 240px !important;
+    max-height: 80vh !important;
+    overflow: hidden !important;
 }
 
 .SelectMenu-divider {
-    background-color: var(--eval-surface-hover) !important;
+    background-color: var(--eval-code-block-bg, rgba(0, 0, 0, 0.2)) !important;
     border-top: 1px solid var(--eval-border) !important;
     border-bottom: 1px solid var(--eval-border) !important;
     color: var(--eval-text-muted) !important;
-    padding: 0.5rem 1rem !important;
+    padding: 8px 14px !important;
+    font-size: 0.72rem !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.06em !important;
+    font-weight: 700 !important;
+}
+
+.SelectMenu-divider:first-child {
+    border-top: none !important;
+}
+
+.SelectMenu-divider h2.h6 {
+    font-size: 0.72rem !important;
+    font-weight: 700 !important;
+    color: var(--eval-text-muted) !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.06em !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.SelectMenu-divider div {
+    font-size: 0.85rem !important;
+    font-weight: 500 !important;
+    color: var(--eval-text-primary) !important;
+    text-transform: none !important;
+    letter-spacing: normal !important;
+    margin-top: 2px !important;
+    word-break: break-all !important;
+}
+
+.SelectMenu-list {
+    background-color: var(--eval-surface) !important;
+    padding: 4px 0 !important;
+    margin: 0 !important;
+    border: none !important;
 }
 
 .SelectMenu-item {
-    color: var(--eval-text-body) !important;
+    display: flex !important;
+    align-items: center !important;
+    padding: 8px 16px !important;
     background-color: transparent !important;
-    border-bottom: 1px solid var(--eval-border) !important;
-    padding: 0.6rem 1rem !important;
+    color: var(--eval-text-body) !important;
+    font-size: 0.875rem !important;
+    font-weight: 500 !important;
+    text-decoration: none !important;
+    border: none !important;
+    border-left: 3px solid transparent !important;
+    transition: all 0.12s ease-in-out !important;
+    cursor: pointer !important;
 }
 
-.SelectMenu-item:hover {
+.SelectMenu-item:hover,
+.SelectMenu-item:focus {
     background-color: var(--eval-surface-hover) !important;
     color: var(--eval-link) !important;
+    border-left-color: var(--eval-link) !important;
+    text-decoration: none !important;
 }
 
 /* Table of Contents (TOC) */

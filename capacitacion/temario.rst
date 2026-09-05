@@ -107,7 +107,7 @@ OpenSSH
 -------
 Protocolo estándar de administración y conectividad remota cifrada.
 
-* Consulta nuestro manual en el wiki: ``howto/ssh/instalacion.rst``
+* Consulta nuestro manual en el wiki: [[Configuración y Acceso SSH|/howto/ssh]]
 * Documentación oficial: https://www.openssh.com/manual.html
 
 find
