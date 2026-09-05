@@ -1,20 +1,18 @@
 ====
 DHCP
 ====
---------------------------------------------
-HowTo de como instalar; en GNU & Linux, DHCP
---------------------------------------------
+----------------------------------------------------------------
+HowTo: Cómo instalar DHCP en GNU/Linux (CentOS Stream 10/Fedora 44)
+----------------------------------------------------------------
 
 Descripción
 ===========
-Un servidor DHCP ofrece configuración de red a las máquinas conectadas. Es el que se encargará de mantener la red tal cual y la
-queramos.
-
+Un servidor DHCP ofrece configuración dinámica de red a los equipos clientes conectados en el segmento local.
 
 Prerrequisitos
 ==============
 
-* Enterprise Linux/Fedora (RHEL, Rocky Linux, AlmaLinux o Fedora).
+* CentOS Stream 10 y/o Fedora 44.
 * Al menos dos interfaces de red (una de enlace ascendente/WAN y otra de red local/LAN).
 
 
@@ -85,7 +83,9 @@ Nada por el momento.
 
 Referencias
 ===========
-* https://docs.redhat.com/
-* https://en.wikipedia.org/wiki/Dynamic_Host_Configuration_Protocol
+* Documentación oficial de Red Hat: https://docs.redhat.com/
+* Documentación de Fedora: https://docs.fedoraproject.org/
+* Documentación de CentOS Stream: https://www.centos.org/centos-stream/
+* Base de conocimientos ISC DHCP: https://kb.isc.org/
 
 

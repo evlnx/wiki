@@ -9,7 +9,7 @@ Procedimiento de contingencia y recuperación ante desastres (DRP) en caso de fa
 
 Prerrequisitos
 ==============
-Un nuevo servidor operativo con Enterprise Linux o Arch Linux, con PostgreSQL, NginX y Bareos instalados y configurados con una topología compatible.
+Un nuevo servidor operativo con CentOS Stream 10 o Fedora 44, con PostgreSQL, NginX y Bareos instalados y configurados con una topología compatible.
 
 
 Procedimiento
@@ -100,4 +100,12 @@ Para verificar y recargar la configuración desde la consola interactiva:
     # Dentro de bconsole ejecutar:
     # * reload
     # * status dir
+
+
+Referencias
+===========
+* Documentación oficial de Red Hat: https://docs.redhat.com/
+* Documentación de Fedora: https://docs.fedoraproject.org/
+* Documentación de CentOS Stream: https://www.centos.org/centos-stream/
+* Documentación oficial de Bareos: https://docs.bareos.org/
 

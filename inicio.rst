@@ -1,15 +1,15 @@
 Bienvenid@
 ==========
-Esta es la wiki de [[EVALinux|https://evalinux.com]]. Gracias por visitarnos!
+Esta es la wiki técnica de [[EVALinux|https://evalinux.com]]. Toda la documentación y guías prácticas están desarrolladas y probadas específicamente para **CentOS Stream 10** y/o **Fedora 44**, tomando como referencia oficial la documentación de Red Hat, Fedora y CentOS Stream.
 
-Revisa la sección de [[overview|/gollum/overview]] del menú de arriba para ver todas las páginas disponibles.
+Revisa la sección de [[overview|/gollum/overview]] del menú superior para explorar todas las páginas disponibles.
 
 Secciones Principales
 =====================
 
 * **Capacitación**: [[Temario y Fundamentos FOSS|capacitacion/temario]]
 * **Conceptos Generales**: [[Almacenamiento (BtrFS, XFS, Ext4, LVM)|conceptos_generales/almacenamiento]]
-* **Instalación de Sistema**: [[Instalando Enterprise Linux|centos/instalacion]]
+* **Instalación de Sistema**: [[Instalando CentOS Stream 10 y Fedora 44|centos/instalacion]]
 
 Guías Prácticas (HowTos)
 ========================

@@ -1,20 +1,20 @@
 =============
 Servidor DNS
 =============
-----------------------------------------------------------
-HowTo sobre como instalar; en GNU & Linux, un servidor DNS
-----------------------------------------------------------
+------------------------------------------------------------------
+HowTo: Cómo instalar un servidor DNS en CentOS Stream 10/Fedora 44
+------------------------------------------------------------------
 
 
 Descripción
 ===========
-Es un servidor que nos ayuda a traducir nombres de dominio a IP. Hay dos tipos de servidores: autoritativo y recursivo.
+Un servidor DNS traduce nombres de dominio a direcciones IP (resolución directa) e inversamente. Esta guía aborda la implementación autoritativa y recursiva con BIND 9.
 
 
 Prerrequisitos
 ==============
 
-* Enterprise Linux/Fedora (RHEL, Rocky Linux, AlmaLinux o Fedora).
+* CentOS Stream 10 y/o Fedora 44.
 
 Vamos a asumir que tenemos dos redes: la pública y la privada. La privada es ``192.168.77.0/24``. El DNS primario vivirá en ``192.168.77.10``.
 
@@ -133,7 +133,9 @@ Revisar el registro de actividad de bind en el log del sistema:
 
 Referencias
 ===========
-* https://docs.redhat.com/
-* https://bind9.readthedocs.io/
+* Documentación oficial de Red Hat: https://docs.redhat.com/
+* Documentación de Fedora: https://docs.fedoraproject.org/
+* Documentación de CentOS Stream: https://www.centos.org/centos-stream/
+* Documentación oficial de BIND 9: https://bind9.readthedocs.io/
 
 

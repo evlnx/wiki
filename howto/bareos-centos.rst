@@ -1,14 +1,14 @@
-====================================================
-Servidor de respaldos con Bareos en Enterprise Linux
-====================================================
+==============================================================
+Servidor de respaldos con Bareos en CentOS Stream 10/Fedora 44
+==============================================================
 
 ---------------------------------------------------------------------------
-HowTo de cómo instalar en GNU & Linux Bareos, NginX, PostgreSQL y PHP-FPM
+HowTo de cómo instalar en GNU/Linux Bareos, NginX, PostgreSQL y PHP-FPM
 ---------------------------------------------------------------------------
 
 Descripción
 ===========
-Servidor para respaldos automatizados en distribuciones Enterprise Linux (Rocky Linux, AlmaLinux, RHEL). Los respaldos se gestionan a través de Bareos (Backup Archiving Recovery Open Sourced), utilizando NginX, PostgreSQL y PHP-FPM para el panel web Bareos-WebUI.
+Servidor para respaldos automatizados en CentOS Stream 10 y/o Fedora 44. Los respaldos se gestionan a través de Bareos (Backup Archiving Recovery Open Sourced), utilizando NginX, PostgreSQL y PHP-FPM para el panel web Bareos-WebUI.
 
 
 Prerrequisitos
@@ -16,7 +16,7 @@ Prerrequisitos
 
 Instalación del sistema operativo
 ---------------------------------
-Para la instalación base de Enterprise Linux, consulta: [[Instalando Enterprise Linux|centos/instalacion]]
+Para la instalación base de CentOS Stream 10 o Fedora 44, consulta: [[Instalando CentOS Stream 10 y Fedora 44|centos/instalacion]]
 
 Instalación de herramientas y paquetes esenciales
 -------------------------------------------------
@@ -91,7 +91,10 @@ Nada por el momento.
 
 Referencias
 ===========
-* https://docs.bareos.org/
-* https://www.nginx.com/resources/wiki/
-* https://www.postgresql.org/docs/
+* Documentación oficial de Red Hat: https://docs.redhat.com/
+* Documentación de Fedora: https://docs.fedoraproject.org/
+* Documentación de CentOS Stream: https://www.centos.org/centos-stream/
+* Documentación oficial de Bareos: https://docs.bareos.org/
+* Documentación de Nginx: https://nginx.org/en/docs/
+* Documentación de PostgreSQL: https://www.postgresql.org/docs/
 

@@ -149,7 +149,7 @@ Plataforma de empaquetado y ejecución de contenedores basada en especificacione
 
 Podman
 ------
-Motor de contenedores moderno sin demonio (*daemonless*) y enfocado en la ejecución sin privilegios de root (*rootless*), estándar en Enterprise Linux y Fedora.
+Motor de contenedores moderno sin demonio (*daemonless*) y enfocado en la ejecución sin privilegios de root (*rootless*), estándar en CentOS Stream 10 y Fedora 44.
 
 * https://podman.io/
 
@@ -219,7 +219,7 @@ SELinux
 -------
 Módulo de seguridad del kernel de Linux que implementa Control de Acceso Mandatorio (MAC) mediante políticas y contextos de seguridad (usuarios, roles y tipos).
 
-* https://access.redhat.com/documentation/es-es/red_hat_enterprise_linux/
+* Documentación oficial de Red Hat: https://docs.redhat.com/
 
 
 Servicios web
@@ -346,14 +346,10 @@ Estándar de documentación técnica preferido por su rigor sintáctico, extensi
 
 * https://docutils.sourceforge.io/rst.html
 
-Recursos válidos
-----------------
-#. ArchLinux Wiki
-#. Documentación de Fedora
-#. Documentación de Red Hat Enterprise Linux
-#. Debian Handbook
-#. Documentación de GNU
-#. Gentoo Wiki
-#. Páginas de manual oficiales (man-pages)
-#. Wikipedia
+Recursos válidos y Referencias
+------------------------------
+#. Documentación oficial de Red Hat (https://docs.redhat.com/)
+#. Documentación de Fedora (https://docs.fedoraproject.org/)
+#. Documentación de CentOS Stream (https://www.centos.org/centos-stream/)
+#. Páginas de manual oficiales del sistema (man-pages)
 

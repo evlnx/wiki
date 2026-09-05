@@ -1,11 +1,14 @@
 =====
 Swarm
 =====
----------------------------
-Instalación y configuración
----------------------------
+-------------------------------------------------------------------------
+HowTo: Cómo instalar Docker Swarm en CentOS Stream 10 y/o Fedora 44
+-------------------------------------------------------------------------
 
-Describimos como instalar swarm y jugar con él un poco.
+Descripción
+===========
+Guía práctica para inicializar un clúster Swarm, configurar puertos en el firewall, unir nodos de trabajo y desplegar servicios escalables.
+
 
 Pre-requisitos
 ==============
@@ -13,8 +16,8 @@ Pre-requisitos
 Sistema Operativo
 -----------------
 
-* Instalación de Fedora o Enterprise Linux (Rocky Linux, AlmaLinux, CentOS Stream, RHEL).
-* Red pública para el controlador (ej. ``ens3`` o ``enp1s0``).
+* Instalación de CentOS Stream 10 y/o Fedora 44.
+* Red pública para el nodo controlador (ej. ``ens3`` o ``enp1s0``).
 * Red privada para los nodos del clúster (ej. ``ens4`` o ``enp2s0``).
 
 Firewall
@@ -45,14 +48,14 @@ Instalación
 ===========
 Instalaremos el motor de contenedores en el sistema:
 
-En Fedora (usando el motor Moby estándar de Fedora):
+En Fedora 44 (usando el motor Moby empaquetado nativamente en Fedora):
 
 .. code:: sh
 
     dnf -y install moby-engine
     systemctl enable --now docker.service
 
-En Enterprise Linux (Rocky/Alma/RHEL):
+En CentOS Stream 10:
 
 .. code:: sh
 
@@ -125,4 +128,7 @@ Veremos como desplegar algunas aplicaciones, usando ejemplos simplificados.
 
 Referencias
 ===========
-* https://docs.docker.com/engine/swarm/swarm-tutorial/
+* Documentación oficial de Red Hat: https://docs.redhat.com/
+* Documentación de Fedora: https://docs.fedoraproject.org/
+* Documentación de CentOS Stream: https://www.centos.org/centos-stream/
+* Tutorial de Docker Swarm: https://docs.docker.com/engine/swarm/swarm-tutorial/

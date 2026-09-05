@@ -71,5 +71,6 @@ Para iniciar la máquina virtual y acceder a la consola:
 
 Referencias
 ===========
-* https://www.cloudsigma.com/
-* https://docs.cloudsigma.com/
+* Documentación oficial de Red Hat: https://docs.redhat.com/
+* Documentación oficial de CloudSigma: https://docs.cloudsigma.com/
+* Sitio web de CloudSigma: https://www.cloudsigma.com/

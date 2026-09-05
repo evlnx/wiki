@@ -1,9 +1,9 @@
 ===
 SSH
 ===
------------------------------------
-HowTo: Cómo instalar y asegurar SSH
------------------------------------
+--------------------------------------------------------------------
+HowTo: Cómo instalar y asegurar OpenSSH en CentOS Stream 10/Fedora 44
+--------------------------------------------------------------------
 
 Descripción
 ===========
@@ -14,31 +14,16 @@ Permite acceder a consolas de comandos remotas, transferir archivos mediante SCP
 
 Prerrequisitos
 ==============
-Cualquiera de los siguientes entornos:
-
-* Instalación mínima de Enterprise Linux/Fedora (RHEL, Rocky Linux, AlmaLinux o Fedora).
-* Instalación mínima de Arch Linux.
+* Instalación mínima de **CentOS Stream 10** y/o **Fedora 44**.
 
 
 Instalación
 ===========
 
-Enterprise Linux/Fedora
------------------------
-
 .. code:: bash
 
     # Instalar servidor y clientes OpenSSH
     dnf -y install openssh-server openssh-clients
-
-
-Arch Linux
-----------
-
-.. code:: bash
-
-    # Instalar OpenSSH
-    pacman -Syu openssh
 
 
 Generación de Llaves de Acceso
@@ -114,7 +99,7 @@ Si se configuró correctamente, iniciarás sesión autenticándote con la llave 
 
 Aseguramiento (Hardening)
 =========================
-En las distribuciones modernas de Enterprise Linux y Fedora, la configuración personalizada debe colocarse en archivos dentro del directorio ``/etc/ssh/sshd_config.d/``.
+En **CentOS Stream 10** y **Fedora 44**, la configuración personalizada debe colocarse en archivos dentro del directorio ``/etc/ssh/sshd_config.d/``.
 
 Crea el archivo ``/etc/ssh/sshd_config.d/01-seguridad.conf``:
 
@@ -202,5 +187,7 @@ Para diagnosticar fallas de negociación criptográfica o rechazo de autenticaci
 
 Referencias
 ===========
-* https://www.openssh.com/manual.html
-* https://docs.redhat.com/es/documentation/red_hat_enterprise_linux/9/html/securing_networks/assembly_using-secure-shell_securing-networks
+* Documentación oficial de Red Hat: https://docs.redhat.com/
+* Documentación de Fedora: https://docs.fedoraproject.org/
+* Documentación de CentOS Stream: https://www.centos.org/centos-stream/
+* Manual oficial de OpenSSH: https://www.openssh.com/manual.html

@@ -1,13 +1,13 @@
 =============
 Servidor LEMP
 =============
-------------------------------------------------------------------
-HowTo: Cómo instalar en GNU/Linux Nginx, MariaDB y PHP-FPM
-------------------------------------------------------------------
+-------------------------------------------------------------------
+HowTo: Cómo instalar la pila LEMP en CentOS Stream 10 y/o Fedora 44
+-------------------------------------------------------------------
 
 Descripción
 ===========
-Guía práctica para desplegar la pila LEMP (Linux, Nginx, MariaDB y PHP-FPM) en entornos Enterprise Linux (Rocky Linux/AlmaLinux/CentOS Stream) y Fedora.
+Guía práctica para desplegar la pila LEMP (Linux, Nginx, MariaDB y PHP-FPM) específicamente en **CentOS Stream 10** y/o **Fedora 44**.
 
 Consta de servicio HTTP/HTTPS optimizado con Nginx, ejecución de PHP mediante sockets UNIX de alto rendimiento con PHP-FPM, y base de datos MariaDB asegurada con credenciales robustas y codificación UTF-8 multibyte (utf8mb4).
 
@@ -18,7 +18,7 @@ Instalación de paquetes requeridos:
 
 .. code:: sh
 
-    # Habilitar repositorio EPEL si se usa Enterprise Linux (en Fedora no es necesario)
+    # Habilitar repositorio EPEL si se usa CentOS Stream 10 (en Fedora 44 no es necesario)
     dnf -y install epel-release
 
     # Instalar paquetes de la pila LEMP
@@ -518,7 +518,9 @@ Problemática
 
 Referencias
 ===========
-* https://docs.redhat.com/
-* https://nginx.org/en/docs/
-* https://mariadb.com/kb/es/
-* https://www.php.net/manual/es/
+* Documentación oficial de Red Hat: https://docs.redhat.com/
+* Documentación de Fedora: https://docs.fedoraproject.org/
+* Documentación de CentOS Stream: https://www.centos.org/centos-stream/
+* Documentación de Nginx: https://nginx.org/en/docs/
+* Base de conocimientos de MariaDB: https://mariadb.com/kb/es/
+* Manual oficial de PHP: https://www.php.net/manual/es/

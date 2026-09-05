@@ -1,21 +1,20 @@
-===========================
-Instalando Enterprise Linux
-===========================
---------------------------------
+=====================================
+Instalando CentOS Stream 10/Fedora 44
+=====================================
+---------------------------------
 Notas del proceso de instalación
---------------------------------
+---------------------------------
 
 Descripción
 ===========
-Esta es la instalación de sistemas Enterprise Linux (Rocky Linux, AlmaLinux, CentOS Stream, Fedora) utilizando netboot.xyz, el cual se puede descargar en: https://boot.netboot.xyz/ipxe/netboot.xyz.iso.
+Guía de instalación de **CentOS Stream 10** y/o **Fedora 44** utilizando netboot.xyz (descargable en https://boot.netboot.xyz/ipxe/netboot.xyz.iso) o los medios oficiales de instalación.
 
 
 Antes del lanzador gráfico
 ==========================
 * Seleccionar **Linux Network Installs** (o **Linux Installers**).
-* Seleccionar la distribución de preferencia: **Rocky Linux**, **AlmaLinux**, **CentOS Stream** o **Fedora**.
-* Seleccionar la versión más reciente (ej. 9 o 10/Stream).
-* Seleccionar el instalador gráfico o estándar interactivo.
+* Seleccionar la distribución de preferencia: **CentOS Stream 10** o **Fedora 44**.
+* Seleccionar el instalador interactivo estándar (Anaconda).
 
 
 En el instalador gráfico
@@ -45,7 +44,7 @@ Seleccionar perfil de seguridad deseado (ej. **standard system security profile*
 Installation Destination
 ------------------------
 #. Seleccionar el disco de destino y marcar **I will configure partitioning**.
-#. Al presionar **Done**, seleccionar el esquema de particionado (**Btrfs** o **LVM/XFS** según el caso; Btrfs es el estándar en Fedora, mientras que XFS sobre LVM es el estándar en RHEL/Rocky/AlmaLinux).
+#. Al presionar **Done**, seleccionar el esquema de particionado (**Btrfs** para **Fedora 44**, o bien **LVM/XFS** para **CentOS Stream 10**).
 #. Crear los puntos de montaje requeridos: **/boot**, **/**, **/srv**, **/var** y **/home**.
 #. Presionar **Done** y aceptar los cambios en disco.
 
@@ -92,4 +91,11 @@ Otras Operaciones
   .. code:: sh
 
       passwd
+
+
+Referencias
+===========
+* Documentación oficial de Red Hat: https://docs.redhat.com/
+* Documentación de Fedora: https://docs.fedoraproject.org/
+* Documentación de CentOS Stream: https://www.centos.org/centos-stream/
 

@@ -1,13 +1,13 @@
 ============
 Servidor NFS
 ============
----------------------------------------------
-HowTo de cómo instalar y configurar NFS Linux
----------------------------------------------
+-----------------------------------------------------------------------
+HowTo: Cómo instalar y configurar NFS en CentOS Stream 10 y/o Fedora 44
+-----------------------------------------------------------------------
 
 Descripción
 ===========
-Guía práctica para compartir almacenamiento entre servidores utilizando NFS (Network File System v4) en entornos Enterprise Linux/Fedora.
+Guía práctica para compartir almacenamiento entre servidores utilizando NFS (Network File System v4) específicamente en **CentOS Stream 10** y/o **Fedora 44**.
 
 
 Prerrequisitos
@@ -77,6 +77,8 @@ Para montaje bajo demanda automático, el archivo principal de configuración se
 
 Referencias
 ===========
-* https://docs.redhat.com/
-* https://linux-nfs.org/
+* Documentación oficial de Red Hat: https://docs.redhat.com/
+* Documentación de Fedora: https://docs.fedoraproject.org/
+* Documentación de CentOS Stream: https://www.centos.org/centos-stream/
+* Proyecto Linux NFS: https://linux-nfs.org/
 
