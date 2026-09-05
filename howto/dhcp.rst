@@ -40,45 +40,76 @@ Servicios
     Nunca habilites el servicio DHCP en la interfaz conectada a la red pública o WAN/ISP, ya que generarás un conflicto de red severo y fallas operativas inmediatas. Limita la escucha a la interfaz interna o subred LAN.
 
 
-Probar
-======
-Para probar, simplemente debes conectar a un cliente en la red interna. En cuanto su interfaz solicite arrendamiento, vas a ver información al respecto en: ``/var/lib/dhcpd/dhcpd.leases``.
+Verificación y Pruebas
+======================
+Para comprobar la consistencia sintáctica, la asignación de arrendamientos y el funcionamiento del servidor DHCP, ejecuta las siguientes validaciones:
 
-Si el cliente es: ``client.example.tld`` y su dirección de hardware coincide con la reservación estática, se le asignará la IP definida en la configuración.
+1. **Validación sintáctica del archivo de configuración**:
 
+   .. code:: bash
 
-Comandos comunes
-================
-Estos comandos son para revisar configuraciones y ver información de logs.
+      # Comprobar la sintaxis de dhcpd.conf antes de recargar
+      dhcpd -t -cf /etc/dhcp/dhcpd.conf
 
-Verificar la dirección y estado de nuestras interfaces de red:
+2. **Estado operativo y socket de escucha en systemd**:
 
-.. code:: sh
+   .. code:: bash
 
-    ip address
+      # Verificar que el servicio esté activo y sin fallos
+      systemctl status dhcpd.service
 
-Activar la interfaz de red interna (ej. ``eth1`` o ``enp2s0``):
+      # Verificar que el demonio esté escuchando en el socket UDP 67 (bootps)
+      ss -u4lnp | grep ':67'
 
-.. code:: sh
+3. **Monitoreo de bitácoras de asignación (DORA)**:
 
-    ip link set dev eth1 up
+   .. code:: bash
 
-Desactivar la interfaz de red interna:
+      # Inspeccionar eventos DHCPDISCOVER, DHCPOFFER, DHCPREQUEST y DHCPACK
+      journalctl -u dhcpd.service -e --no-pager
 
-.. code:: sh
+4. **Inspección de la base de datos de arrendamientos activos**:
 
-    ip link set dev eth1 down
+   .. code:: bash
 
-Revisar el estado y logs en vivo de la aplicación:
+      # Revisar las concesiones registradas por el servidor
+      cat /var/lib/dhcpd/dhcpd.leases
 
-.. code:: sh
+5. **Prueba funcional desde un cliente en la red local**:
 
-    journalctl -u dhcpd.service -f
+   .. code:: bash
+
+      # Liberar y solicitar un nuevo arrendamiento en el cliente
+      dhclient -v -r eth0 && dhclient -v eth0
+
+      # Comprobar la IP y máscara asignadas por DHCP
+      ip address show dev eth0
 
 
 Problemática
 ============
-Nada por el momento.
+
+Bloqueo en el cortafuegos para solicitudes broadcast
+-----------------------------------------------------
+Los clientes DHCP envían peticiones broadcast a ``255.255.255.255:67``. Si Firewalld bloquea el tráfico entrante:
+
+.. code:: bash
+
+   # Habilitar el servicio dhcp en la zona de la interfaz LAN interna
+   firewall-cmd --permanent --zone=internal --add-service=dhcp
+   firewall-cmd --reload
+
+Restricción del demonio a una interfaz específica
+-------------------------------------------------
+Para evitar que ``dhcpd`` intente responder solicitudes en interfaces públicas o deseadas para otros propósitos, especifica la interfaz explícita en ``/etc/sysconfig/dhcpd``:
+
+.. code:: bash
+
+   # En /etc/sysconfig/dhcpd:
+   # DHCPDARGS="eth1"
+
+   # Reiniciar el servicio
+   systemctl restart dhcpd.service
 
 
 Referencias

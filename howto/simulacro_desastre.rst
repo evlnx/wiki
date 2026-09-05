@@ -102,6 +102,89 @@ Para verificar y recargar la configuración desde la consola interactiva:
     # * status dir
 
 
+Verificación y Pruebas
+======================
+Procedimientos para validar que la recuperación ante desastres fue exitosa y el catálogo es íntegro:
+
+1. **Estado de los demonios de Bareos y PostgreSQL**:
+
+   .. code:: bash
+
+      systemctl status postgresql.service bareos-dir.service bareos-sd.service bareos-fd.service
+
+2. **Verificación de integridad del catálogo en PostgreSQL**:
+
+   Comprueba que las tablas del catálogo restaurado contengan los registros históricos de trabajos (Jobs), clientes y volúmenes:
+
+   .. code:: bash
+
+      # Contar la cantidad de clientes registrados en el catálogo
+      su - postgres -c "psql -d bareos -c 'SELECT count(*) AS total_clientes FROM Client;'"
+
+      # Verificar los últimos trabajos registrados antes del incidente
+      su - postgres -c "psql -d bareos -c 'SELECT jobid, name, starttime, endtime, jobstatus, joberrors FROM Job ORDER BY jobid DESC LIMIT 5;'"
+
+3. **Verificación del estado operativo desde bconsole**:
+
+   Ejecuta comandos no interactivos con ``bconsole`` para auditar el estado del Director, Storage Daemon y Fileset:
+
+   .. code:: bash
+
+      # Consultar el estado del Director y programaciones pendientes
+      bconsole -c "status dir"
+
+      # Validar la conectividad con el demonio de almacenamiento (Storage Daemon)
+      bconsole -c "status storage"
+
+      # Listar los volúmenes reconocidos por el catálogo en el Storage Daemon
+      bconsole -c "list media"
+
+4. **Prueba de restauración en seco (Dry-Run Restore)**:
+
+   Ejecuta un trabajo de restauración hacia un directorio temporal (por ejemplo, ``/tmp/bareos-restore/``) para confirmar la legibilidad física de los datos rescatados:
+
+   .. code:: bash
+
+      # Restaurar un archivo específico de prueba a través de bconsole
+      bconsole <<EOF
+      restore select current all done yes
+      EOF
+
+5. **Monitoreo de bitácoras del sistema**:
+
+   .. code:: bash
+
+      journalctl -u bareos-dir.service -u bareos-sd.service -e --no-pager
+
+
+Problemática
+============
+
+Discrepancia en permisos de volúmenes o base de datos (Permission Denied)
+------------------------------------------------------------------------
+Si el Storage Daemon no puede leer los volúmenes rescatados o el Director falla al conectar a PostgreSQL:
+
+.. code:: bash
+
+   # Restaurar propiedad y permisos de los volúmenes de respaldo
+   chown -R bareos:bareos /var/lib/bareos/storage/
+   chmod 750 /var/lib/bareos/storage/
+   chmod 640 /var/lib/bareos/storage/*
+
+   # Comprobar contexto de SELinux si los datos se ubican en una partición dedicada
+   semanage fcontext -a -t bareos_var_lib_t "/var/lib/bareos(/.*)?"
+   restorecon -Rv /var/lib/bareos
+
+El catálogo reporta inconsistencia o versión incompatible de esquema
+--------------------------------------------------------------------
+Si la versión de Bareos en el nuevo servidor es superior a la del respaldo, ejecuta la actualización del esquema:
+
+.. code:: bash
+
+   su - postgres -c /usr/lib/bareos/scripts/update_bareos_tables
+   systemctl restart bareos-dir.service
+
+
 Referencias
 ===========
 * Documentación oficial de Red Hat: https://docs.redhat.com/

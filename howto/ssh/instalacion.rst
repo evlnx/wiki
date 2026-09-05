@@ -136,12 +136,6 @@ Activar y Habilitar el Servicio
     # Habilitar e iniciar sshd inmediatamente
     systemctl enable --now sshd.service
 
-    # Comprobar estado del servicio
-    systemctl status sshd.service
-
-    # Comprobar socket escuchando en el puerto 22
-    ss -t4lnp | grep sshd
-
 Configuración de Firewall
 -------------------------
 
@@ -150,6 +144,56 @@ Configuración de Firewall
     # Permitir servicio SSH en firewalld
     firewall-cmd --permanent --add-service=ssh
     firewall-cmd --reload
+
+
+Verificación y Pruebas
+======================
+Procedimientos para validar el correcto funcionamiento y la postura de seguridad de OpenSSH:
+
+1. **Validación de la sintaxis de configuración**:
+
+   Antes de reiniciar el servicio tras cambios en ``/etc/ssh/sshd_config.d/``, verifica que no existan errores sintácticos:
+
+   .. code:: bash
+
+      sshd -t
+
+2. **Estado del servicio y socket en systemd**:
+
+   Comprueba que el demonio esté activo y escuchando en el puerto TCP 22:
+
+   .. code:: bash
+
+      # Comprobar estado del servicio
+      systemctl status sshd.service
+
+      # Confirmar socket activo en el puerto 22
+      ss -t4lnp | grep ':22\s'
+
+3. **Prueba de autenticación no interactiva con llave**:
+
+   Desde tu estación local, ejecuta una prueba automatizada en modo batch (no interactivo) para validar el intercambio de llaves:
+
+   .. code:: bash
+
+      # Probar autenticación por llave sin solicitar contraseña interactiva
+      ssh -o BatchMode=yes -o ConnectTimeout=5 usuario@mi-servidor.example.tld echo "Acceso SSH autenticado exitosamente"
+
+4. **Auditoría de huellas digitales de host (Host Keys)**:
+
+   Comprueba las huellas públicas del servidor para verificar su identidad ante advertencias de *man-in-the-middle*:
+
+   .. code:: bash
+
+      # Obtener huella SHA-256 de la llave Ed25519 del host
+      ssh-keygen -lf /etc/ssh/ssh_host_ed25519_key.pub
+
+5. **Monitoreo de bitácoras de autenticación**:
+
+   .. code:: bash
+
+      # Inspeccionar eventos recientes de conexión y autenticación en systemd
+      journalctl -u sshd.service -e --no-pager
 
 
 Problemática

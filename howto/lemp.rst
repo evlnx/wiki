@@ -406,73 +406,134 @@ Configurar contextos de SELinux para el directorio de servicio web en ``/srv/www
     setsebool -P httpd_can_network_connect_db 1
 
 
-Pruebas
-=======
-Ahora, vamos a crear un pequeño script de PHP que actualice el campo ``navegador`` y nos muestre cuantas veces hemos visitado:
+Verificación y Pruebas
+======================
+Procedimientos para validar el correcto funcionamiento de cada componente del stack LEMP:
 
-.. code:: php
+1. **Validación de sintaxis de configuración**:
 
-    <html>
-        <head>
-            <title>Prueba de PHP y MariaDB</title>
-        </head>
+   Antes de iniciar o recargar los servicios, valida la sintaxis de los archivos de configuración:
 
-        <body>
-            <pre>
-                <?php
+   .. code:: bash
 
-                # datos
-                # usa el usuario y contraseña que generamos al momento de crear la base de datos
-                $usuario = 'QCdsXh9MT5yGN5h';
-                $contra = 'jS9y4i9nPaFNwuXa2KX4R2XwVWK8NR';
+      # Validar la configuración global y virtual hosts de Nginx
+      nginx -t
 
-                # verificar conexión
-                try {
-                    $db = new PDO( 'mysql:host=localhost;dbname=mst_tld-site', $usuario, $contra );
-                    echo( "\nEstatus: conectado!\n" );
+      # Validar la configuración del pool de PHP-FPM
+      php-fpm -t
 
-                } catch ( PDOException $e ) {
-                    echo( "Error!: " . $e->getMessage() );
-                    die();
-                }
+2. **Estado de los servicios en systemd**:
 
-                # insertar datos
-                try {
-                    $stmt = $db->prepare( 'insert into visitas( navegador ) values( :agente );' );
-                    $stmt->bindParam( ':agente', $_SERVER['HTTP_USER_AGENT'] );
-                    $stmt->execute();
-                } catch ( PDOException $e ) {
-                    echo( 'Error!: ' . $e->getMessage() );
-                    die();
-                }
+   Comprueba que los tres servicios fundamentales estén activos y sin fallas reportadas:
 
-                # obtener datos
-                try {
-                    $query = $db->query( 'select * from visitas order by total desc limit 1' );
-                    $r = $query->fetch();
+   .. code:: bash
 
-                    echo( 'Total de visita: ' . $r['total'] . "\n" );
-                    echo( 'Hora de la visita: ' . $r['ultima'] . "\n" );
-                    echo( 'Tu navegador es: ' . $r['navegador'] . "\n" );
+      systemctl status nginx.service php-fpm.service mariadb.service
 
-                    $db = null;
-                } catch ( PDOException $e ) {
-                    echo( "Error!: " . $e->getMessage() );
-                    die();
-                }
+3. **Verificación de sockets y puertos de red**:
 
-                ?>
-            </pre>
-        </body>
-    </html>
+   Confirma que Nginx escuche en HTTP/HTTPS, MariaDB en el puerto de base de datos y PHP-FPM en su socket UNIX dedicado:
 
-Ahora, solo ve a: http://misitio.tld/test.php y verás si se puede conectar o no.
+   .. code:: bash
 
-Una vez creado este archivo, hay que volver a reestablecer las etiquetas de SELinux:
+      # Comprobar puertos TCP 80, 443 y 3306
+      ss -tlnp | grep -E ':(80|443|3306)\s'
 
-.. code:: sh
+      # Comprobar la existencia y permisos del socket UNIX de PHP-FPM
+      ls -la /run/php-fpm/www.sock
 
-    restorecon -Rv /srv
+4. **Verificación de la base de datos MariaDB**:
+
+   Comprueba el acceso administrativo y del usuario de la aplicación creado previamente:
+
+   .. code:: bash
+
+      # Consultar la versión de la base de datos con el usuario de aplicación
+      mariadb -u <mariadb_usuario> -p -e "SELECT VERSION();"
+
+5. **Prueba funcional HTTP y procesamiento dinámico FastCGI/PHP**:
+
+   Crea un script de prueba PHP en el directorio raíz del sitio (por ejemplo, ``/srv/www/misitio.tld/public_html/test.php``) para verificar la conexión entre PHP y MariaDB:
+
+   .. code:: php
+
+       <html>
+           <head>
+               <title>Prueba de PHP y MariaDB</title>
+           </head>
+
+           <body>
+               <pre>
+                   <?php
+
+                   # Datos de acceso configurados previamente
+                   $usuario = '<mariadb_usuario>';
+                   $contra = '<mariadb_contra>';
+
+                   # Verificar conexión PDO
+                   try {
+                       $db = new PDO('mysql:host=localhost;dbname=mst_tld-site', $usuario, $contra);
+                       echo "\nEstatus: conectado exitosamente a MariaDB!\n";
+                   } catch (PDOException $e) {
+                       echo "Error de conexion: " . $e->getMessage();
+                       die();
+                   }
+
+                   # Insertar registro de prueba
+                   try {
+                       $stmt = $db->prepare('INSERT INTO visitas (navegador) VALUES (:agente);');
+                       $stmt->bindParam(':agente', $_SERVER['HTTP_USER_AGENT']);
+                       $stmt->execute();
+                   } catch (PDOException $e) {
+                       echo "Error al insertar: " . $e->getMessage();
+                       die();
+                   }
+
+                   # Consultar datos registrados
+                   try {
+                       $query = $db->query('SELECT * FROM visitas ORDER BY total DESC LIMIT 1;');
+                       $r = $query->fetch();
+
+                       echo "Total de visitas: " . $r['total'] . "\n";
+                       echo "Hora de la visita: " . $r['ultima'] . "\n";
+                       echo "Navegador detectado: " . $r['navegador'] . "\n";
+
+                       $db = null;
+                   } catch (PDOException $e) {
+                       echo "Error al consultar: " . $e->getMessage();
+                       die();
+                   }
+
+                   ?>
+               </pre>
+           </body>
+       </html>
+
+   Restablece los contextos de SELinux para el archivo recién creado:
+
+   .. code:: bash
+
+      restorecon -Rv /srv/www
+
+   Realiza una petición HTTP local simulando el dominio configurado con ``curl``:
+
+   .. code:: bash
+
+      # Prueba de encabezados HTTP (debe retornar HTTP/1.1 200 OK)
+      curl -I -H "Host: misitio.tld" http://127.0.0.1/test.php
+
+      # Consulta del cuerpo procesado por el intérprete PHP
+      curl -s -H "Host: misitio.tld" http://127.0.0.1/test.php
+
+6. **Monitoreo de bitácoras del sistema**:
+
+   .. code:: bash
+
+      # Bitácoras conjuntas de Nginx y PHP-FPM
+      journalctl -u nginx.service -u php-fpm.service -e --no-pager
+
+      # Bitácoras directas de Nginx en disco
+      tail -n 50 /var/log/nginx/error.log
 
 
 Trucos
@@ -511,10 +572,59 @@ de esa otra computadora.
     inesperados y confusión.
 
 
-
-
 Problemática
 ============
+
+Error 502 Bad Gateway al procesar solicitudes PHP
+------------------------------------------------
+Este error suele presentarse cuando Nginx no puede comunicarse con el socket UNIX de PHP-FPM debido a permisos o discrepancia de usuario:
+
+.. code:: bash
+
+   # 1. Verificar si el demonio php-fpm está activo
+   systemctl status php-fpm.service
+
+   # 2. Confirmar que el socket pertenezca al usuario nginx
+   ls -la /run/php-fpm/www.sock
+
+   # 3. Si pertenece a apache:apache, editar /etc/php-fpm.d/www.conf y reiniciar:
+   # listen.owner = nginx
+   # listen.group = nginx
+   # listen.mode = 0660
+   systemctl restart php-fpm.service
+
+Error 403 Forbidden o denegaciones de acceso por SELinux
+--------------------------------------------------------
+Si Nginx no puede servir archivos estáticos o scripts PHP desde ``/srv/www``, verifica las denegaciones en la bitácora de auditoría:
+
+.. code:: bash
+
+   # Inspeccionar denegaciones AVC recientes
+   ausearch -m avc -ts recent
+
+   # Aplicar el contexto httpd_sys_content_t de forma persistente
+   semanage fcontext -a -t httpd_sys_content_t "/srv/www(/.*)?"
+   restorecon -Rv /srv/www
+
+Falla de conexión entre PHP y MariaDB por red
+---------------------------------------------
+Si el script PHP reporta un error ``SQLSTATE[HY000] [2002] Permission denied`` al intentar conectar a MariaDB vía TCP (127.0.0.1 o IP remota), habilita la variable booleana de SELinux correspondiente:
+
+.. code:: bash
+
+   # Permitir al motor web conectar a servidores de bases de datos
+   setsebool -P httpd_can_network_connect_db 1
+
+Bloqueo en el cortafuegos para tráfico HTTP/HTTPS
+-------------------------------------------------
+Si las peticiones externas no responden o se quedan colgadas:
+
+.. code:: bash
+
+   # Habilitar servicios http y https en la zona activa de firewalld
+   firewall-cmd --permanent --add-service=http
+   firewall-cmd --permanent --add-service=https
+   firewall-cmd --reload
 
 Referencias
 ===========

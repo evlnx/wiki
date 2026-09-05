@@ -156,6 +156,55 @@ Si el contenedor expone puertos hacia la red local o pública:
    firewall-cmd --reload
 
 
+Verificación y Pruebas
+======================
+Para comprobar el correcto aprovisionamiento, aislamiento y funcionamiento de los contenedores y pods, realiza las siguientes validaciones:
+
+1. **Verificación del entorno Rootless y subsistemas de seguridad**:
+
+   .. code:: bash
+
+      # Comprobar que Podman opera en modo sin privilegios (debe retornar true)
+      podman info --format '{{.Host.Security.Rootless}}'
+
+      # Verificar aislamiento de namespaces de usuario y mapeos de UID
+      podman unshare id
+
+2. **Estado operativo de Pods y contenedores**:
+
+   .. code:: bash
+
+      # Listar pods activos y cantidad de contenedores asociados
+      podman pod ps
+
+      # Listar contenedores con sus nombres, estados de salud y puertos mapeados
+      podman ps --format "table {{.Names}}\t{{.Status}}\t{{.Ports}}"
+
+3. **Verificación de servicios Quadlet en systemd**:
+
+   .. code:: bash
+
+      # Confirmar que la unidad compilada por Quadlet está activa
+      systemctl --user is-active evalinux-web.service
+
+      # Inspeccionar los registros de inicio del servicio en journald
+      journalctl --user-unit evalinux-web.service -e --no-pager
+
+4. **Prueba funcional de conectividad de red**:
+
+   .. code:: bash
+
+      # Probar respuesta HTTP en el puerto publicado del host
+      curl -I http://127.0.0.1:8080
+
+5. **Telemetría y consumo de recursos (cgroups v2)**:
+
+   .. code:: bash
+
+      # Inspeccionar uso instantáneo de CPU, memoria y E/S de red
+      podman stats --no-stream
+
+
 Problemática
 ============
 

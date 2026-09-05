@@ -78,57 +78,96 @@ Servicios
 ```bash:/howto/dns/servicios.bash```
 
 
-Pruebas
-=======
-Para probar, necesitamos hacer que ``/etc/resolv.conf`` apunte al servidor DNS configurado:
+Verificación y Pruebas
+======================
+Para certificar la integridad de las zonas, la sintaxis del motor BIND 9 y la resolución DNS autoritativa, ejecuta los siguientes pasos de validación:
 
-.. code:: sh
+1. **Validación sintáctica de la configuración global**:
 
-    search example.tld
-    nameserver 192.168.77.10
+   .. code:: bash
 
-Una vez que esté así en nuestro cliente y nuestro servidor, podemos iniciar las pruebas:
+      # Comprobar la sintaxis de named.conf y archivos incluidos
+      named-checkconf -z /etc/named.conf
 
-.. code:: sh
+2. **Validación de consistencia y número serial de la zona**:
 
-    # buscar el dominio principal
-    dig example.tld
+   .. code:: bash
 
-    # buscar los subdominios
-    dig ns1.example.tld
-    dig mail1.example.tld
+      # Verificar integridad estructural y registros de la zona example.tld
+      named-checkzone example.tld /var/named/masters/example.tld.db
 
-    # buscar uno no existente y verificar la respuesta autoritativa
-    dig nonexistent.example.tld
+3. **Estado del servicio y sockets en systemd**:
+
+   .. code:: bash
+
+      # Comprobar que named.service está activo y en ejecución
+      systemctl status named.service
+
+      # Verificar sockets escuchando en el puerto 53 (TCP y UDP)
+      ss -tulnp | grep ':53 '
+
+4. **Verificación del canal de control RNDC**:
+
+   .. code:: bash
+
+      # Consultar el estado operativo y estadísticas del servidor mediante rndc
+      rndc status
+
+5. **Pruebas funcionales de consulta directa con dig**:
+
+   .. code:: bash
+
+      # Consultar el registro SOA de la zona directamente en la IP del servidor
+      dig @192.168.77.10 example.tld SOA +short
+
+      # Consultar registros NS y A
+      dig @192.168.77.10 example.tld NS +short
+      dig @192.168.77.10 ns1.example.tld A +short
+      dig @192.168.77.10 mail1.example.tld A +short
+
+      # Verificar respuesta autoritativa negativa (NXDOMAIN) para registros inexistentes
+      dig @192.168.77.10 inexistente.example.tld
+
+6. **Monitoreo de bitácoras del demonio**:
+
+   .. code:: bash
+
+      # Inspeccionar advertencias o rechazos en las bitácoras del sistema
+      journalctl -u named.service -e --no-pager
 
 
 Problemática
 ============
 
-Verificar tu configuración general
-----------------------------------
-Para verificar la sintaxis de la configuración principal, corre el comando:
+Permisos incorrectos en archivos de zona (Permission Denied)
+-----------------------------------------------------------
+Si BIND falla al cargar una zona o reporta errores de acceso, confirma que los permisos y propietarios correspondan a ``root:named``:
 
-.. code:: sh
+.. code:: bash
 
-    named-checkconf
+   # Asignar propietario y permisos estrictos FHS
+   chown -R root:named /var/named/masters
+   chmod 2750 /var/named/masters
+   chmod 640 /var/named/masters/*.db
 
-Para verificar que tus zonas son válidas:
+Bloqueos por SELinux al alojar zonas en rutas no estándar
+---------------------------------------------------------
+Si los archivos de zona se almacenan fuera de ``/var/named`` o fueron restaurados desde un respaldo:
 
-.. code:: sh
+.. code:: bash
 
-    named-checkzone example.tld /var/named/masters/example.tld.db
+   # Restaurar el contexto SELinux predeterminado de BIND (named_zone_t)
+   restorecon -Rv /var/named
 
-.. note::
-    Cuando no arroja salida de error, indica que la sintaxis de zona es válida.
+Bloqueos en el cortafuegos (Puerto 53 UDP/TCP)
+----------------------------------------------
+El protocolo DNS opera primordialmente sobre UDP 53, pero requiere TCP 53 para transferencias de zona (AXFR/IXFR) y respuestas truncadas:
 
-Errores en los logs
--------------------
-Revisar el registro de actividad de bind en el log del sistema:
+.. code:: bash
 
-.. code:: sh
-
-    journalctl -u named.service -f
+   # Habilitar el servicio dns en firewalld
+   firewall-cmd --permanent --add-service=dns
+   firewall-cmd --reload
 
 
 Referencias
