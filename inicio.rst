@@ -21,4 +21,4 @@ Guías Prácticas (HowTos)
 * [[Servidor de Respaldos Bareos|howto/bareos-centos]]
 * [[Simulacro de Desastre|howto/simulacro_desastre]]
 * [[Configuración y Acceso SSH|howto/ssh/instalacion]]
-* [[Docker Swarm en GNU & Linux|howto/docker-swarm.rst]]
+* [[Contenedores y Pods con Podman|howto/podman]]

@@ -138,20 +138,17 @@ Solución de virtualización completa nativa del kernel de Linux combinada con e
 * QEMU: https://www.qemu.org/docs/master/
 * libvirt: https://libvirt.org/
 
-Contenedores
-============
-
-Docker
-------
-Plataforma de empaquetado y ejecución de contenedores basada en especificaciones OCI.
-
-* https://docs.docker.com/
+Contenedores (Podman)
+=====================
 
 Podman
 ------
-Motor de contenedores moderno sin demonio (*daemonless*) y enfocado en la ejecución sin privilegios de root (*rootless*), estándar en CentOS Stream 10 y Fedora 44.
+Motor de contenedores estándar en CentOS Stream 10 y Fedora 44. Es una solución sin demonio (*daemonless*), de ejecución sin privilegios de root (*rootless* por diseño) e interoperable con especificaciones OCI. Incorpora gestión de Pods, soporte nativo de manifiestos Kubernetes (``podman kube play``) e integración nativa con systemd mediante Quadlets.
 
-* https://podman.io/
+* Guía en este wiki: ``howto/podman.rst``
+* Documentación oficial de Red Hat: https://docs.redhat.com/
+* Documentación de Fedora: https://docs.fedoraproject.org/
+* Sitio oficial: https://podman.io/
 
 
 Linux (kernel)
