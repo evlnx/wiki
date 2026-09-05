@@ -2,7 +2,7 @@ Bienvenid@
 ==========
 Esta es la wiki técnica de [[EVALinux|https://evalinux.com]]. Toda la documentación y guías prácticas están desarrolladas y probadas específicamente para **CentOS Stream 10** y/o **Fedora 44**, tomando como referencia oficial la documentación de Red Hat, Fedora y CentOS Stream.
 
-Revisa la sección de [[overview|/gollum/overview]] del menú superior para explorar todas las páginas disponibles.
+Revisa la sección **Overview** en el menú superior para explorar todas las páginas disponibles.
 
 Secciones Principales
 =====================
@@ -22,3 +22,4 @@ Guías Prácticas (HowTos)
 * [[Simulacro de Desastre|howto/simulacro_desastre]]
 * [[Configuración y Acceso SSH|howto/ssh/instalacion]]
 * [[Contenedores y Pods con Podman|howto/podman]]
+* [[Plantilla para Nuevos HowTos|howto/plantilla]]

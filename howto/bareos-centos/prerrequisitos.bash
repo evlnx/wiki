@@ -8,9 +8,15 @@ dnf -y install nginx php-fpm php-pgsql php-pdo
 dnf -y install postgresql-server postgresql
 postgresql-setup --initdb
 
-# repositorio oficial de Bareos
+# repositorio oficial de Bareos (CentOS Stream 10 o Fedora 44)
 dnf -y install wget
-URL="https://download.bareos.org/current/EL_9"
+if grep -q "CentOS Stream" /etc/os-release; then
+    URL="https://download.bareos.org/current/EL_10"
+elif grep -q "Fedora" /etc/os-release; then
+    URL="https://download.bareos.org/current/Fedora_44"
+else
+    URL="https://download.bareos.org/current/EL_10"
+fi
 wget -O /etc/yum.repos.d/bareos.repo "$URL/bareos.repo"
 
 # instalación de Bareos con backend PostgreSQL y WebUI

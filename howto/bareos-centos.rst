@@ -16,7 +16,7 @@ Prerrequisitos
 
 Instalación del sistema operativo
 ---------------------------------
-Para la instalación base de CentOS Stream 10 o Fedora 44, consulta: [[Instalando CentOS Stream 10 y Fedora 44|centos/instalacion]]
+Para la instalación base de CentOS Stream 10 o Fedora 44, consulta: [[Instalando CentOS Stream 10 y Fedora 44|/centos/instalacion]]
 
 Instalación de herramientas y paquetes esenciales
 -------------------------------------------------

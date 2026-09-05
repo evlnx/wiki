@@ -155,9 +155,9 @@ Linux (kernel)
 ==============
 * https://www.kernel.org/doc/html/latest/
 
-cgroups v1 y v2
----------------
-Mecanismo del kernel para aislar, controlar y contabilizar el consumo de recursos (CPU, memoria, I/O) de grupos de procesos.
+cgroups v2
+----------
+Jerarquía unificada del kernel para aislar, controlar y contabilizar el consumo de recursos (CPU, memoria, I/O) de grupos de procesos, estándar obligatorio en CentOS Stream 10 y Fedora 44.
 
 * Manual: ``man cgroups``
 * Guía cgroup-v2: https://www.kernel.org/doc/html/latest/admin-guide/cgroup-v2.html
@@ -211,6 +211,13 @@ nftables
 Subsistema moderno y unificado del kernel de Linux para clasificación, filtrado y enrutamiento de paquetes de red, reemplazo oficial de iptables.
 
 * https://wiki.nftables.org/
+
+firewalld
+---------
+Demonio de gestión dinámica de cortafuegos estándar en CentOS Stream 10 y Fedora 44, con soporte para zonas, servicios declarativos y backend nativo nftables.
+
+* Documentación oficial de Red Hat: https://docs.redhat.com/
+* Sitio oficial: https://firewalld.org/
 
 SELinux
 -------
