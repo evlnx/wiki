@@ -14,12 +14,23 @@ Secciones Principales
 Guías Prácticas (HowTos)
 ========================
 
-* [[Servidor DHCP|howto/dhcp]]
+* [[Políticas y Modo Enforcing de SELinux|howto/selinux]]
+* [[Cortafuegos Perimetral e Interno con Firewalld (Zonas, Reglas Ricas e IPSets)|howto/firewalld]]
+* [[Servidor PostgreSQL con Replicación en Caliente y Respaldo Físico|howto/postgresql]]
+* [[Redes Seguras y VPN Mesh con WireGuard y NetworkManager|howto/wireguard]]
+* [[Autoridad Certificadora Interna (PKI): Emisión y Automatización TLS|howto/pki-ca]]
+* [[Virtualización Headless KVM/QEMU con virt-install y Cloud-Init|howto/kvm-libvirt]]
+* [[Aprovisionamiento Desatendido con Kickstart e iPXE/HTTP|howto/kickstart]]
+* [[Monitoreo y Telemetría del Sistema con Prometheus y Node Exporter|howto/prometheus]]
+* [[Cifrado de Discos LUKS2 y Desbloqueo por Red (NBDE: Clevis y Tang)|howto/luks-clevis-tang]]
+* [[Servidor DHCP Moderno: Implementación y Migración a ISC Kea|howto/kea-dhcp]]
+* [[Servidor DHCP Legado (ISC DHCP)|howto/dhcp]]
 * [[Servidor DNS (BIND)|howto/dns]]
 * [[Pila LEMP (Linux, NginX, MariaDB, PHP-FPM)|howto/lemp]]
 * [[Servidor de Archivos NFS|howto/nfs]]
 * [[Servidor de Respaldos Bareos|howto/bareos-centos]]
-* [[Simulacro de Desastre|howto/simulacro_desastre]]
+* [[Simulacro de Desastre (DRP)|howto/simulacro_desastre]]
 * [[Configuración y Acceso SSH|howto/ssh/instalacion]]
 * [[Contenedores y Pods con Podman|howto/podman]]
 * [[Plantilla para Nuevos HowTos|howto/plantilla]]
+
