@@ -1,5 +1,3 @@
-# activar el servicio
-systemctl enable dhcpd.service
+# activar e iniciar el servicio
+systemctl enable --now dhcpd.service
 
-# iniciar el servicio
-systemctl start dhcpd.service

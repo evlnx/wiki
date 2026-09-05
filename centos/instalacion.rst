@@ -1,30 +1,30 @@
-=================
-Instalando CentOS
-=================
+===========================
+Instalando Enterprise Linux
+===========================
 --------------------------------
 Notas del proceso de instalación
 --------------------------------
 
 Descripción
 ===========
-Esta es la instalación utilizando netboot.xyz, el cual se puede descargar en: https://boot.netboot.xyz/ipxe/netboot.xyz.iso.
+Esta es la instalación de sistemas Enterprise Linux (Rocky Linux, AlmaLinux, CentOS Stream, Fedora) utilizando netboot.xyz, el cual se puede descargar en: https://boot.netboot.xyz/ipxe/netboot.xyz.iso.
 
 
 Antes del lanzador gráfico
 ==========================
-* Seleccionar "Linux Installers".
-* Seleccionar "CentOS".
-* Seleccionar la versión más nueva.
-* Seleccionar el instalador gráfico.
+* Seleccionar **Linux Network Installs** (o **Linux Installers**).
+* Seleccionar la distribución de preferencia: **Rocky Linux**, **AlmaLinux**, **CentOS Stream** o **Fedora**.
+* Seleccionar la versión más reciente (ej. 9 o 10/Stream).
+* Seleccionar el instalador gráfico o estándar interactivo.
 
 
-En el lanzador gráfico
-======================
-Hay distintos apartados que deben ser llenados durante la instalación.
+En el instalador gráfico
+========================
+Hay distintos apartados que deben ser configurados durante la instalación:
 
 Language
 --------
-Seleccionar English (United States).
+Seleccionar **English (United States)** (recomendado en servidores para consistencia de logs) o el idioma de tu preferencia.
 
 Date & Time
 -----------
@@ -32,60 +32,64 @@ Date & Time
 ::
 
     Region: Etc
-    City: Coordinated Universal Time
+    City: Coordinated Universal Time (UTC)
 
 Keyboard
 --------
-#. Eliminar **English (US)**.
-#. Agregar **Spanish; Castilian (Spanish)**.
+#. Conservar o agregar la distribución de teclado deseada (ej. **Spanish; Castilian** o **English (US)**).
 
 Security Policy
 ---------------
-Seleccionar **standard system security profile**.
+Seleccionar perfil de seguridad deseado (ej. **standard system security profile** o CIS benchmark según requerimiento).
 
 Installation Destination
 ------------------------
-#. Seleccionar la opción **i will configure partitioning** en la parte inferior del menú.
-#. Al presionar **Done** aparecerá otro menú, cambiar **LVM** por **Btrfs**.
-#. Dar click en **Click here to create them automatically**.
-#. Crear los subvolúmenes: **/srv**, **/var** y **/usr/local**.
-#. De nuevo dar click en **Done** en la esquina superior izquierda.
-
-.. note:: Para crear subvolúmenes en **Btrfs** antes de presionar **Done**, dar click en el signo **+** en el menú del recuadro que aparece a la izquierda e insertar el nombre de éste.
+#. Seleccionar el disco de destino y marcar **I will configure partitioning**.
+#. Al presionar **Done**, seleccionar el esquema de particionado (**Btrfs** o **LVM/XFS** según el caso; Btrfs es el estándar en Fedora, mientras que XFS sobre LVM es el estándar en RHEL/Rocky/AlmaLinux).
+#. Crear los puntos de montaje requeridos: **/boot**, **/**, **/srv**, **/var** y **/home**.
+#. Presionar **Done** y aceptar los cambios en disco.
 
 Network & Hostname
 ------------------
-En el apartado "Host Name" cambiarlo por el más apropiado (en mi caso "test1.axl.evalinux.net").
+En el apartado **Host Name** colocar el FQDN asignado para el nodo (ej. ``srv01.evalinux.net``) y encender la interfaz de red con DHCP o IP estática.
 
-``Una vez presionado el botón "begin instalation"``
-
-Root Password
--------------
-Agregar un "strong" password.
-
-User Creation
--------------
-#. Crear un usuario.
-#. Nombrarlo administrador.
-#. Ponerle un "strong" password.
-#. Dar click en el botón **advanced** ubicado en la parte inferior.
-#. En el apartado "grupos" en la parte inferior izquierda, agregar, separados con una coma los grupos: webdev, gitter y deployer.
-#. Dar click en **Done** en la esquina superior izquierda.
+Root Password & User Creation
+-----------------------------
+* **Root Password**: Asignar una contraseña robusta (o deshabilitar acceso por contraseña y usar exclusivamente llaves SSH).
+* **User Creation**:
+  #. Crear el usuario principal y marcar **Make this user administrator** (acceso sudo).
+  #. En **Advanced**, agregar los grupos de sistema correspondientes (ej. ``wheel``, ``webdev``, ``deployer``).
 
 
 Finalizar
 =========
-#. Una vez finalizada la instalación dar click en el botón **Reboot** en la esquina inferior derecha.
-#. Desmontar la imagen de netboot.xyz para que inicie CentOS.
-
-.. note:: En realidad, no es necesario desmontarla para que bootee. Si se pone, primero, el drive nuevo y, luego, el netboot.xyz, no
-          hay problema. Intentará bootear el primer drive. Si el primero ya tiene CentOS instalado, lo correrá satisfactoriamente. Dicho ésto,
-          no es lo mejor dejarla montada de todas maneras.
+#. Una vez finalizada la instalación dar click en el botón **Reboot System**.
+#. Desmontar la imagen ISO de netboot.xyz en el hipervisor o BIOS para asegurar que el sistema inicie desde el almacenamiento local.
 
 
 Otras Operaciones
 =================
-* Para acceder al servidor remotamente por medio de una llave SSH es necesario que el servidor esté corriendo y correr el comando
-  ``ssh root@<<IP-del-servidor>>`` y entrar con la clave de root del servidor.
-* Para generar un password de 30 caracteres seguro se usa la aplicación **apg** y el comando ``apg -M CLN -m 30``.
-* Para cambiar el password de root se utiliza el comando ``passwd``.
+* Para acceder al servidor remotamente por medio de SSH:
+
+  .. code:: sh
+
+      ssh usuario@<IP-del-servidor>
+
+* Para generar una contraseña segura y aleatoria de 30 caracteres (sin depender de herramientas obsoletas como apg):
+
+  .. code:: sh
+
+      cat /dev/urandom | tr -dc A-Za-z0-9 | head -c 30; echo
+
+  O bien con OpenSSL:
+
+  .. code:: sh
+
+      openssl rand -base64 24
+
+* Para cambiar la contraseña de un usuario o root se utiliza:
+
+  .. code:: sh
+
+      passwd
+

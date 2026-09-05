@@ -13,50 +13,58 @@ Pre-requisitos
 Sistema Operativo
 -----------------
 
-* Instalación mínima de Fedora 25
-* Red pública para el controlador (ens3)
-* Red privada para los nodos (ens4)
+* Instalación de Fedora o Enterprise Linux (Rocky Linux, AlmaLinux, CentOS Stream, RHEL).
+* Red pública para el controlador (ej. ``ens3`` o ``enp1s0``).
+* Red privada para los nodos del clúster (ej. ``ens4`` o ``enp2s0``).
 
 Firewall
 --------
-El firewall debe modificarse para permitir acceso de/a swarm por la interfaz de red privada. Solo abriremos los puertos necesarios.
+El firewall debe modificarse para permitir el tráfico del clúster Swarm a través de la interfaz de red privada. Solo abriremos los puertos requeridos:
 
-.. code:: bash
+* ``2377/tcp``: Comunicación para administración del clúster (manager).
+* ``7946/tcp`` y ``7946/udp``: Comunicación entre nodos del clúster.
+* ``4789/udp``: Tráfico de redes superpuestas (*overlay network*).
 
-    # configurar zona
+.. code:: sh
+
+    # configurar zona privada
     firewall-cmd --permanent --zone=work --add-port=2377/tcp --add-port=7946/tcp --add-port=7946/udp --add-port=4789/udp
 
-    # modificar la zona de ens4
+    # asignar interfaz privada a la zona work
     nmcli connection modify ens4 connection.zone work
 
-    # activar
-    firewall-cmd --full-reload
-    nmcli connection reload ens4
+    # aplicar cambios
+    firewall-cmd --reload
+    nmcli connection up ens4
 
-    # verificar
-    nmcli connection show ens4
-
-    firewall-cmd --list-all
+    # verificar configuración
     firewall-cmd --list-all --zone=work
 
 
 Instalación
 ===========
-Instalaremos la versión más reciente en los repositorios de Fedora.
+Instalaremos el motor de contenedores en el sistema:
 
-.. code:: bash
+En Fedora (usando el motor Moby estándar de Fedora):
 
-    # instalar
-    dnf -y install docker-latest
+.. code:: sh
 
-    # activar
-    systemctl enable docker-latest
-    systemctl start docker-latest
+    dnf -y install moby-engine
+    systemctl enable --now docker.service
+
+En Enterprise Linux (Rocky/Alma/RHEL):
+
+.. code:: sh
+
+    dnf config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+    dnf -y install docker-ce docker-ce-cli containerd.io
+    systemctl enable --now docker.service
 
 
 Configuración
 =============
-Debemos iniciar un swarm y unir los nodos a él.
+Debemos iniciar un swarm en el nodo manager y unir los nodos trabajadores (*workers*) a él.
+
 
 .. code:: bash
 

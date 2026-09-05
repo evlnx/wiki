@@ -1,2 +1,0 @@
-mkdir /var/nfs_share
-mount -t nfs `IP del servidor`:/var/example_share/ /var/nfs_share/

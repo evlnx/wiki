@@ -1,2 +1,2 @@
-# generar llave
-rndc-confgen -b 512 -k EvaKey -r /dev/urandom
+# generar llave con algoritmo hmac-sha256
+rndc-confgen -a -A hmac-sha256 -k EvaKey -c /etc/rndc.key

@@ -47,8 +47,9 @@ location / {
 
 location ~ \.php$ {
     include /etc/nginx/fastcgi_params;
-    fastcgi_pass unix:/run/php55-php-fpm/php55-fpm.sock;
+    fastcgi_pass unix:/run/php-fpm/www.sock;
 }
+
 
 EOF
 

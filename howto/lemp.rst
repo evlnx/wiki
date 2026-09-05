@@ -1,39 +1,35 @@
 =============
 Servidor LEMP
 =============
-----------------------------------------------------------------
-HowTo de como instalar; en GNU & Linux, nginx, MariaDB y PHP-FPM
-----------------------------------------------------------------
-
-[[_TOC_]]
+------------------------------------------------------------------
+HowTo: Cómo instalar en GNU/Linux Nginx, MariaDB y PHP-FPM
+------------------------------------------------------------------
 
 Descripción
 ===========
-Éste es un servidor instalado en CentOS 7. Consta de servicios HTTP, de PHP por socket y Maria DB con una contraseña de root
-generado aleatoriamente y de 30 caracteres.
+Guía práctica para desplegar la pila LEMP (Linux, Nginx, MariaDB y PHP-FPM) en entornos Enterprise Linux (Rocky Linux/AlmaLinux/CentOS Stream) y Fedora.
+
+Consta de servicio HTTP/HTTPS optimizado con Nginx, ejecución de PHP mediante sockets UNIX de alto rendimiento con PHP-FPM, y base de datos MariaDB asegurada con credenciales robustas y codificación UTF-8 multibyte (utf8mb4).
 
 
 Prerrequisitos
 ==============
-Primero, tenemos que instalar algunas cosas:
+Instalación de paquetes requeridos:
 
 .. code:: sh
 
-    # instalar repositorio necesario
+    # Habilitar repositorio EPEL si se usa Enterprise Linux (en Fedora no es necesario)
     dnf -y install epel-release
 
-    # instalar paquetes necesarios
+    # Instalar paquetes de la pila LEMP
     dnf -y install nginx mariadb-server mariadb php-fpm php-mysqlnd
 
-    # activar servicios
-    systemctl enable nginx.service mariadb.service php-fpm.service
-
-    # iniciar servicios
-    systemctl start nginx.service mariadb.service php-fpm.service
+    # Habilitar e iniciar servicios inmediatamente
+    systemctl enable --now nginx.service mariadb.service php-fpm.service
 
 .. note::
 
-    Iniciamos los servicios porque ``MariaDB`` lo requiere para ser configurado.
+    Iniciamos los servicios porque ``MariaDB`` lo requiere para su configuración y securización inicial.
 
 
 nginx
@@ -183,7 +179,7 @@ hacerlo, cualquier usuario en nuestro servidor puede accesar como root.
 
 .. code:: sh
 
-    mariadb_root=$( cat /dev/urandom | tr -dc A-Za-z0-9 | head -c ${1:-30}; echo )
+    mariadb_root=$(tr -dc 'A-Za-z0-9' < /dev/urandom | head -c 30; echo)
 
 Lo hemos puesto en una variable. Para conocer cual es la contraseña, solo hay que hacerle ``echo`` a esa variable:
 
@@ -192,57 +188,55 @@ Lo hemos puesto en una variable. Para conocer cual es la contraseña, solo hay q
     echo "La contraseña de root de MariaDB es: $mariadb_root"
 
 .. warning::
-    Recuerda que, si te sales de la sesión (sSH o cierras tu terminal) perderás el valor de esa variable.
+    Recuerda que, si te sales de la sesión (SSH o cierras tu terminal) perderás el valor de esa variable.
 
-Lo que sigue es asegurar MariaDB para evitar que sea tan vulnerable como cuando recien se instala. Hay un script para eso llamado:
-``mysql_secure_installation``; el cual puedes correr en cualquier momento y te guiará por los siguientes pasos.
+Lo que sigue es asegurar MariaDB para evitar que sea vulnerable. Existe la herramienta guiada oficial ``mariadb-secure-installation`` (o ``mysql_secure_installation``), la cual puedes ejecutar en cualquier momento.
 
-En nuestro caso, vamos a correr cada comando para poder aprender, a detalle, qué es lo que hace.
+A continuación, ejecutaremos las operaciones SQL directamente para comprender su propósito y funcionamiento.
 
-Primero, vamos a usar el cliente de ``MariaDB`` para iniciar una sesión para con el servidor.
+Primero, iniciamos sesión en el servidor con el cliente administrativo:
 
 .. code:: sh
 
-    mysql -u root
+    mariadb -u root
 
-Luego, vamos a agregarle una contraseña a root de MariaDb. Recuerda consultar la contraseña de root de MariaDB que generamos
-anteriormente. Substituye "<la-contraseña-de-root-de-mariadb>":
+Luego, asignamos la contraseña generada a la cuenta administrativa ``root``. Sustituye ``<la-contraseña-de-root-de-mariadb>``:
 
 .. code:: sql
 
-    UPDATE mysql.user SET Password = PASSWORD( '<la-contraseña-de-root-de-mariadb>' ) WHERE User = 'root';
+    ALTER USER 'root'@'localhost' IDENTIFIED BY '<la-contraseña-de-root-de-mariadb>';
 
-Lo que sigue es eliminar el acceso para el usuario sin nombre.
+Eliminamos el acceso para usuarios anónimos:
 
 .. code:: sql
 
     DELETE FROM mysql.user WHERE User = '';
 
-Eliminar el acceso a root de manera remota:
+Eliminamos el acceso remoto para el usuario root:
 
 .. code:: sql
 
     DELETE FROM mysql.user WHERE User = 'root' AND Host NOT IN ('localhost', '127.0.0.1', '::1');
 
-Remover las bases de datos de prueba:
+Removemos la base de datos de prueba predeterminada:
 
 .. code:: sql
 
     DROP DATABASE IF EXISTS test;
     DELETE FROM mysql.db WHERE Db = 'test' OR Db = 'test\\_%';
 
-Recargamos los privilegios:
+Recargamos los privilegios para aplicar los cambios y salimos:
 
 .. code:: sql
 
     FLUSH PRIVILEGES;
     EXIT;
 
-Ahora, si queremos volver a entrar a MariaDB, debemos usar el cliente e indicarle que queremos usar una contraseña para entrar.
+Ahora, para volver a entrar a MariaDB, indicamos al cliente que solicitaremos contraseña:
 
 .. code:: sh
 
-    mysql -u root -p
+    mariadb -u root -p
 
 Para ser un poco prácticos, vamos a crear un archivo de configuración para el cliente; el cual contendrá nuestras credenciales.
 
@@ -287,24 +281,22 @@ Para verlas, podemos hacer ``echo``; como en el ejemplo anterior, o podemos, tam
 
     EOF
 
-Para iniciar una sesión para con ``MariaDB`` a través de su cliente, ahora solo debemos escribir el nombre del cliente. Todos los
-datos están en el archivo de configuración:
+Para iniciar una sesión con ``MariaDB`` a través de su cliente, ahora solo debemos invocarlo directamente (las credenciales se leerán desde ``/root/.my.cnf``):
 
 .. code:: sh
 
-    mysql
+    mariadb
 
-Bueno, ahora, estamos listos para crear una base de datos de prueba. No olvides substituir: "<mariadb_usuario>" y "<mariadb_contra>"
-por los actuales.
+Estamos listos para crear una base de datos de prueba con codificación UTF-8 multibyte (``utf8mb4``). Sustituye ``<mariadb_usuario>`` y ``<mariadb_contra>``:
 
-La base de datos de prueba solamente debe poder ser accesada por root y por un usuario sin privilegios. Debemos crear tal usuario y
-otorgarle privilegios sobre la base de datos también.
+La base de datos de prueba solamente debe poder ser accedida por root y por un usuario de aplicación sin privilegios adicionales.
 
 .. code:: sql
 
-    CREATE DATABASE `mst_tld-site` DEFAULT CHARSET utf8;
-    CREATE USER '<mariadb_usuario>'@'localhost' IDENTIFIED BY '<mariadb_contraseña>';
+    CREATE DATABASE `mst_tld-site` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+    CREATE USER '<mariadb_usuario>'@'localhost' IDENTIFIED BY '<mariadb_contra>';
     GRANT ALL PRIVILEGES ON `mst_tld-site`.* TO '<mariadb_usuario>'@'localhost';
+    FLUSH PRIVILEGES;
 
 La base de datos que hemos creado necesita una tabla. Vamos a crearla:
 
@@ -390,12 +382,11 @@ Primero vamos a darle acceso al mundo a nuestro servicio de HTTP y HTTPS; que so
 
 .. code:: sh
 
-    firewall-cmd --set-default-zone=public
-    firewall-cmd --permanent --add-port=80/tcp --add-port=443/tcp
+    firewall-cmd --permanent --add-service=http --add-service=https
     firewall-cmd --reload
 
-Ahora, vamos a asegurarnos de que ``root`` sea dueño de todo  en ``/etc/nginx``; de que ``nginx`` sea el grupo y que solo tenga
-permiso de lectura. El mundo no debe tener permisos de nada ahí:
+Ahora, vamos a asegurarnos de que ``root`` sea dueño de la configuración en ``/etc/nginx``; de que ``nginx`` sea el grupo y que solo tenga
+permiso de lectura. El mundo no debe tener permisos:
 
 .. code:: sh
 
@@ -403,11 +394,16 @@ permiso de lectura. El mundo no debe tener permisos de nada ahí:
     find /etc/nginx -type d -exec chmod 2750 {} \;
     find /etc/nginx -type f -exec chmod 640 {} \;
 
-También, hay que reestablecer las etiquetas de SELinux:
+Configurar contextos de SELinux para el directorio de servicio web en ``/srv/www`` y permitir conexiones de red si PHP necesita acceder a MariaDB por red:
 
 .. code:: sh
 
-    restorecon -Rv /srv
+    # Asignar contexto httpd_sys_content_t a /srv/www
+    semanage fcontext -a -t httpd_sys_content_t "/srv/www(/.*)?"
+    restorecon -Rv /srv/www
+
+    # Permitir a los servicios web conectar con bases de datos por red si es necesario
+    setsebool -P httpd_can_network_connect_db 1
 
 
 Pruebas
@@ -522,7 +518,7 @@ Problemática
 
 Referencias
 ===========
-* https://wiki.centos.org/es
-* https://www.nginx.com/resources/wiki/
+* https://docs.redhat.com/
+* https://nginx.org/en/docs/
 * https://mariadb.com/kb/es/
-* http://php.net/manual/es/
+* https://www.php.net/manual/es/

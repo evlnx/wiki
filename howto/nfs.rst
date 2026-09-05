@@ -1,82 +1,82 @@
 ============
 Servidor NFS
 ============
--------------------------------------
-HowTo de como instalar; en Linux, NFS
--------------------------------------
+---------------------------------------------
+HowTo de cómo instalar y configurar NFS Linux
+---------------------------------------------
 
 Descripción
 ===========
-Éste es un ejemplo de dos servidores conectados por NFS en una red local con CentOS 7.
+Guía práctica para compartir almacenamiento entre servidores utilizando NFS (Network File System v4) en entornos Enterprise Linux/Fedora.
 
 
 Prerrequisitos
 ==============
 
-```bash:/howto/nfs/prerrequisitos```
+```bash:/howto/nfs/prerrequisitos.bash```
+
 
 Servicios
 =========
 
-```bash:/howto/nfs/servicios```
+```bash:/howto/nfs/servicios.bash```
 
 .. note::
-
-    Éstos comandos deben correrse tanto en el servidor como en el cliente.
+    Estos comandos deben ejecutarse tanto en el servidor como en el cliente.
 
 
 Servidor
 ========
 
-```bash:/howto/nfs/servicios```
+```bash:/howto/nfs/servidor.bash```
 
 
 Cliente
 =======
 
-```bash:/howto/nfs/cliente```
+```bash:/howto/nfs/cliente.bash```
 
 
-Mount options
-=============
+Opciones de Montaje (Mount options)
+===================================
 
 soft/hard:
-    Determina el comportamiento del cliente NFS luego de que el tiempo de una petición NFS se terminó, es decir, que no
-    haya podido ser enviada. Si ninguna opción es especificada (o si la opción *hard* es especificada), entonces la petición NFS es
-    reintentada indefinidamente. Si la opción *soft* es especificada, entonces el cliente falla la petición, la detiene y manda
-    error.
+    Determina el comportamiento del cliente NFS si la conexión se interrumpe:
+    * `hard` (predeterminado): La petición se reintenta indefinidamente hasta que el servidor responde, evitando corrupción de datos.
+    * `soft`: Si tras un tiempo límite el servidor no responde, el cliente reporta error a la aplicación.
 
 sec=mode:
-    Especifica el tipo de seguridad utilizada durante la autenticación de una conexión NFS.
-
-sec=sys:
-    Es la configuración predeterminada.
+    Especifica el esquema de seguridad y autenticación para la conexión (ej. `sec=sys` para autenticación estándar por UID/GID, o `sec=krb5p` para Kerberos cifrado).
 
 .. note::
+    En entornos de producción se recomienda utilizar `hard,intr` para asegurar consistencia transaccional.
 
-    Más opciones en las referencias.
 
-
-Export options
-==============
+Opciones de Exportación (Export options)
+========================================
 
 ro:
-    abreviación para *read only*.
+    Acceso de solo lectura (*read-only*).
 
 rw:
-    abreviación para *read and write*.
+    Acceso de lectura y escritura (*read-write*).
+
+sync:
+    Fuerza al servidor a responder a peticiones solo después de que los cambios hayan sido grabados en almacenamiento no volátil.
+
+no_root_squash:
+    Permite al usuario root del cliente operar como root en el directorio exportado (utilizar con precaución).
 
 
 autofs
 ======
-
-El archivo utilizado para ésta función se encuentra en */etc/auto.master* donde el formato general es el siguiente:
+Para montaje bajo demanda automático, el archivo principal de configuración se encuentra en ``/etc/auto.master``:
 
 ```bash:/howto/nfs/autofs```
 
 
 Referencias
 ===========
+* https://docs.redhat.com/
+* https://linux-nfs.org/
 
-* https://www.centos.org/docs/5/html/Deployment_Guide-en-US/ch-nfs.html
-* https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/7/html/Storage_Administration_Guide/ch-nfs.html

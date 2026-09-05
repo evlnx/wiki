@@ -4,54 +4,100 @@ Simulacro de desastre
 
 Descripción
 ===========
-Explicación sobre qué hacer en caso de desastre, es decir, en caso de que el servidor deje de funcionar y el disco duro donde se
-almacena la información de bareos(catalogo, base de datos, etc) aún funcione.
+Procedimiento de contingencia y recuperación ante desastres (DRP) en caso de fallo crítico de un servidor, recuperando el catálogo, la base de datos PostgreSQL y los volúmenes de respaldo de Bareos desde un disco o partición rescatada.
+
 
 Prerrequisitos
 ==============
-Un servidor con Archlinux, NginX, PHP56, BareOS y Postgresql instalados y corriendo en estado mínimo.
+Un nuevo servidor operativo con Enterprise Linux o Arch Linux, con PostgreSQL, NginX y Bareos instalados y configurados con una topología compatible.
+
 
 Procedimiento
 =============
 
-1. Copiar configuración del servidor dañado al servidor nuevo.
---------------------------------------------------------------
-Ésta es tal vez la parte más importante pues debemos tener la misma configuración del servidor antiguo para que el nuevo pueda leer
-las bases de datos de las cuales queremos recuperar la información.
+1. Copia de configuración previa
+--------------------------------
+Debemos asegurarnos de que el nuevo servidor cuente con la misma configuración de directores, dispositivos de almacenamiento (SD) y clientes (FD) que el servidor original para poder interpretar los volúmenes y catálogos:
 
-2. Montar disco duro al nuevo servidor.
----------------------------------------
-mount /dev/sda4 /mnt/
+.. code:: sh
+
+    # verificar permisos de los archivos de configuración
+    chown -R bareos:bareos /etc/bareos/
+    find /etc/bareos/ -type d -exec chmod 750 {} \;
+    find /etc/bareos/ -type f -exec chmod 640 {} \;
+
+
+2. Montar el almacenamiento rescatado
+-------------------------------------
+Identificar el disco o partición que contiene los datos y montarlo en un punto temporal:
+
+.. code:: sh
+
+    mount /dev/sda4 /mnt/
 
 .. note::
+    Puedes verificar las particiones y discos disponibles con el comando ``lsblk -f`` o ``fdisk -l``.
 
-    Puedes revisar tus discos duros disponibles con el comando `fdisk -l`.
 
-3. Copiar con todo y permisos el directorio /var/lib/bareos/ del disco duro del servidor dañado.
-------------------------------------------------------------------------------------------------
-rm - /var/lib/bareos/
-mkdir /var/lib/bareos/
-chmod 755 /var/lib/bareos/
-chown bareos:bareos /var/lib/bareos/
-rsync -avP /mnt/var/lib/bareos/ /var/lib/bareos/
+3. Restaurar los archivos de almacenamiento de Bareos
+-----------------------------------------------------
+Sincronizar el directorio de datos de Bareos preservando permisos y atributos:
 
-4. Crear copia de la base de datos actual.
-------------------------------------------
-systemctl stop bareos-dir bareos-sd bareos-fd
-su postgres
-psql
-create database newdb template bareos;
-\l
-Ctrl + D dos veces.
+.. code:: sh
 
-5. Remover y crear tablas de la base de datos
----------------------------------------------
-su postgres -c /usr/lib/bareos/scripts/drop_bareos_tables
-su postgres -c /usr/lib/bareos/scripts/make_bareos_tables
-su postgres -c /usr/lib/bareos/scripts/grant_bareos_privileges
+    mkdir -p /var/lib/bareos/
+    chmod 755 /var/lib/bareos/
+    chown bareos:bareos /var/lib/bareos/
+    rsync -avP /mnt/var/lib/bareos/ /var/lib/bareos/
 
-Ingresamos a bconsole y correr `run` --> `RestoreFiles` --> JobId to restore: `0` --> `mod` --> `9` --> ingresar ruta completa al archivo bsr.
-chown postgres:postgres /var/lib/bareos/bareos.sql
-su postgres
-psql bareos < /var/lib/bareos/bareos.sql
-Ingresar a bconsole y correr `reload`
+
+4. Respaldo preventivo de la base de datos actual
+-------------------------------------------------
+Detener los servicios de Bareos antes de operar sobre el catálogo:
+
+.. code:: sh
+
+    systemctl stop bareos-dir.service bareos-sd.service bareos-fd.service
+
+Crear una copia de seguridad preventiva de la base de datos en PostgreSQL:
+
+.. code:: sh
+
+    su - postgres -c "psql -c 'CREATE DATABASE bareos_previo TEMPLATE bareos;'"
+
+
+5. Recrear tablas del catálogo de Bareos
+----------------------------------------
+Reinicializar las estructuras de datos de Bareos en PostgreSQL:
+
+.. code:: sh
+
+    su - postgres -c /usr/lib/bareos/scripts/drop_bareos_tables
+    su - postgres -c /usr/lib/bareos/scripts/make_bareos_tables
+    su - postgres -c /usr/lib/bareos/scripts/grant_bareos_privileges
+
+
+6. Restauración del catálogo y recarga de servicios
+---------------------------------------------------
+Si se cuenta con el volcado SQL del catálogo (``bareos.sql``):
+
+.. code:: sh
+
+    chown postgres:postgres /var/lib/bareos/bareos.sql
+    su - postgres -c "psql bareos < /var/lib/bareos/bareos.sql"
+
+Posteriormente, reiniciar los servicios de Bareos:
+
+.. code:: sh
+
+    systemctl restart bareos-dir.service bareos-sd.service bareos-fd.service
+
+Para verificar y recargar la configuración desde la consola interactiva:
+
+.. code:: sh
+
+    bconsole
+    # Dentro de bconsole ejecutar:
+    # * reload
+    # * status dir
+

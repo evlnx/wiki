@@ -31,13 +31,13 @@ IRC
 (Internet Relay Chat) Protocolo de comunicación en tiempo real basado en texto, más información en
 https://es.wikipedia.org/wiki/Internet_Relay_Chat
 
-Registrarse en Freenode
-#######################
-Red de servidores IRC orientado al software libre, más información en http://en.wikipedia.org/wiki/Freenode.
+Registrarse en Libera.Chat
+##########################
+Red principal de servidores IRC orientada a proyectos FOSS y software libre (sucesor de Freenode tras la migración masiva comunitaria en 2021). Más información en https://libera.chat/.
 
-Aprender de la etiqueta de IRC
-##############################
-Búscala aquí: https://github.com/fizerkhan/irc-etiquette
+Aprender la etiqueta de IRC
+###########################
+Directrices y buenas prácticas en canales IRC: https://github.com/fizerkhan/irc-etiquette
 
 Matrix
 ------
@@ -105,28 +105,53 @@ sed
 
 OpenSSH
 -------
+Protocolo estándar de administración y conectividad remota cifrada.
+
+* Consulta nuestro manual en el wiki: ``howto/ssh/instalacion.rst``
+* Documentación oficial: https://www.openssh.com/manual.html
 
 find
 ----
+Utilidad de búsqueda recursiva de archivos y directorios según criterios de tiempo, tamaño, tipo y permisos.
+
+* Manual: ``man find``
+* https://www.gnu.org/software/findutils/
 
 rsync
 -----
+Herramienta de sincronización y copia delta eficiente de archivos tanto local como remotamente por SSH.
+
+* Manual: ``man rsync``
+* https://rsync.samba.org/
 
 git
 ---
-Para aprender git, vamos a usar el libro oficial de git: https://git-scm.com/book/en/v2
+Sistema distribuido de control de versiones estándar de la industria.
 
-KVM/Qemu y libvirt
+* Libro oficial (*Pro Git*): https://git-scm.com/book/en/v2
+
+KVM/QEMU y libvirt
 ==================
+Solución de virtualización completa nativa del kernel de Linux combinada con emulación de hardware y la API unificada de gestión de hipervisores.
+
+* KVM: https://www.linux-kvm.org/
+* QEMU: https://www.qemu.org/docs/master/
+* libvirt: https://libvirt.org/
 
 Contenedores
 ============
 
 Docker
 ------
+Plataforma de empaquetado y ejecución de contenedores basada en especificaciones OCI.
+
+* https://docs.docker.com/
 
 Podman
 ------
+Motor de contenedores moderno sin demonio (*daemonless*) y enfocado en la ejecución sin privilegios de root (*rootless*), estándar en Enterprise Linux y Fedora.
+
+* https://podman.io/
 
 
 Linux (kernel)
@@ -135,21 +160,28 @@ Linux (kernel)
 
 cgroups v1 y v2
 ---------------
-* man cgroups
-* https://www.kernel.org/doc/html/latest/admin-guide/cgroup-v2.html
-* https://www.kernel.org/doc/html/latest/admin-guide/cgroup-v1
+Mecanismo del kernel para aislar, controlar y contabilizar el consumo de recursos (CPU, memoria, I/O) de grupos de procesos.
+
+* Manual: ``man cgroups``
+* Guía cgroup-v2: https://www.kernel.org/doc/html/latest/admin-guide/cgroup-v2.html
 
 Syscalls
 --------
+Puntos de entrada e interfaz programática fundamental entre el espacio de usuario (*user space*) y el kernel (*kernel space*).
+
+* Manual: ``man syscalls``
 
 Procesos
 --------
+Estructura y gestión del ciclo de vida de procesos en GNU/Linux, señales POSIX, estados (running, sleeping, zombie) y monitoreo con herramientas como ``ps``, ``top`` y ``systemd-cgls``.
 
 Seguridad
 ---------
+Principios de mínimo privilegio, auditoría del sistema con el subsistema ``auditd``, capacidades POSIX (*capabilities*) y aislamiento de espacios de nombres (*namespaces*).
 
 Hardware
 --------
+Inspección e interacción con hardware del sistema (PCI, USB, bloques de almacenamiento) mediante ``lspci``, ``lsusb``, ``lsblk`` y el pseudo-sistema de ficheros ``/sys`` y ``/proc``.
 
 
 Redes
@@ -157,13 +189,15 @@ Redes
 
 TCP/IP
 ------
+Pila fundamental de protocolos de comunicación para interconexión de redes y transporte de datos fiable orientado a conexión.
 
 UDP
 ---
+Protocolo de datagramas no orientado a conexión y de baja latencia utilizado en DNS, streaming y consultas ligeras.
 
 Modelo OSI
 ----------
-Es un modelo para conceptualizar redes muy común y muy usado. Hay que estar bien familiarizados con él.
+Modelo de referencia conceptual de siete capas para estructurar e intercomunicar sistemas de red:
 
 * https://en.wikipedia.org/wiki/OSI_model
 
@@ -173,25 +207,42 @@ Seguridad
 
 iptables
 --------
+Subsistema legado de filtrado de paquetes y tablas de traducción de direcciones (NAT) en el kernel de Linux.
 
 nftables
 --------
+Subsistema moderno y unificado del kernel de Linux para clasificación, filtrado y enrutamiento de paquetes de red, reemplazo oficial de iptables.
+
+* https://wiki.nftables.org/
 
 SELinux
 -------
+Módulo de seguridad del kernel de Linux que implementa Control de Acceso Mandatorio (MAC) mediante políticas y contextos de seguridad (usuarios, roles y tipos).
+
+* https://access.redhat.com/documentation/es-es/red_hat_enterprise_linux/
 
 
 Servicios web
 =============
 
-NginX
+Nginx
 -----
+Servidor web de arquitectura dirigida por eventos (*event-driven*), proxy inverso y terminador TLS/SSL de alto rendimiento.
+
+* Guía LEMP en este wiki: ``howto/lemp.rst``
+* https://nginx.org/en/docs/
 
 PHP
 ---
+Lenguaje de programación interpretado ampliamente extendido para aplicaciones web dinámicas, servido en entornos modernos mediante el gestor de procesos FastCGI (``php-fpm``).
+
+* https://www.php.net/manual/es/
 
 Apache HTTPD
 ------------
+Servidor web modular y clásico de la Apache Software Foundation.
+
+* https://httpd.apache.org/docs/
 
 
 Bases de datos
@@ -199,12 +250,21 @@ Bases de datos
 
 MariaDB/MySQL
 -------------
+Sistemas de gestión de bases de datos relacionales SQL con soporte para transacciones ACID y alta disponibilidad.
+
+* https://mariadb.com/kb/es/
 
 MongoDB
 -------
+Base de datos orientada a documentos NoSQL de esquema flexible basada en formato BSON.
+
+* https://www.mongodb.com/docs/
 
 PostgreSQL
 ----------
+Sistema gestor de base de datos relacional y objeto-relacional altamente avanzado, robusto, extensible y con estricto apego a estándares SQL.
+
+* https://www.postgresql.org/docs/
 
 
 Infraestructura
@@ -212,24 +272,37 @@ Infraestructura
 
 Ansible
 -------
+Herramienta de automatización, orquestación y aprovisionamiento de configuración sin agentes (*agentless*) mediante playbooks declarativos en YAML y transporte SSH.
 
-MRTG
-----
+* https://docs.ansible.com/
+
+MRTG/sFlow
+----------
+Herramientas clásicas y protocolos de muestreo para telemetría, monitoreo de interfaces y tráfico de red en tiempo real.
 
 Puppet
 ------
+Plataforma de gestión de configuración declarativa basada en modelos cliente/servidor.
 
-Salt (saltstack)
+* https://www.puppet.com/docs
+
+Salt (SaltStack)
 ----------------
+Sistema de orquestación y gestión remota basada en bus de eventos ZeroMQ.
 
-sFlow
------
+* https://docs.saltproject.io/
 
 Terraform
 ---------
+Herramienta declarativa para aprovisionamiento de Infraestructura como Código (IaC) multicloud.
+
+* https://developer.hashicorp.com/terraform/docs
 
 Zabbix
 ------
+Plataforma integral y distribuida de monitorización de infraestructura, servidores, redes y métricas en tiempo real.
+
+* https://www.zabbix.com/documentation/current/
 
 
 Extras
@@ -237,18 +310,25 @@ Extras
 
 Crystal
 -------
-Lenguaje de programación compilado y fuertemente tipado. Muy rápido y muy útil. Nuestro favorito.
+Lenguaje de programación compilado, fuertemente tipado, con sintaxis elegante inspirada en Ruby y concurrencia moderna por fibras. Nuestro lenguaje principal de elección.
 
 * https://crystal-lang.org/
 
-HTML, CSS, y Javascript
------------------------
+HTML, CSS y Javascript
+----------------------
+Fundamentos y estándares abiertos de la web moderna para estructura, diseño visual y dinamismo en el cliente.
 
 Python
 ------
+Lenguaje de programación interpretado multipropósito para scripting, automatización de sistemas, ingeniería de datos y desarrollo backend.
+
+* https://docs.python.org/3/
 
 Ruby
 ----
+Lenguaje dinámico, reflexivo y enfocado en la simplicidad y productividad del desarrollador.
+
+* https://www.ruby-lang.org/es/documentation/
 
 
 Documentación
@@ -256,25 +336,24 @@ Documentación
 
 Markdown
 --------
-Es el markup principalmente usado en la comunidad al rededor de GitHub y GitLab. No es libre y no lo preferimos, pero lo usamos de
-todos modos cuando el proyecto lo requiere.
+Formato de marcado ligero comúnmente empleado en foros técnicos, plataformas de repositorios (GitLab, GitHub) y documentación rápida.
 
 * https://www.markdownguide.org/
 
-reStructured Text
------------------
-Es el markup preferido por ser software libre y ser bastante convertible a varios formatos; incluyendo PDF, html, man y demás.
+reStructuredText
+----------------
+Estándar de documentación técnica preferido por su rigor sintáctico, extensibilidad semántica y capacidad nativa para compilar hacia múltiples formatos (HTML, PDF, manuales man, ePub) mediante docutils y Sphinx.
 
 * https://docutils.sourceforge.io/rst.html
 
 Recursos válidos
 ----------------
 #. ArchLinux Wiki
-#. CentOS Documentation
-#. Fedora Documentation
-#. GNU
+#. Documentación de Fedora
+#. Documentación de Red Hat Enterprise Linux
+#. Debian Handbook
+#. Documentación de GNU
 #. Gentoo Wiki
-#. Página oficial del proyecto
-#. Red Hat Documentation
+#. Páginas de manual oficiales (man-pages)
 #. Wikipedia
 

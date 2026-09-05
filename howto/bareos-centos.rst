@@ -1,28 +1,27 @@
-==========================================
-Servidor de respaldos con Bareos en Centos
-==========================================
+====================================================
+Servidor de respaldos con Bareos en Enterprise Linux
+====================================================
 
------------------------------------------------------------------------------
-HowTo de como instalar; en GNU & Linux, Bareos, NginX, PostgreSQL y PHP55-FPM
------------------------------------------------------------------------------
-
-[[_TOC_]]
+---------------------------------------------------------------------------
+HowTo de cómo instalar en GNU & Linux Bareos, NginX, PostgreSQL y PHP-FPM
+---------------------------------------------------------------------------
 
 Descripción
 ===========
-Servidor para respaldos automatizados en Centos 7. Los respaldos automatizados se hacen a través de Bareos. Se utiliza, además:
-Nginx, Postgresql y PHP55-fpm.
+Servidor para respaldos automatizados en distribuciones Enterprise Linux (Rocky Linux, AlmaLinux, RHEL). Los respaldos se gestionan a través de Bareos (Backup Archiving Recovery Open Sourced), utilizando NginX, PostgreSQL y PHP-FPM para el panel web Bareos-WebUI.
+
 
 Prerrequisitos
 ==============
 
 Instalación del sistema operativo
 ---------------------------------
-Para la instalación de CentOS 7.x, puedes leer el siguiente howto: http://wiki.evalinux.com/centos/instalacion
+Para la instalación base de Enterprise Linux, consulta: [[Instalando Enterprise Linux|centos/instalacion]]
 
-Instalación de herramientas escenciales
----------------------------------------
-```bash:/howto/bareos-centos/prerrequisitos```
+Instalación de herramientas y paquetes esenciales
+-------------------------------------------------
+```bash:/howto/bareos-centos/prerrequisitos.bash```
+
 
 Procedimiento
 =============
@@ -30,55 +29,69 @@ Procedimiento
 NginX
 -----
 
-```bash:/howto/bareos-centos/nginx```
-
+```bash:/howto/bareos-centos/nginx.bash```
 
 .. note::
+   `server.name` deberá ser sustituido por el FQDN o dirección asignada al servidor de administración.
 
-   server.name deberá ser sustituido por el nombre del servidor que se utilizará. 
 
+PHP-FPM
+-------
 
-PHP55-FPM
----------
+```bash:/howto/bareos-centos/php-fpm.bash```
 
-```bash:/howto/bareos-centos/php55-fpm```
 
 SELinux
 -------
 
-```bash:/howto/bareos-centos/selinux```
+```bash:/howto/bareos-centos/selinux.bash```
 
-Servicios (nginx, php55)
------------------------
 
-```bash:/howto/bareos-centos/servicios```
+Servicios (NginX y PHP-FPM)
+---------------------------
+
+```bash:/howto/bareos-centos/servicios.bash```
+
 
 Firewall
 --------
 
-```bash:/howto/bareos-centos/seguridad```
+```bash:/howto/bareos-centos/seguridad.bash```
 
-Postgresql
+
+PostgreSQL
 ----------
 
-```bash:/howto/bareos-centos/postgresql```
+```bash:/howto/bareos-centos/postgresql.bash```
+
 
 Bareos
 ------
 
-```bash:/howto/bareos-centos/bareos```
+```bash:/howto/bareos-centos/bareos.bash```
 
 .. note::
-    
-    La contraseña y el usuario pueden ser generados aleatoriamente con apg, recomendamos utilizar
-    contraseñas y nombres de usuario de 30 caracteres.
+    La contraseña y el usuario para el perfil de administración web pueden generarse de manera aleatoria y segura con:
 
-Troubleshooting
-===============
+    .. code:: sh
+
+        openssl rand -base64 24
+
+    O mediante:
+
+    .. code:: sh
+
+        cat /dev/urandom | tr -dc A-Za-z0-9 | head -c 30; echo
+
+
+Problemática
+============
+Nada por el momento.
+
 
 Referencias
 ===========
-* https://wiki.centos.org/es
+* https://docs.bareos.org/
 * https://www.nginx.com/resources/wiki/
-* https://www.softwarecollections.org/en/scls/rhscl/php55/
-* http://doc.bareos.org
+* https://www.postgresql.org/docs/
+

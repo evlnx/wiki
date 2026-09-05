@@ -1,207 +1,206 @@
 ===
 SSH
 ===
-------------------------
-HowTo: Como instalar SSH
-------------------------
+-----------------------------------
+HowTo: Cómo instalar y asegurar SSH
+-----------------------------------
 
 Descripción
 ===========
-El SSH, o "Secure Shell", se utiliza para conectarse a otros servidores.
+SSH (*Secure Shell*) es el protocolo estándar para la administración remota cifrada de sistemas GNU/Linux.
 
-Lo puedes usar para copiar archivos, correr programas de manera remota y hasta para navegar la red a través de otro servidor.
-
-
-[[_TOC_]]
+Permite acceder a consolas de comandos remotas, transferir archivos mediante SCP o SFTP, ejecutar comandos individuales de forma segura y redirigir puertos o túneles de red a través de conexiones autenticadas y cifradas.
 
 
 Prerrequisitos
 ==============
-Cualquiera de los siguientes es suficionete:
+Cualquiera de los siguientes entornos:
 
-* Instalación mínima de CentOS/Fedora.
+* Instalación mínima de Enterprise Linux/Fedora (RHEL, Rocky Linux, AlmaLinux o Fedora).
 * Instalación mínima de Arch Linux.
 
-Fedora
-======
+
 Instalación
------------
+===========
+
+Enterprise Linux/Fedora
+-----------------------
 
 .. code:: bash
 
-    # instalar ssh
-    dnf -y install openssh
+    # Instalar servidor y clientes OpenSSH
+    dnf -y install openssh-server openssh-clients
 
 
 Arch Linux
-==========
-Instalación
------------
+----------
 
 .. code:: bash
 
-    # instalar ssh
+    # Instalar OpenSSH
     pacman -Syu openssh
 
 
-Configuración
-=============
-Ahora, necesitas generar tu llave en tu estación de trabajo.
+Generación de Llaves de Acceso
+==============================
+En tu estación de trabajo local, debes generar un par de llaves criptográficas (una pública y una privada).
+
+Se recomienda enfáticamente el uso de curvas elípticas Ed25519 por su rendimiento y nivel de seguridad:
 
 .. code:: bash
 
-    # generar llave RSA (local)
-    ssh-keygen -b 8192
+    # Generar llave de curva elíptica Ed25519 (Recomendado)
+    ssh-keygen -t ed25519 -C "usuario@estacion"
 
-    # generar llave de curva elíptica (mucho más segura y rápida)
-    ssh-keygen -t ed25519
-
-Con ésto, has generado dos partes de cada llave. La parte pública y la parte privada.
+    # Alternativa: generar llave RSA de 4096 bits (compatibilidad con sistemas legados)
+    ssh-keygen -t rsa -b 4096 -C "usuario@estacion"
 
 .. warning::
 
-    La parte privada de tu llave es muy importante y no debe ser accesible por nadie más que por tí. El tener una copia de la parte
-    privada implica tener acceso a todo lo que se te haya concedido.
+    La **llave privada** (ej. ``~/.ssh/id_ed25519``) es estrictamente confidencial y nunca debe compartirse ni exponerse. Cualquier entidad con acceso a la llave privada obtendrá los mismos privilegios del usuario correspondiente.
 
 .. note::
 
-    La parte pública de tu llave puede ser publicada hasta en tu sitio web. No implica riesgo.
+    La **llave pública** (ej. ``~/.ssh/id_ed25519.pub``) puede compartirse e instalarse libremente en los servidores de destino sin riesgo de seguridad.
 
-.. note::
+.. important::
 
-    Es muy importante que le pongas un muy buen password a tus llaves. De esta manera, si las pierdes, te da algo de tiempo para
-    revocar el acceso antes de que el cracker pueda obtener el password.
-
-.. note::
-
-    No es estrictamente necesario generar los dos tipos de llaves. Lo hacemos por compatibilidad.
+    Asigna siempre una frase de paso (*passphrase*) robusta a tus llaves privadas. Si la llave es extraviada o comprometida, la frase de paso otorga una ventana crítica para revocar los accesos antes de que un atacante pueda descifrarla.
 
 
-Acceso
-======
-Para obtener acceso a un servidor u estación de trabajo, solo debes copiar el contenido de la parte pública de tu llave a:
-`/root/.ssh/authorized_keys` o `/home/<usuario>/.ssh/authorized_keys`.
+Instalación de la Llave en el Servidor
+=====================================
 
-He aquí una manera simple para agregar tu llave:
+Método Automatizado (Recomendado)
+---------------------------------
+Utiliza la herramienta ``ssh-copy-id`` para transferir e instalar tu llave pública con los permisos adecuados:
 
 .. code:: bash
 
-    # ir al servidor e identificarte con contraseña
-    ssh renich@mi-servidor.example.tld
+    ssh-copy-id -i ~/.ssh/id_ed25519.pub usuario@mi-servidor.example.tld
 
-    # configurar la máscara de permisos adecuadamente:
-    # 077: el dueño tiene todos los permisos, el grupo y el mundo no tienen permisos
+Método Manual
+-------------
+Si necesitas configurar el acceso manualmente en el servidor:
+
+.. code:: bash
+
+    # Iniciar sesión en el servidor remoto
+    ssh usuario@mi-servidor.example.tld
+
+    # Ajustar máscara de creación para que solo el propietario tenga permisos
     umask 077
 
-    # crear el directorio $HOME/.ssh
-    mkdir $HOME/.ssh
+    # Crear directorio .ssh con permisos 700
+    mkdir -p "$HOME/.ssh"
+    chmod 700 "$HOME/.ssh"
 
-    # ir al directorio
-    cd $HOME/.ssh
+    # Agregar la llave pública al archivo authorized_keys con permisos 600
+    cat << 'EOF' >> "$HOME/.ssh/authorized_keys"
+    ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILWo3RJ88qk1RS+P6b8U+rFJ1GpIxKvWW7AGrgiCx8dK usuario@estacion
+    EOF
+    chmod 600 "$HOME/.ssh/authorized_keys"
 
-    # crear el archivo authorized_keys e insertar la parte pública de tu(s) llave(s)
-    vim authorized_keys
-
-    # verificar que todo está bien
-    cat $HOME/.ssh/authorized_keys
-
-El resultado debiera ser algo como:
-
-::
-
-    # Renich Bon Ciric
-    ## Mi llave ED25519
-    ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILWo3RJ88qk1RS+P6b8U+rFJ1GpIxKvWW7AGrgiCx8dK renich@introdesk
-
-    ## mi llave RSA
-    ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAAEAQC8LgmKrDAEEj/gYYjL/M6kfl5z19HaA8ANdY5bVaDMrdOQPVEvC0RPwMDW7te/C9Pnd+Ms7ImOydaos0FCyMKoSdVCK3i7rkuJPiLLVpaFR3qkM2v0eMaOAbpFvamac4TFuBrNWVsgRZKmataij2jE8EuGl+JMKXjaRPJLAkYwucq
-
-.. note::
-
-    Las llaves ocupan una sola línea por llave.
-
-Ahora, para probar que todo funciona bien, hacemos lo siguiente en otra terminal:
+Prueba de Acceso
+----------------
+Abre una nueva terminal en tu estación de trabajo y verifica la conexión:
 
 .. code:: bash
 
-    # probar el acceso
-    ssh renich@mi-servidor.example.tld
+    ssh usuario@mi-servidor.example.tld
 
-El resultado debiera ser que pude entrar sin necesidad de contraseñas; más que la de mis llaves. Si configuro mi agente de SSH para
-capturarlas, no tendré que poner el password. Más sobre el tema en la sección de optimización.
-
-.. note::
-
-    La locación del archivo de acceso puede ser modificada en `/etc/ssh/sshd_config`. La directiva es: AuthorizedKeysFile
+Si se configuró correctamente, iniciarás sesión autenticándote con la llave (y la frase de paso de la misma), sin solicitar la contraseña de la cuenta del servidor.
 
 
-Seguridad
-=========
-Necesitamos hacer algunas cosas para restringir el acceso a nuestro servidor solo a los usuarios interesados. Además, permitirle a
-`root` entrar solo con llaves.
+Aseguramiento (Hardening)
+=========================
+En las distribuciones modernas de Enterprise Linux y Fedora, la configuración personalizada debe colocarse en archivos dentro del directorio ``/etc/ssh/sshd_config.d/``.
 
-Restringir el acceso a root solo con llaves
--------------------------------------------
-Para ésto, debemos de localizar la directiva:
+Crea el archivo ``/etc/ssh/sshd_config.d/01-seguridad.conf``:
 
 .. code:: ssh-config
 
-    # CentOS
-    PermitRootLogin without-password
-
-    # Fedora/Arch Linux
+    # Deshabilitar inicio de sesión como root por contraseña (solo permitir llaves SSH)
     PermitRootLogin prohibit-password
 
-Es posible que la directiva esté en su lugar pero comentada. Ésto significa que es, por defecto, la configuración actual. Dicho
-ésto, preferiremos quitarle el comentario para forzar la configuración en caso de un cambio de política por parte de upstream.
+    # Deshabilitar autenticación por contraseñas una vez verificadas las llaves
+    # PasswordAuthentication no
 
-.. warning ::
+    # Limitar acceso exclusivamente a usuarios autorizados
+    AllowUsers renich admin
 
-    Una vez que cambiemos esta directiva, el acceso directo por ssh a root será restringido al uso de llaves. Asegúrate de copiar tu
-    llave a `/root/.ssh/authorized_keys` antes de hacer ésto.
+    # Deshabilitar contraseñas vacías
+    PermitEmptyPasswords no
 
-Para activar los cambios, es necesario reiniciar el servicio de SSH: `systemctl restart sshd.service`.
+    # Deshabilitar reenvío X11 si no es necesario
+    X11Forwarding no
 
-.. note::
+.. warning::
 
-    Si estás conectado por SSH al servidor y reinicias el servicio de SSH, no te preocupes, la conexión permanecerá. Si falla el
-    reinicio, aún así, puedes corregir el error en el archivo de configuración e intentar de nuevo.
+    Antes de desactivar la autenticación por contraseña (``PasswordAuthentication no``) o restringir usuarios con ``AllowUsers``, asegúrate de haber verificado exitosamente el acceso por llave en una sesión paralela para evitar quedar incomunicado.
 
-Restringir el acceso a los usuarios conocidos
----------------------------------------------
-Para asegurarnos que solo los usuarios que queremos que tengan acceso lo tengan, es importante delimitarlos en la directiva:
-`AllowUsers`. Por ejemplo:
 
-.. code:: ssh-config
+Servicios y Firewall
+====================
 
-    AllowUsers root renich
-
-.. note::
-
-    La lista es separada por espacios. Se pueden agregar grupos tambień usando %grupo. Más información en el manual de sshd_config.
-
-Servicios
-=========
+Activar y Habilitar el Servicio
+-------------------------------
 
 .. code:: bash
 
-    # activar
-    systemctl enable sshd.service
+    # Habilitar e iniciar sshd inmediatamente
+    systemctl enable --now sshd.service
 
-    # encender
-    systemctl start sshd.service
-
-    # verificar
+    # Comprobar estado del servicio
     systemctl status sshd.service
 
-    # identifiquemos el puerto 22 siendo usado por sshd.
-    ss -t4lnp
+    # Comprobar socket escuchando en el puerto 22
+    ss -t4lnp | grep sshd
+
+Configuración de Firewall
+-------------------------
+
+.. code:: bash
+
+    # Permitir servicio SSH en firewalld
+    firewall-cmd --permanent --add-service=ssh
+    firewall-cmd --reload
 
 
-Troubleshooting
-===============
+Problemática
+============
+
+Permisos incorrectos en directorio o archivos SSH
+-------------------------------------------------
+OpenSSH por defecto rechaza llaves si los permisos del directorio ``~/.ssh`` o del archivo ``authorized_keys`` son demasiado permisivos.
+
+Corrige los permisos con:
+
+.. code:: bash
+
+    chmod 700 ~/.ssh
+    chmod 600 ~/.ssh/authorized_keys
+    chmod 600 ~/.ssh/id_*
+    chmod 644 ~/.ssh/*.pub
+
+Contextos de SELinux
+--------------------
+Si el directorio ``~/.ssh`` o ``authorized_keys`` fue copiado o restaurado desde otro origen, SELinux puede bloquear el acceso:
+
+.. code:: bash
+
+    restorecon -Rv ~/.ssh
+
+Depuración de Conexiones
+------------------------
+Para diagnosticar fallas de negociación criptográfica o rechazo de autenticación, ejecuta el cliente con nivel de detalle máximo:
+
+.. code:: bash
+
+    ssh -vvv usuario@mi-servidor.example.tld
 
 
 Referencias
 ===========
 * https://www.openssh.com/manual.html
+* https://docs.redhat.com/es/documentation/red_hat_enterprise_linux/9/html/securing_networks/assembly_using-secure-shell_securing-networks

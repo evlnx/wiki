@@ -14,10 +14,9 @@ Es un servidor que nos ayuda a traducir nombres de dominio a IP. Hay dos tipos d
 Prerrequisitos
 ==============
 
-* CentOS 7
+* Enterprise Linux/Fedora (RHEL, Rocky Linux, AlmaLinux o Fedora).
 
-Vamos a asumir que tenemos dos redes. La pública y la privada. La privada es: ``192.168.77.0/24``. El DNS primario, vivirá en:
-``192.168.77.10``.
+Vamos a asumir que tenemos dos redes: la pública y la privada. La privada es ``192.168.77.0/24``. El DNS primario vivirá en ``192.168.77.10``.
 
 El dominio a configurar es: ``example.tld``.
 
@@ -33,24 +32,22 @@ Configuración
 
 /etc/rndc.key
 -------------
-Para no quedarnos con la llave pre-generada, vamos a generar una nosotros mismos.
+Para no quedarnos con la llave pre-generada, vamos a generar una nosotros mismos:
 
 ```bash:/howto/dns/rndc.bash```
 
-De lo que resulte, vamos a obtener las funciones ```key` y ``controls``; y las acomodaremos en ``/etc/rndc.key`` y
-``/etc/named.conf`` respectivamente.
+De lo que resulte, vamos a obtener las secciones ``key`` y ``controls``; y las acomodaremos en ``/etc/rndc.key`` y ``/etc/named.conf`` respectivamente.
 
 Ejemplo:
 
 ```bash:/howto/dns/rndc.key```
 
 .. note::
-    ver la sección ``/etc/named.conf`` para el ejemplo de controls.
+    Ver la sección ``/etc/named.conf`` para el ejemplo de controls.
 
 /etc/named.conf
 ---------------
-Debemos cambiar las intancias de ``127.0.0.1`` o ``::1`` en las funciones: ``listen-on``, ``listen-on-v6`` y ``allow-query`` a
-``localnets``.  Además, debemos incluir ``localhost``.
+Debemos cambiar las instancias de ``127.0.0.1`` o ``::1`` en las directivas ``listen-on``, ``listen-on-v6`` y ``allow-query`` a ``localnets`` y ``localhost``.
 
 Ejemplo:
 
@@ -66,15 +63,13 @@ La '@':
     ``$ORIGIN``, cada vez que pongas '@' o nada, se substituirá por ``example.tld.``.
 
 Serial '2017041100':
-    El serial es un número que debe aumentar cada vez que actualizas una zona para notificarle a los esclavos de que hay cambios. Se
-    estila poner año, mes, dia e id. Así, puedes hacer hasta 99 cambios en un día.
+    El serial es un número que debe aumentar cada vez que actualizas una zona para notificarle a los secundarios (esclavos) de que hay cambios. Se estila poner año, mes, día e ID incremental (YYYYMMDDNN).
 
 ```bash:/howto/dns/example.tld.db```
 
 Permisos
 ########
-El directorio ``masters`` debe tener de dueño/grupo a: ``root:named``. Los permisos recomendados son ``2750``. Los archivos o zonas
-deben tener al mismo dueño/grupo, pero con permisos ``640``.
+El directorio ``masters`` debe tener como dueño y grupo a ``root:named`` con permisos ``2750``. Los archivos de zona deben pertenecer a ``root:named`` con permisos ``640``.
 
 
 Servicios
@@ -85,16 +80,16 @@ Servicios
 
 Pruebas
 =======
-Para probar, necesitamos hacer que ``/etc/resolv.conf`` luzca así:
+Para probar, necesitamos hacer que ``/etc/resolv.conf`` apunte al servidor DNS configurado:
 
-.. code-block:: sh
+.. code:: sh
 
     search example.tld
     nameserver 192.168.77.10
 
 Una vez que esté así en nuestro cliente y nuestro servidor, podemos iniciar las pruebas:
 
-.. code-block:: sh
+.. code:: sh
 
     # buscar el dominio principal
     dig example.tld
@@ -103,8 +98,8 @@ Una vez que esté así en nuestro cliente y nuestro servidor, podemos iniciar la
     dig ns1.example.tld
     dig mail1.example.tld
 
-    # buscar uno no existente y verificar que lo envía a 192.168.77.10
-    dig chuchuwa.example.tld
+    # buscar uno no existente y verificar la respuesta autoritativa
+    dig nonexistent.example.tld
 
 
 Problemática
@@ -112,21 +107,33 @@ Problemática
 
 Verificar tu configuración general
 ----------------------------------
-Para hacer ésto, solo necesitas correr el comando: ``named-checkconf``.
+Para verificar la sintaxis de la configuración principal, corre el comando:
 
-Para verificar que tus zonas son válidas, debes usar el comando: ``named-checkzone <dominio> <archivo>``. Por ejemplo:
-``named-checkzone example.tld /var/named/masters/example.tld.db``.
+.. code:: sh
+
+    named-checkconf
+
+Para verificar que tus zonas son válidas:
+
+.. code:: sh
+
+    named-checkzone example.tld /var/named/masters/example.tld.db
 
 .. note::
-    Cuando no sale nada, quiere decir que todo está bien.
+    Cuando no arroja salida de error, indica que la sintaxis de zona es válida.
 
 Errores en los logs
 -------------------
-Es importante saber que en ``/var/named/data/named.run`` está el log de todo lo que sucede con bind. Por otro lado, tenemos el log
-de ``journalctl -u named``; el cual nos muestra la información relevante al sistema.
+Revisar el registro de actividad de bind en el log del sistema:
+
+.. code:: sh
+
+    journalctl -u named.service -f
 
 
 Referencias
 ===========
-* https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/7/html/Networking_Guide/sec-BIND.html
+* https://docs.redhat.com/
+* https://bind9.readthedocs.io/
+
 

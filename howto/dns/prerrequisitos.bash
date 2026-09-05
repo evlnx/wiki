@@ -1,2 +1,2 @@
 # instalar bind y sus herramientas
-yum -y install bind-chroot bind-utils
+dnf -y install bind bind-utils

@@ -1,5 +1,3 @@
-# activar servicio
-systemctl enable named.service
+# activar e iniciar servicio
+systemctl enable --now named.service
 
-# iniciar servicio
-systemctl start named.service

@@ -8,6 +8,6 @@ Console {
 
 EOF
 
-# activar servicios e iniciarlos
-systemctl enable bareos-dir.service bareos-sd.service bareos-fd.service 
-systemctl start bareos-dir.service bareos-sd.service bareos-fd.service 
+# activar e iniciar servicios de Bareos
+systemctl enable --now bareos-dir.service bareos-sd.service bareos-fd.service
+ 
