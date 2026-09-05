@@ -21,7 +21,7 @@ Bajo este modelo, la protección de los datos en reposo (*data-at-rest*) permane
 Prerrequisitos
 ==============
 * Instalación base de **CentOS Stream 10** y/o **Fedora 44** (ver: [[Instalando CentOS Stream 10 y Fedora 44|/centos/instalacion]]).
-* Privilegios de superusuario mediante ``sudo`` en ambos equipos.
+* Acceso como superusuario (cuenta root) en ambos equipos.
 * Políticas de SELinux activas en modo Enforcing en ambos sistemas.
 * Un servidor independiente en la red interna dedicado al rol de servidor de llaves **Tang** (en esta guía utilizaremos el FQDN resoluble ``tang.internal`` y la dirección IPv4 ``192.168.10.200``).
 * Un equipo cliente con conectividad de red hacia el servidor Tang y un disco o partición secundaria para el aprovisionamiento de pruebas (en esta guía utilizaremos la partición ``/dev/sdb1`` de 10 GiB; el mismo método aplica a volúmenes lógicos LVM o al disco raíz del sistema).

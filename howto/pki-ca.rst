@@ -25,7 +25,7 @@ Esta guía implementa una arquitectura jerárquica de dos niveles (*two-tier CA 
 Prerrequisitos
 ==============
 * Instalación base de **CentOS Stream 10** y/o **Fedora 44** (ver: [[Instalando CentOS Stream 10 y Fedora 44|/centos/instalacion]]).
-* Privilegios de superusuario (acceso administrativo mediante ``sudo``).
+* Acceso como superusuario (cuenta root).
 * Políticas de SELinux en modo ``Enforcing`` activas en el sistema.
 * Políticas criptográficas globales del sistema en perfil compatible (``DEFAULT`` o ``FUTURE``):
 

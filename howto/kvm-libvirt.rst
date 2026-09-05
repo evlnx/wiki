@@ -26,7 +26,7 @@ Prerrequisitos
       lscpu | grep -i virtualization
 
 * Instalación base de **CentOS Stream 10** y/o **Fedora 44** (ver: [[Instalando CentOS Stream 10 y Fedora 44|/centos/instalacion]]).
-* Privilegios de superusuario (acceso administrativo mediante ``sudo``).
+* Acceso como superusuario (cuenta root).
 * Políticas de SELinux en modo Enforcing activas (el confinamiento de máquinas virtuales se realiza mediante sVirt con categorías MCS dinámicas).
 * Acceso a repositorios oficiales del sistema operativo configurado y operativo.
 
@@ -165,14 +165,12 @@ Crear el archivo ``/var/lib/libvirt/images/user-data`` (sustituir la clave públ
 
    #cloud-config
    # Archivo: /var/lib/libvirt/images/user-data
+   disable_root: false
    users:
-     - name: sysadmin
-       gecos: Administrador del Sistema
-       sudo: ALL=(ALL) NOPASSWD:ALL
+     - name: root
        shell: /usr/bin/bash
-       lock_passwd: true
        ssh_authorized_keys:
-         - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIExampleKeyForSysadminHostAuthToken sysadmin@evalinux.com
+         - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIExampleKeyForSysadminHostAuthToken root@evalinux.com
 
    package_update: true
    package_upgrade: false

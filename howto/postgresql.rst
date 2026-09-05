@@ -17,7 +17,7 @@ En **CentOS Stream 10** y **Fedora 44**, PostgreSQL está empaquetado nativament
 Prerrequisitos
 ==============
 * Instalación base de **CentOS Stream 10** y/o **Fedora 44** (ver: [[Instalando CentOS Stream 10 y Fedora 44|/centos/instalacion]]).
-* Privilegios de superusuario (acceso administrativo mediante ``sudo``).
+* Acceso como superusuario (cuenta ``root``).
 * Políticas de SELinux activas en modo Enforcing (verificar con ``getenforce``).
 * Dos servidores dedicados conectados mediante una red privada local segura:
 
@@ -49,7 +49,7 @@ En **CentOS Stream 10** y **Fedora 44**, los paquetes oficiales de PostgreSQL y 
 .. code-block:: bash
 
    # Actualizar metadatos del repositorio e instalar el motor y extensiones
-   sudo dnf -y install postgresql-server postgresql-contrib
+   dnf -y install postgresql-server postgresql-contrib
 
 El paquete ``postgresql-server`` proporciona el binario principal ``postgres``, la unidad de servicio para systemd (``postgresql.service``), la herramienta de inicialización y mantenimiento ``postgresql-setup``, y utilidades clave de administración como ``pg_basebackup``. El paquete ``postgresql-contrib`` añade herramientas esenciales de inspección forense e integridad física como ``pg_amcheck`` y extensiones de catálogo como ``pg_stat_statements``.
 
@@ -64,7 +64,7 @@ En distribuciones de la familia RHEL y Fedora, la inicialización del directorio
 .. code-block:: bash
 
    # Inicializar el clúster con cálculo de checksums en bloques de datos
-   sudo postgresql-setup --initdb --data-checksums
+   postgresql-setup --initdb --data-checksums
 
 El parámetro ``--data-checksums`` activa la verificación mediante sumas de verificación (*checksums*) en cada bloque de datos escrito en disco, lo que permite detectar inmediatamente corrupción silenciosa (*bit-rot*) o degradación a nivel de controlador de almacenamiento antes de que se propague a los registros de transacción.
 
@@ -73,8 +73,8 @@ Si se utiliza un volumen dedicado montado en ``/var/lib/pgsql/data``, asegúrese
 .. code-block:: bash
 
    # Ajustar propiedad y permisos estrictos en el directorio de clúster
-   sudo chown -R postgres:postgres /var/lib/pgsql/data
-   sudo chmod 700 /var/lib/pgsql/data
+   chown -R postgres:postgres /var/lib/pgsql/data
+   chmod 700 /var/lib/pgsql/data
 
 Ajuste de Rendimiento en postgresql.conf
 ----------------------------------------
@@ -120,9 +120,9 @@ Cree el directorio de archivado continuo con los permisos del demonio:
 .. code-block:: bash
 
    # Crear directorio local de archivado WAL en el servidor primario
-   sudo mkdir -p /var/lib/pgsql/wal_archive
-   sudo chown -R postgres:postgres /var/lib/pgsql/wal_archive
-   sudo chmod 700 /var/lib/pgsql/wal_archive
+   mkdir -p /var/lib/pgsql/wal_archive
+   chown -R postgres:postgres /var/lib/pgsql/wal_archive
+   chmod 700 /var/lib/pgsql/wal_archive
 
 Control de Accesos y Seguridad en pg_hba.conf
 ---------------------------------------------
@@ -157,13 +157,13 @@ Para permitir que el nodo secundario extraiga el respaldo inicial y reciba el fl
 .. code-block:: bash
 
    # Iniciar el servicio PostgreSQL en el nodo primario
-   sudo systemctl start postgresql.service
+   systemctl start postgresql.service
 
    # Crear el rol de replicación ejecutando la sentencia interactiva en psql
-   sudo -u postgres psql -c "CREATE ROLE replicator WITH REPLICATION LOGIN ENCRYPTED PASSWORD 'ClaveUltraSeguraReplicacion2026!';"
+   su - postgres -c "psql -c \"CREATE ROLE replicator WITH REPLICATION LOGIN ENCRYPTED PASSWORD 'ClaveUltraSeguraReplicacion2026!';\""
 
    # Validar la existencia y atributos del rol creado
-   sudo -u postgres psql -c "\du replicator"
+   su - postgres -c "psql -c '\du replicator'"
 
 Aprovisionamiento del Nodo Secundario con pg_basebackup
 -------------------------------------------------------
@@ -174,18 +174,18 @@ En el servidor secundario (``pg-standby.lab.evalinux.com``), el clúster no debe
    .. code-block:: bash
 
       # Detener el servicio en el nodo secundario si estuviese activo
-      sudo systemctl stop postgresql.service
+      systemctl stop postgresql.service
 
       # Limpiar o asegurar que el directorio de datos destino esté vacío
-      sudo rm -rf /var/lib/pgsql/data/*
+      rm -rf /var/lib/pgsql/data/*
 
 #. Ejecute ``pg_basebackup`` conectándose al servidor primario como usuario del sistema ``postgres``:
 
    .. code-block:: bash
 
       # Ejecución del respaldo base en frío para replicación en flujo
-      sudo -u postgres pg_basebackup -h 192.168.10.10 -p 5432 -U replicator \
-         -D /var/lib/pgsql/data -Fp -Xs -R -P
+      su - postgres -c "pg_basebackup -h 192.168.10.10 -p 5432 -U replicator \
+         -D /var/lib/pgsql/data -Fp -Xs -R -P"
 
    Parámetros aplicados:
 
@@ -222,8 +222,8 @@ En el servidor secundario (``pg-standby.lab.evalinux.com``), el clúster no debe
 
    .. code-block:: bash
 
-      sudo chown -R postgres:postgres /var/lib/pgsql/data
-      sudo chmod 700 /var/lib/pgsql/data
+      chown -R postgres:postgres /var/lib/pgsql/data
+      chmod 700 /var/lib/pgsql/data
 
 Habilitación e Inicio de Servicios
 ----------------------------------
@@ -232,25 +232,25 @@ Habilite e inicie el servicio PostgreSQL en ambos nodos de forma atómica con ``
 .. code-block:: bash
 
    # En el Servidor Primario (pg-primary):
-   sudo systemctl enable --now postgresql.service
+   systemctl enable --now postgresql.service
 
    # En el Servidor Secundario (pg-standby):
-   sudo systemctl enable --now postgresql.service
+   systemctl enable --now postgresql.service
 
 Configuración de Cortafuegos y Red
 ----------------------------------
-En **CentOS Stream 10** y **Fedora 44**, ``firewalld`` opera como el demonio dinámico de gestión de cortafuegos. Nunca exponga el puerto de base de datos a redes públicas no filtradas. Configure *Rich Rules* para admitir tráfico en el puerto 5432/tcp exclusivamente desde la subred privada de infraestructura o el nodo secundario:
+En **CentOS Stream 10** y **Fedora 44**, ``firewalld`` opera como el demonio dinámico de gestión de cortafuegos. Nunca exponga el puerto de base de datos a redes públicas no filtradas. Configure reglas sustanciosas (*Rich Rules*) para admitir tráfico en el puerto 5432/tcp exclusivamente desde la subred privada de infraestructura o el nodo secundario:
 
 .. code-block:: bash
 
    # En el Servidor Primario: autorizar conexiones de la subred privada de base de datos
-   sudo firewall-cmd --permanent --add-rich-rule='rule family="ipv4" source address="192.168.10.0/24" port port="5432" protocol="tcp" accept'
+   firewall-cmd --permanent --add-rich-rule='rule family="ipv4" source address="192.168.10.0/24" port port="5432" protocol="tcp" accept'
 
    # En ambos servidores: recargar reglas para aplicar cambios en memoria
-   sudo firewall-cmd --reload
+   firewall-cmd --reload
 
    # Validar las reglas activas de la zona predeterminada
-   sudo firewall-cmd --list-all
+   firewall-cmd --list-all
 
 
 Verificación y Pruebas
@@ -279,7 +279,7 @@ Siga este procedimiento paso a paso para validar la salud del clúster, la repli
 
    .. code-block:: bash
 
-      sudo -u postgres psql -x -c "SELECT pid, usename, application_name, client_addr, state, sync_state, replay_lsn, pg_wal_lsn_diff(pg_current_wal_lsn(), replay_lsn) AS replay_lag_bytes FROM pg_stat_replication;"
+      su - postgres -c "psql -x -c \"SELECT pid, usename, application_name, client_addr, state, sync_state, replay_lsn, pg_wal_lsn_diff(pg_current_wal_lsn(), replay_lsn) AS replay_lag_bytes FROM pg_stat_replication;\""
 
    El campo ``state`` debe mostrar el valor ``streaming``, ``sync_state`` reflejará ``async`` (o ``sync`` si configuró réplica síncrona), y el cálculo ``replay_lag_bytes`` debe indicar un valor cercano a ``0`` bytes en condiciones normales.
 
@@ -290,10 +290,10 @@ Siga este procedimiento paso a paso para validar la salud del clúster, la repli
    .. code-block:: bash
 
       # Comprobar si el nodo opera en modo de recuperación (debe retornar true/t)
-      sudo -u postgres psql -c "SELECT pg_is_in_recovery();"
+      su - postgres -c "psql -c \"SELECT pg_is_in_recovery();\""
 
       # Inspeccionar la telemetría del proceso receptor de WAL (walreceiver)
-      sudo -u postgres psql -x -c "SELECT sender_host, sender_port, status, received_lsn, latest_end_lsn, latest_end_time FROM pg_stat_wal_receiver;"
+      su - postgres -c "psql -x -c \"SELECT sender_host, sender_port, status, received_lsn, latest_end_lsn, latest_end_time FROM pg_stat_wal_receiver;\""
 
    La salida confirmará que el proceso receptor está en estado ``streaming`` recibiendo datos desde ``192.168.10.10``.
 
@@ -356,20 +356,20 @@ Si el clúster de base de datos o el repositorio de archivado WAL se ubican en d
 
    .. code-block:: bash
 
-      sudo ausearch -m avc -ts recent
+      ausearch -m avc -ts recent
 
 #. Defina el contexto persistente ``postgresql_db_t`` para las rutas de almacenamiento de datos y archivado:
 
    .. code-block:: bash
 
       # Registrar contexto permanente para el directorio de datos y sus descendientes
-      sudo semanage fcontext -a -t postgresql_db_t "/var/lib/pgsql/data(/.*)?"
+      semanage fcontext -a -t postgresql_db_t "/var/lib/pgsql/data(/.*)?"
 
       # Registrar contexto permanente para el repositorio de archivado continuo
-      sudo semanage fcontext -a -t postgresql_db_t "/var/lib/pgsql/wal_archive(/.*)?"
+      semanage fcontext -a -t postgresql_db_t "/var/lib/pgsql/wal_archive(/.*)?"
 
       # Aplicar recursivamente las etiquetas definidas en el sistema de archivos
-      sudo restorecon -Rv /var/lib/pgsql
+      restorecon -Rv /var/lib/pgsql
 
 #. Verifique el etiquetado correcto con ``ls -ldZ``:
 
@@ -386,14 +386,14 @@ Si el secundario registra el error ``FATAL: password authentication failed for u
 
    .. code-block:: bash
 
-      sudo -u postgres psql -c "ALTER ROLE replicator WITH ENCRYPTED PASSWORD 'ClaveUltraSeguraReplicacion2026!';"
+      su - postgres -c "psql -c \"ALTER ROLE replicator WITH ENCRYPTED PASSWORD 'ClaveUltraSeguraReplicacion2026!';\""
 
 #. Valide el orden de registros en ``/var/lib/pgsql/data/pg_hba.conf`` del primario. Las reglas más específicas (como ``host replication replicator 192.168.10.20/32 scram-sha-256``) deben preceder a cualquier regla general que use el método ``reject`` o ``peer``.
 #. Tras modificar ``pg_hba.conf``, recargue la configuración en el primario sin reiniciar el demonio:
 
    .. code-block:: bash
 
-      sudo -u postgres psql -c "SELECT pg_reload_conf();"
+      su - postgres -c "psql -c \"SELECT pg_reload_conf();\""
 
 Desconexión y Retardo de Replicación (Replication Lag)
 ------------------------------------------------------
@@ -404,14 +404,14 @@ Si el secundario pierde la sincronización o el proceso ``walreceiver`` no repor
    .. code-block:: bash
 
       # En el secundario, revisar si se reporta un segmento faltante
-      sudo journalctl -u postgresql.service -e --no-pager | grep -i "requested WAL segment"
+      journalctl -u postgresql.service -e --no-pager | grep -i "requested WAL segment"
 
 #. Para evitar que un primario recicle WAL durante desconexiones de red transitorias, configure una ranura de replicación física persistente (*Replication Slot*) en el nodo primario:
 
    .. code-block:: bash
 
       # En el Servidor Primario: crear ranura física persistente
-      sudo -u postgres psql -c "SELECT pg_create_physical_replication_slot('standby1_slot');"
+      su - postgres -c "psql -c \"SELECT pg_create_physical_replication_slot('standby1_slot');\""
 
 #. En el servidor secundario, agregue la ranura en ``/var/lib/pgsql/data/postgresql.auto.conf``:
 
@@ -423,7 +423,7 @@ Si el secundario pierde la sincronización o el proceso ``walreceiver`` no repor
 
    .. code-block:: bash
 
-      sudo systemctl restart postgresql.service
+      systemctl restart postgresql.service
 
 Saturación de Espacio por Fallos en archive_command
 ---------------------------------------------------
@@ -433,7 +433,7 @@ Si la directiva ``archive_command`` falla (por ejemplo, por falta de permisos en
 
    .. code-block:: bash
 
-      sudo -u postgres psql -x -c "SELECT archived_count, last_archived_wal, last_archived_time, failed_count, last_failed_wal, last_failed_time FROM pg_stat_archiver;"
+      su - postgres -c "psql -x -c \"SELECT archived_count, last_archived_wal, last_archived_time, failed_count, last_failed_wal, last_failed_time FROM pg_stat_archiver;\""
 
    Si ``failed_count`` es mayor a ``0`` y ``last_failed_time`` es reciente, el archivador está fallando.
 
@@ -442,7 +442,7 @@ Si la directiva ``archive_command`` falla (por ejemplo, por falta de permisos en
    .. code-block:: bash
 
       # Probar permisos de escritura en la ruta de archivado
-      sudo -u postgres touch /var/lib/pgsql/wal_archive/test_write && sudo -u postgres rm -f /var/lib/pgsql/wal_archive/test_write
+      su - postgres -c "touch /var/lib/pgsql/wal_archive/test_write && rm -f /var/lib/pgsql/wal_archive/test_write"
 
 #. Asegúrese de que el comando en ``postgresql.conf`` maneje la idempotencia (evitando sobrescritura de archivos existentes) y devuelva código de salida 0:
 

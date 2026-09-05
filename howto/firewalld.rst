@@ -1,6 +1,6 @@
-============================================================================
-Cortafuegos Perimetral e Interno con Firewalld: Zonas, Reglas Ricas e IPSets
-============================================================================
+==================================================================================
+Cortafuegos Perimetral e Interno con Firewalld: Zonas, Reglas Sustanciosas e IPSets
+==================================================================================
 ----------------------------------------------------------------------
 HowTo: Guía práctica y paso a paso para CentOS Stream 10 y/o Fedora 44
 ----------------------------------------------------------------------
@@ -14,7 +14,7 @@ Firewalld es el demonio de seguridad y filtrado dinámico de red estándar en di
 Siguiendo una arquitectura de confianza cero (*Zero-Trust network boundaries*), esta guía aborda:
 
 * **Zonas de seguridad segregadas**: Clasificación estricta de interfaces de red físicas y virtuales en dominios de confianza aislados, separando el perímetro externo expuesto a Internet (WAN) de las redes privadas y túneles seguros (LAN/VPN).
-* **Reglas ricas (Rich Rules)**: Directivas de filtrado granular que combinan fuentes de red específicas, control de servicios y puertos, registro estructurado en el diario del sistema y limitación de tasa (*rate limiting*) contra ataques de denegación de servicio o sondeos automatizados.
+* **Reglas sustanciosas (Rich Rules)**: Directivas de filtrado granular que combinan fuentes de red específicas, control de servicios y puertos, registro estructurado en el diario del sistema y limitación de tasa (*rate limiting*) contra ataques de denegación de servicio o sondeos automatizados.
 * **Conjuntos de direcciones IP (IPSets)**: Estructuras hash optimizadas en el espacio de memoria del núcleo que permiten la evaluación en tiempo constante :math:`O(1)` de miles de prefijos o direcciones IP hostiles (*blocklists*) sin impacto perceptible en la latencia de conmutación de paquetes.
 * **Traducción de direcciones de red (NAT)**: Enmascaramiento de salida (*masquerading/SNAT*) para dar salida a redes privadas y redirección de puertos perimetrales (*DNAT/port forwarding*) hacia servicios internos.
 
@@ -22,7 +22,7 @@ Siguiendo una arquitectura de confianza cero (*Zero-Trust network boundaries*), 
 Prerrequisitos
 ==============
 * Instalación base de **CentOS Stream 10** y/o **Fedora 44** (ver: [[Instalando CentOS Stream 10 y Fedora 44|/centos/instalacion]]).
-* Privilegios de superusuario administrativo (acceso mediante ``sudo``).
+* Acceso como superusuario (cuenta ``root``).
 * Políticas de SELinux activas en modo restrictivo (**Enforcing**).
 * Acceso a repositorios oficiales del sistema (BaseOS/AppStream en CentOS Stream 10 o fedora/updates en Fedora 44).
 * Reenvío de paquetes IPv4 habilitado en el núcleo si el servidor realiza enrutamiento o enmascaramiento entre interfaces (``net.ipv4.ip_forward = 1``).
@@ -37,7 +37,7 @@ Actualiza los metadatos de los repositorios e instala los paquetes requeridos me
 .. code:: bash
 
    # Actualizar metadatos e instalar firewalld junto a utilidades ipset
-   sudo dnf -y install firewalld ipset
+   dnf -y install firewalld ipset
 
 
 Configuración
@@ -56,16 +56,16 @@ Antes de modificar cualquier política de seguridad, es indispensable inspeccion
 .. code:: bash
 
    # Comprobar el estado operativo del demonio
-   sudo firewall-cmd --state
+   firewall-cmd --state
 
    # Consultar la zona predeterminada configurada en el sistema
-   sudo firewall-cmd --get-default-zone
+   firewall-cmd --get-default-zone
 
    # Listar las zonas activas y las interfaces o fuentes asociadas
-   sudo firewall-cmd --get-active-zones
+   firewall-cmd --get-active-zones
 
    # Inspeccionar detalladamente las directivas de la zona predeterminada
-   sudo firewall-cmd --list-all
+   firewall-cmd --list-all
 
 Asignación de Interfaces de Red a Zonas
 ---------------------------------------
@@ -76,10 +76,10 @@ Asigna la interfaz externa a la zona ``public`` y la interfaz interna a la zona 
 .. code:: bash
 
    # Asignar la interfaz WAN perimetral a la zona public
-   sudo firewall-cmd --permanent --zone=public --change-interface=eth0
+   firewall-cmd --permanent --zone=public --change-interface=eth0
 
    # Asignar la interfaz VPN o LAN segura a la zona internal
-   sudo firewall-cmd --permanent --zone=internal --change-interface=wg0
+   firewall-cmd --permanent --zone=internal --change-interface=wg0
 
 Gestión de Servicios y Puertos
 ------------------------------
@@ -90,61 +90,61 @@ En la zona perimetral ``public``, autoriza el servicio HTTPS estándar y un puer
 .. code:: bash
 
    # Permitir el servicio HTTPS estándar (puerto 443/tcp) en la zona perimetral
-   sudo firewall-cmd --permanent --zone=public --add-service=https
+   firewall-cmd --permanent --zone=public --add-service=https
 
    # Permitir el puerto TCP personalizado 8443 en la zona perimetral
-   sudo firewall-cmd --permanent --zone=public --add-port=8443/tcp
+   firewall-cmd --permanent --zone=public --add-port=8443/tcp
 
-Reglas Ricas (Rich Rules) Avanzadas
------------------------------------
-Las reglas ricas (*Rich Rules*) permiten definir políticas de filtrado avanzadas mediante una sintaxis estructurada sin necesidad de manipular tablas de bajo nivel en nftables. Proporcionan control de origen, limitación de tasa (*rate limiting*) y registro en el diario del sistema con prefijos legibles para auditoría.
+Reglas Sustanciosas (Rich Rules) Avanzadas
+------------------------------------------
+Las reglas sustanciosas (*Rich Rules*) permiten definir políticas de filtrado avanzadas mediante una sintaxis estructurada sin necesidad de manipular tablas de bajo nivel en nftables. Proporcionan control de origen, limitación de tasa (*rate limiting*) y registro en el diario del sistema con prefijos legibles para auditoría.
 
 Autorizar el acceso SSH (puerto 22/tcp) exclusivamente desde una subred administrativa interna (``192.168.10.0/24``), registrando eventos informativos con un límite de 5 intentos por minuto:
 
 .. code:: bash
 
    # Permitir SSH administrativo con registro informativo y limitación de tasa
-   sudo firewall-cmd --permanent --zone=public --add-rich-rule='rule family="ipv4" source address="192.168.10.0/24" service name="ssh" log prefix="FIREWALL_SSH: " level="info" limit value="5/m" accept'
+   firewall-cmd --permanent --zone=public --add-rich-rule='rule family="ipv4" source address="192.168.10.0/24" service name="ssh" log prefix="FIREWALL_SSH: " level="info" limit value="5/m" accept'
 
 Descartar silenciosamente y auditar el tráfico procedente de una subred de origen hostil (``198.51.100.0/24``), registrando advertencias con un límite de 5 eventos por minuto:
 
 .. code:: bash
 
    # Registrar y descartar paquetes provenientes de una red hostil
-   sudo firewall-cmd --permanent --zone=public --add-rich-rule='rule family="ipv4" source address="198.51.100.0/24" log prefix="FIREWALL_DROP: " level="warning" limit value="5/m" drop'
+   firewall-cmd --permanent --zone=public --add-rich-rule='rule family="ipv4" source address="198.51.100.0/24" log prefix="FIREWALL_DROP: " level="warning" limit value="5/m" drop'
 
 Conjuntos de Direcciones IP (IPSets)
 ------------------------------------
-Cuando se requiere gestionar cientos o miles de direcciones IP o bloques CIDR (como fuentes de inteligencia de amenazas o listas de reputación), las reglas ricas individuales degradan el rendimiento al crear cadenas lineales extensas. Los conjuntos IP (*IPSets*) utilizan tablas hash en memoria del núcleo que realizan comparaciones en tiempo constante :math:`O(1)`.
+Cuando se requiere gestionar cientos o miles de direcciones IP o bloques CIDR (como fuentes de inteligencia de amenazas o listas de reputación), las reglas sustanciosas individuales degradan el rendimiento al crear cadenas lineales extensas. Los conjuntos IP (*IPSets*) utilizan tablas hash en memoria del núcleo que realizan comparaciones en tiempo constante :math:`O(1)`.
 
 Crea un conjunto IP permanente de tipo red (``hash:net``) para direcciones IPv4:
 
 .. code:: bash
 
    # Crear conjunto IP persistente optimizado para subredes IPv4
-   sudo firewall-cmd --permanent --new-ipset=blocklist --type=hash:net --option=family=inet --option=maxelem=100000
+   firewall-cmd --permanent --new-ipset=blocklist --type=hash:net --option=family=inet --option=maxelem=100000
 
 Agrega los bloques CIDR que deben ser bloqueados de forma permanente:
 
 .. code:: bash
 
    # Agregar rangos de red a la lista de bloqueo permanente
-   sudo firewall-cmd --permanent --ipset=blocklist --add-entry=198.51.100.0/24
-   sudo firewall-cmd --permanent --ipset=blocklist --add-entry=203.0.113.0/24
+   firewall-cmd --permanent --ipset=blocklist --add-entry=198.51.100.0/24
+   firewall-cmd --permanent --ipset=blocklist --add-entry=203.0.113.0/24
 
-Vincula el conjunto IP a la zona perimetral mediante una regla rica que descarte inmediatamente el tráfico coincidente:
+Vincula el conjunto IP a la zona perimetral mediante una regla sustanciosa que descarte inmediatamente el tráfico coincidente:
 
 .. code:: bash
 
    # Descartar cualquier tráfico cuyo origen coincida con el ipset blocklist
-   sudo firewall-cmd --permanent --zone=public --add-rich-rule='rule source ipset="blocklist" drop'
+   firewall-cmd --permanent --zone=public --add-rich-rule='rule source ipset="blocklist" drop'
 
 Para agregar direcciones de forma dinámica en caliente sin necesidad de recargar el cortafuegos:
 
 .. code:: bash
 
    # Agregar una entrada en caliente a la tabla hash del núcleo
-   sudo firewall-cmd --ipset=blocklist --add-entry=192.0.2.100
+   firewall-cmd --ipset=blocklist --add-entry=192.0.2.100
 
 Enmascaramiento (Masquerading) y Redirección de Puertos
 -------------------------------------------------------
@@ -158,29 +158,29 @@ Habilitar el enmascaramiento de salida en la zona perimetral ``public``:
 .. code:: bash
 
    # Habilitar enmascaramiento en la zona pública
-   sudo firewall-cmd --permanent --zone=public --add-masquerade
+   firewall-cmd --permanent --zone=public --add-masquerade
 
 Asegura que el reenvío de paquetes IPv4 esté habilitado de forma permanente en los parámetros del núcleo de Linux:
 
 .. code:: bash
 
    # Habilitar reenvío de paquetes en el archivo de configuración sysctl
-   echo "net.ipv4.ip_forward = 1" | sudo tee /etc/sysctl.d/99-ipforward.conf
-   sudo sysctl --system
+   echo "net.ipv4.ip_forward = 1" > /etc/sysctl.d/99-ipforward.conf
+   sysctl --system
 
 Configurar la redirección de puertos (*DNAT*) para capturar conexiones dirigidas al puerto 443 público y reenviarlas al puerto 8443 de un servidor interno en la dirección ``10.0.10.5``:
 
 .. code:: bash
 
    # Redirigir el puerto 443 WAN hacia el host interno 10.0.10.5 en el puerto 8443
-   sudo firewall-cmd --permanent --zone=public --add-forward-port=port=443:proto=tcp:toport=8443:toaddr=10.0.10.5
+   firewall-cmd --permanent --zone=public --add-forward-port=port=443:proto=tcp:toport=8443:toaddr=10.0.10.5
 
 Para redirigir tráfico entre puertos dentro del mismo servidor local (por ejemplo, del puerto 80 al 8080 local):
 
 .. code:: bash
 
    # Redirigir puerto local 80 hacia el puerto local 8080
-   sudo firewall-cmd --permanent --zone=public --add-forward-port=port=80:proto=tcp:toport=8080
+   firewall-cmd --permanent --zone=public --add-forward-port=port=80:proto=tcp:toport=8080
 
 Aplicación y Persistencia de Cambios
 ------------------------------------
@@ -191,7 +191,7 @@ Aplica los cambios de manera segura y sin corte de servicio ejecutando ``firewal
 .. code:: bash
 
    # Recargar configuración permanente preservando sesiones activas
-   sudo firewall-cmd --reload
+   firewall-cmd --reload
 
 .. note::
 
@@ -205,14 +205,14 @@ Siempre habilita e inicia los servicios del sistema de manera atómica con ``sys
 .. code:: bash
 
    # Habilitar el arranque en el inicio y arrancar inmediatamente el servicio
-   sudo systemctl enable --now firewalld.service
+   systemctl enable --now firewalld.service
 
 Verifica que el servicio se encuentre activo, en ejecución y supervisado correctamente por systemd:
 
 .. code:: bash
 
    # Inspeccionar el estado operativo de la unidad systemd
-   sudo systemctl status firewalld.service --no-pager
+   systemctl status firewalld.service --no-pager
 
 
 Verificación y Pruebas
@@ -221,26 +221,26 @@ Finalizada la aplicación de reglas, es indispensable verificar la coherencia de
 
 Inspección de Configuración Activa en Firewalld
 -----------------------------------------------
-Inspecciona detalladamente la configuración activa de la zona perimetral para confirmar que los servicios, puertos, enmascaramiento, reglas ricas e interfaces estén aplicados:
+Inspecciona detalladamente la configuración activa de la zona perimetral para confirmar que los servicios, puertos, enmascaramiento, reglas sustanciosas e interfaces estén aplicados:
 
 .. code:: bash
 
    # Verificar directivas activas en la zona public
-   sudo firewall-cmd --list-all --zone=public
+   firewall-cmd --list-all --zone=public
 
 Inspecciona la configuración activa de la zona interna:
 
 .. code:: bash
 
    # Verificar directivas activas en la zona internal
-   sudo firewall-cmd --list-all --zone=internal
+   firewall-cmd --list-all --zone=internal
 
 Consulta las entradas activas cargadas en el conjunto hash ``blocklist``:
 
 .. code:: bash
 
    # Consultar los prefijos CIDR cargados en el conjunto IP
-   sudo firewall-cmd --ipset=blocklist --get-entries
+   firewall-cmd --ipset=blocklist --get-entries
 
 Inspección del Backend Nftables en el Núcleo
 --------------------------------------------
@@ -249,16 +249,16 @@ Dado que firewalld opera como capa de abstracción sobre nftables, es posible ex
 .. code:: bash
 
    # Inspeccionar el conjunto completo de reglas netfilter/nftables en el núcleo
-   sudo nft list ruleset
+   nft list ruleset
 
    # Listar la tabla unificada inet administrada por firewalld
-   sudo nft list table inet firewalld
+   nft list table inet firewalld
 
    # Inspeccionar la cadena de filtrado de entrada (filter_INPUT)
-   sudo nft list chain inet firewalld filter_INPUT
+   nft list chain inet firewalld filter_INPUT
 
    # Inspeccionar la estructura del conjunto hash en el núcleo
-   sudo nft list set inet firewalld blocklist
+   nft list set inet firewalld blocklist
 
 Validación de Conectividad con Nmap y Netcat
 --------------------------------------------
@@ -298,7 +298,7 @@ Para mitigar este riesgo y recuperar el acceso, implementa las siguientes práct
    .. code:: bash
 
       # Programar una recarga de seguridad que revertirá cambios temporales en 3 minutos
-      (sleep 180 && sudo firewall-cmd --reload) &
+      (sleep 180 && firewall-cmd --reload) &
 
 #. **Recuperación fuera de línea con firewall-offline-cmd**:
    Si el acceso remoto se interrumpió y únicamente se dispone de consola de emergencia/rescate local donde el demonio no puede comunicar por D-Bus, modifica directamente la configuración en disco:
@@ -306,7 +306,7 @@ Para mitigar este riesgo y recuperar el acceso, implementa las siguientes práct
    .. code:: bash
 
       # Autorizar permanentemente el servicio SSH sin requerir el demonio activo
-      sudo firewall-offline-cmd --zone=public --add-service=ssh
+      firewall-offline-cmd --zone=public --add-service=ssh
 
 Omisión del Cortafuegos por Motores de Contenedores (Docker/Podman)
 -------------------------------------------------------------------
@@ -340,14 +340,14 @@ Antes de solicitar la recarga de reglas, valida la sintaxis y conformidad de tod
 .. code:: bash
 
    # Validar la sintaxis de todos los archivos XML de configuración
-   sudo firewall-cmd --check-config
+   firewall-cmd --check-config
 
 En caso de que el servicio falle o el comando de recarga devuelva error, consulta la bitácora del sistema:
 
 .. code:: bash
 
    # Inspeccionar los registros de error emitidos por firewalld en journald
-   sudo journalctl -u firewalld.service -e --no-pager
+   journalctl -u firewalld.service -e --no-pager
 
 Bloqueos de Políticas de SELinux (Permission Denied)
 ----------------------------------------------------
@@ -356,10 +356,10 @@ En CentOS Stream 10 y Fedora 44 con SELinux en modo Enforcing, el demonio firewa
 .. code:: bash
 
    # Inspeccionar denegaciones de SELinux recientes asociadas a firewalld
-   sudo ausearch -m avc -c firewalld -ts recent
+   ausearch -m avc -c firewalld -ts recent
 
    # Restaurar contextos predeterminados en el árbol de configuración de firewalld
-   sudo restorecon -Rv /etc/firewalld
+   restorecon -Rv /etc/firewalld
 
 
 Referencias
@@ -367,5 +367,5 @@ Referencias
 * Documentación oficial de Red Hat Enterprise Linux 10: `Configuring firewalls and packet filtering <https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/10/html/configuring_firewalls_and_packet_filtering/index>`__
 * Guía de cortafuegos de Fedora Project: `Fedora Quick Docs: Firewalld <https://docs.fedoraproject.org/en-US/quick-docs/firewalld/>`__
 * Sitio oficial y documentación de Firewalld: `Firewalld Documentation Index <https://firewalld.org/documentation/>`__
-* Sintaxis y gramática de Reglas Ricas: `Firewalld Rich Language Reference <https://firewalld.org/documentation/man-pages/firewalld.richlanguage.html>`__
+* Sintaxis y gramática de Reglas Sustanciosas: `Firewalld Rich Language Reference <https://firewalld.org/documentation/man-pages/firewalld.richlanguage.html>`__
 * Subredes y conjuntos hash en nftables: `Netfilter and Nftables Documentation <https://netfilter.org/projects/nftables/>`__

@@ -17,7 +17,7 @@ Esta guía técnica detalla la arquitectura completa de despliegue automatizado:
 Prerrequisitos
 ==============
 * Instalación base de **CentOS Stream 10** y/o **Fedora 44** para el servidor de aprovisionamiento (ver: [[Instalando CentOS Stream 10 y Fedora 44|/centos/instalacion]]).
-* Privilegios de superusuario en el sistema de gestión (acceso administrativo mediante ``sudo``).
+* Acceso como superusuario (cuenta root).
 * Políticas de SELinux en modo Enforcing activas en todos los nodos de la infraestructura.
 * Servidor HTTP (Caddy o Nginx) accesible por la red de aprovisionamiento para alojar los archivos Kickstart e imágenes de arranque.
 * Infraestructura de red local con servidor DHCP (ISC Kea o DHCPd) y servidor TFTP configurados para entregar el binario inicial de iPXE (``undionly.kpxe`` para BIOS o ``ipxe.efi``/``snponly.efi`` para UEFI).
@@ -72,9 +72,8 @@ La sección de comandos declara los parámetros globales de la instalación. A c
    # Perfil de autenticación del sistema (SSSD con creación automática de directorios personales)
    authselect select sssd with-mkhomedir --force
 
-   # Desactivar acceso directo a root y crear cuenta de administración con privilegios sudo
-   rootpw --lock
-   user --name=sysadmin --groups=wheel --iscrypted --password=$6$fK8jL2vP9qW3zR1y$mZbkFk4oBv0YV3GZ7dK2Lw1e8j0fVbNmK9P0Q7W2e1Y.8HkL0Vp9Qw3Zr1YmZbkFk4oBv0YV3GZ7dK2Lw --sshkey="ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIExampleKickstartAdminKey20260905sysadmin sysadmin@evalinux.com"
+   # Configuración de credenciales y acceso seguro para la cuenta root
+   rootpw --iscrypted $6$fK8jL2vP9qW3zR1y$mZbkFk4oBv0YV3GZ7dK2Lw1e8j0fVbNmK9P0Q7W2e1Y.8HkL0Vp9Qw3Zr1YmZbkFk4oBv0YV3GZ7dK2Lw --sshkey="ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIExampleKickstartAdminKey20260905sysadmin root@evalinux.com"
 
    # Seguridad: Cortafuegos activo con SSH permitido y SELinux en modo Enforcing
    firewall --enabled --service=ssh
@@ -120,7 +119,6 @@ La sección ``%packages`` especifica el software que formará parte de la instal
    NetworkManager
    curl
    openssh-server
-   sudo
    rsync
    tmux
    vim-enhanced
@@ -149,7 +147,7 @@ La sección ``%post`` ejecuta scripts dentro del entorno del nuevo sistema opera
 
    # 1. Configuración de endurecimiento para el servicio OpenSSH
    cat << 'EOF' > /etc/ssh/sshd_config.d/01-hardening.conf
-   PermitRootLogin no
+   PermitRootLogin prohibit-password
    PasswordAuthentication no
    KbdInteractiveAuthentication no
    X11Forwarding no
@@ -159,10 +157,9 @@ La sección ``%post`` ejecuta scripts dentro del entorno del nuevo sistema opera
    EOF
    chmod 0600 /etc/ssh/sshd_config.d/01-hardening.conf
 
-   # 2. Configuración de permisos estrictos para el usuario administrador
-   mkdir -p /home/sysadmin/.ssh
-   chmod 0700 /home/sysadmin/.ssh
-   chown -R sysadmin:sysadmin /home/sysadmin/.ssh
+   # 2. Configuración de permisos estrictos para el directorio SSH de root
+   mkdir -p /root/.ssh
+   chmod 0700 /root/.ssh
 
    # 3. Importación obligatoria de llaves GPG de repositorios oficiales
    rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY*

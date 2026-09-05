@@ -17,7 +17,7 @@ En **CentOS Stream 10** y **Fedora 44**, el despliegue de esta pila se implement
 Prerrequisitos
 ==============
 * Instalación base de **CentOS Stream 10** y/o **Fedora 44** (ver: [[Instalando CentOS Stream 10 y Fedora 44|/centos/instalacion]]).
-* Privilegios de superusuario mediante ``sudo``.
+* Acceso como superusuario (cuenta root).
 * SELinux activo y operando en modo ``Enforcing``.
 * Acceso a repositorios oficiales y repositorio EPEL 10 (en CentOS Stream 10).
 * Herramientas básicas de línea de comandos (``curl``, ``tar``, ``jq``).

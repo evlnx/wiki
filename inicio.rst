@@ -15,7 +15,7 @@ Guías Prácticas (HowTos)
 ========================
 
 * [[Políticas y Modo Enforcing de SELinux|howto/selinux]]
-* [[Cortafuegos Perimetral e Interno con Firewalld (Zonas, Reglas Ricas e IPSets)|howto/firewalld]]
+* [[Cortafuegos Perimetral e Interno con Firewalld (Zonas, Reglas Sustanciosas e IPSets)|howto/firewalld]]
 * [[Servidor PostgreSQL con Replicación en Caliente y Respaldo Físico|howto/postgresql]]
 * [[Redes Seguras y VPN Mesh con WireGuard y NetworkManager|howto/wireguard]]
 * [[Autoridad Certificadora Interna (PKI): Emisión y Automatización TLS|howto/pki-ca]]

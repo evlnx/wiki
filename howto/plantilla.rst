@@ -15,7 +15,7 @@ Mencionar si implementa especificaciones estándar (OCI, POSIX, IETF) o particul
 Prerrequisitos
 ==============
 * Instalación base de **CentOS Stream 10** y/o **Fedora 44** (ver: [[Instalando CentOS Stream 10 y Fedora 44|/centos/instalacion]]).
-* Privilegios de superusuario (acceso mediante ``sudo``).
+* Acceso como superusuario (cuenta root).
 * Políticas de SELinux en modo Enforcing activas.
 * Acceso a repositorios oficiales y, de ser necesario, EPEL (``epel-release``).
 

@@ -22,7 +22,7 @@ A diferencia del demonio monolítico clásico, Kea implementa una arquitectura d
 Prerrequisitos
 ==============
 * Instalación base de **CentOS Stream 10** y/o **Fedora 44** (ver: [[Instalando CentOS Stream 10 y Fedora 44|/centos/instalacion]]).
-* Privilegios de superusuario administrativos (acceso mediante ``sudo`` o cuenta ``root``).
+* Acceso como superusuario (cuenta root).
 * Políticas de control de acceso mandatorio **SELinux** en modo ``Enforcing`` activas.
 * Al menos dos interfaces de red físicas o virtuales conectadas al servidor:
    * Interfaz de enlace ascendente (WAN/Internet) para gestión y salida general.
@@ -37,7 +37,7 @@ En CentOS Stream 10 y Fedora 44, el software de Kea y sus utilitarios de control
 .. code-block:: bash
 
    # Instalar el servidor Kea DHCPv4/DHCPv6 y el agente de control REST
-   sudo dnf -y install kea kea-ctrl-agent
+   dnf -y install kea kea-ctrl-agent
 
 Los paquetes proporcionan los siguientes componentes principales en el árbol del sistema de archivos (FHS):
 
@@ -177,8 +177,8 @@ Para inicializar las tablas requeridas por Kea en PostgreSQL o MySQL, se utiliza
 .. code-block:: bash
 
    # Inicializar esquema relacional en PostgreSQL
-   sudo -u postgres createuser -P keauser
-   sudo -u postgres createdb -O keauser keadb
+   su - postgres -c "createuser -P keauser"
+   su - postgres -c "createdb -O keauser keadb"
    kea-admin db-init pgsql -u keauser -p ClaveSeguraPostgreSQL -n keadb -h 127.0.0.1
 
 Configuración del Agente de Control REST (/etc/kea/kea-ctrl-agent.conf)
@@ -218,10 +218,10 @@ Antes de intentar iniciar el servicio en producción, valida que la sintaxis JSO
 .. code-block:: bash
 
    # Validar configuración de DHCPv4
-   sudo kea-dhcp4 -t /etc/kea/kea-dhcp4.conf
+   kea-dhcp4 -t /etc/kea/kea-dhcp4.conf
 
    # Validar configuración del Agente de Control
-   sudo kea-ctrl-agent -t /etc/kea/kea-ctrl-agent.conf
+   kea-ctrl-agent -t /etc/kea/kea-ctrl-agent.conf
 
 Si la salida devuelve un estado exitoso (código de salida 0) y mensajes informativos sin advertencias de error, los archivos están listos para entrar en operación.
 
@@ -232,7 +232,7 @@ En systemd, habilita e inicia de forma atómica tanto el motor DHCPv4 como el ag
 .. code-block:: bash
 
    # Habilitar e iniciar inmediatamente ambos demonios
-   sudo systemctl enable --now kea-dhcp4.service kea-ctrl-agent.service
+   systemctl enable --now kea-dhcp4.service kea-ctrl-agent.service
 
 Configuración de Cortafuegos y Red
 ----------------------------------
@@ -241,13 +241,13 @@ El protocolo DHCPv4 opera sobre UDP utilizando el puerto 67 en el servidor y el 
 .. code-block:: bash
 
    # Habilitar el servicio dhcp en firewalld de manera permanente
-   sudo firewall-cmd --permanent --add-service=dhcp
+   firewall-cmd --permanent --add-service=dhcp
 
    # Aplicar los cambios inmediatamente en el cortafuegos
-   sudo firewall-cmd --reload
+   firewall-cmd --reload
 
    # Verificar que el servicio esté activo en la zona de red
-   sudo firewall-cmd --list-services
+   firewall-cmd --list-services
 
 
 Verificación y Pruebas
@@ -260,7 +260,7 @@ Para confirmar que el servidor Kea está respondiendo correctamente a las solici
 
    .. code-block:: bash
 
-      sudo systemctl status kea-dhcp4.service kea-ctrl-agent.service
+      systemctl status kea-dhcp4.service kea-ctrl-agent.service
 
 2. **Monitoreo de bitácoras en tiempo real**:
 
@@ -268,7 +268,7 @@ Para confirmar que el servidor Kea está respondiendo correctamente a las solici
 
    .. code-block:: bash
 
-      sudo journalctl -u kea-dhcp4.service -e --no-pager
+      journalctl -u kea-dhcp4.service -e --no-pager
 
 3. **Inspección de arrendamientos en archivo CSV**:
 
@@ -276,7 +276,7 @@ Para confirmar que el servidor Kea está respondiendo correctamente a las solici
 
    .. code-block:: bash
 
-      sudo cat /var/lib/kea/kea-leases4.csv
+      cat /var/lib/kea/kea-leases4.csv
 
    El encabezado del archivo muestra los campos estructurados:
 
@@ -291,7 +291,7 @@ Para confirmar que el servidor Kea está respondiendo correctamente a las solici
    .. code-block:: bash
 
       # Solicitar arrendamiento con dhclient mostrando información detallada
-      sudo dhclient -v -d eth0
+      dhclient -v -d eth0
 
    Alternativamente, puedes verificar la capacidad de respuesta del servidor DHCP sin modificar la configuración de red del equipo utilizando la utilidad ``dhcping``:
 
@@ -347,8 +347,8 @@ Para solucionarlo de forma permanente en CentOS Stream 10 y Fedora 44, asigna la
 .. code-block:: bash
 
    # Asignar IP estática y activar la conexión en la interfaz LAN
-   sudo nmcli connection add type ethernet con-name eth1 ifname eth1 ipv4.method manual ipv4.addresses 192.168.10.1/24 ipv6.method disabled
-   sudo nmcli connection up eth1
+   nmcli connection add type ethernet con-name eth1 ifname eth1 ipv4.method manual ipv4.addresses 192.168.10.1/24 ipv6.method disabled
+   nmcli connection up eth1
 
 Conflicto de puertos UDP 67 con servicios heredados (dhcpd o dnsmasq)
 ---------------------------------------------------------------------
@@ -358,13 +358,13 @@ Si en el servidor aún se encuentra instalado o ejecutándose el demonio clásic
 
   .. code-block:: bash
 
-     sudo ss -tulpn | grep ':67 '
+     ss -tulpn | grep ':67 '
 
 * **Deshabilitar y detener el servicio conflictivo**:
 
   .. code-block:: bash
 
-     sudo systemctl disable --now dhcpd.service dnsmasq.service
+     systemctl disable --now dhcpd.service dnsmasq.service
 
 Bloqueos por SELinux en rutas o bases de datos no estándar
 ----------------------------------------------------------
@@ -375,11 +375,11 @@ Si configuras una ruta no estándar para el archivo de arrendamientos o almacena
 .. code-block:: bash
 
    # Inspeccionar posibles denegaciones en auditoría
-   sudo ausearch -m avc -ts recent
+   ausearch -m avc -ts recent
 
    # Registrar y restaurar el contexto de tipo kea_var_lib_t en la ruta personalizada
-   sudo semanage fcontext -a -t kea_var_lib_t "/srv/kea(/.*)?"
-   sudo restorecon -Rv /srv/kea
+   semanage fcontext -a -t kea_var_lib_t "/srv/kea(/.*)?"
+   restorecon -Rv /srv/kea
 
 
 Referencias

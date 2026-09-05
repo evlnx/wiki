@@ -17,13 +17,13 @@ El modo **Enforcing** opera bajo el principio fundamental de **denegación por d
 * **Aislamiento de procesos y contenedores**: Proporciona contención multinivel mediante Multi-Category Security (MCS) y dominios especializados.
 * **Integridad del sistema y trazabilidad forense**: Cada intento no autorizado genera registros de auditoría no repudiables (eventos AVC).
 
-En **CentOS Stream 10** y **Fedora 44**, SELinux incorpora la versión moderna del espacio de usuario (SELinux userspace 3.8 a 3.11). Se ha eliminado la capacidad de deshabilitar SELinux en caliente en tiempo de ejecución (la llamada ``security_disable(3)`` está obsoleta y deshabilitada en núcleos modernos); cualquier desactivación total requiere parámetros de arranque del kernel (``selinux=0``). Asimismo, la gestión de políticas se apoya de forma nativa en el lenguaje intermedio CIL (*Common Intermediate Language*), acelerando la compilación y validación atómica del almacén de políticas.
+In **CentOS Stream 10** y **Fedora 44**, SELinux incorpora la versión moderna del espacio de usuario (SELinux userspace 3.8 a 3.11). Se ha eliminado la capacidad de deshabilitar SELinux en caliente en tiempo de ejecución (la llamada ``security_disable(3)`` está obsoleta y deshabilitada en núcleos modernos); cualquier desactivación total requiere parámetros de arranque del kernel (``selinux=0``). Asimismo, la gestión de políticas se apoya de forma nativa en el lenguaje intermedio CIL (*Common Intermediate Language*), acelerando la compilación y validación atómica del almacén de políticas.
 
 
 Prerrequisitos
 ==============
 * Instalación base de **CentOS Stream 10** y/o **Fedora 44** (ver: [[Instalando CentOS Stream 10 y Fedora 44|/centos/instalacion]]).
-* Privilegios de superusuario en el sistema (acceso administrativo mediante ``sudo``).
+* Acceso como superusuario (cuenta ``root``).
 * Políticas base de SELinux instaladas y activas (paquete ``selinux-policy-targeted``).
 * Conectividad a los repositorios oficiales de la distribución para la instalación de herramientas de auditoría y desarrollo.
 
@@ -35,7 +35,7 @@ Para auditar eventos de denegación, administrar contextos persistentes, inspecc
 .. code:: bash
 
    # Actualizar metadatos e instalar herramientas de administración y compilación
-   sudo dnf -y install \
+   dnf -y install \
       policycoreutils \
       policycoreutils-python-utils \
       setroubleshoot-server \
@@ -58,27 +58,13 @@ Configuración
 
 Verificación del Modo Operativo
 -------------------------------
-SELinux dispone de tres modos operativos:
-
-* **Enforcing**: Modo predeterminado de producción. Las políticas de seguridad se aplican estrictamente; las operaciones no autorizadas se bloquean y se registran en la bitácora de auditoría.
-* **Permissive**: Las políticas no bloquean las operaciones denegadas, pero cada infracción se registra como una advertencia AVC en la bitácora. Es idóneo para depuración y calibración sin degradar la disponibilidad del servicio.
-* **Disabled**: La infraestructura de SELinux y los hooks LSM no cargan política alguna.
-
-Para verificar el modo de operación activo en tiempo de ejecución:
+Antes de aplicar directivas, consulte el estado del subsistema en el equipo ejecutando ``sestatus``:
 
 .. code:: bash
 
-   # Consultar el estado operativo inmediato
-   getenforce
-
-Para obtener un desglose completo de la configuración actual, versión de política y montajes:
-
-.. code:: bash
-
-   # Inspección detallada del estado de SELinux
    sestatus
 
-El resultado refleja el modo actual, el modo configurado en disco y el perfil cargado:
+Salida esperada en un sistema correctamente inicializado:
 
 .. code:: text
 
@@ -98,10 +84,10 @@ Si necesita alternar temporalmente al modo permisivo para pruebas de diagnóstic
 .. code:: bash
 
    # Cambiar temporalmente a modo permisivo
-   sudo setenforce 0
+   setenforce 0
 
    # Restaurar de inmediato el modo Enforcing
-   sudo setenforce 1
+   setenforce 1
 
 Para asegurar que el sistema siempre inicie en modo Enforcing de forma persistente, verifique el archivo ``/etc/selinux/config``:
 
@@ -144,27 +130,27 @@ Para consultar denegaciones recientes con ``ausearch``:
 .. code:: bash
 
    # Buscar denegaciones de los últimos 10 minutos
-   sudo ausearch -m avc -ts recent
+   ausearch -m avc -ts recent
 
    # Consultar denegaciones del día de hoy traduciendo UIDs a nombres legibles (-i)
-   sudo ausearch -m avc,user_avc,selinux_err -ts today -i
+   ausearch -m avc,user_avc,selinux_err -ts today -i
 
    # Filtrar denegaciones asociadas a un proceso específico
-   sudo ausearch -m avc -c httpd -ts today
+   ausearch -m avc -c httpd -ts today
 
 Para interpretar automáticamente la causa raíz de una denegación y conocer si puede resolverse mediante etiquetas o un booleano preexistente, canalice la salida a ``audit2why``:
 
 .. code:: bash
 
    # Analizar causas raíz de denegaciones recientes
-   sudo ausearch -m avc -ts recent | audit2why
+   ausearch -m avc -ts recent | audit2why
 
 Para obtener un informe forense integral generado por el motor de reglas de ``setroubleshoot``:
 
 .. code:: bash
 
    # Generar reporte analítico de toda la bitácora de auditoría
-   sudo sealert -a /var/log/audit/audit.log
+   sealert -a /var/log/audit/audit.log
 
 
 Gestión de Contextos de Archivos Persistentes
@@ -188,29 +174,29 @@ Por ejemplo, para alojar un sitio web o aplicación en la ruta no estándar ``/s
 .. code:: bash
 
    # 1. Crear el árbol de directorios
-   sudo mkdir -p /srv/www/custom/uploads
+   mkdir -p /srv/www/custom/uploads
 
    # 2. Registrar regla persistente de solo lectura para el contenido web general
-   sudo semanage fcontext -a -t httpd_sys_content_t "/srv/www/custom(/.*)?"
+   semanage fcontext -a -t httpd_sys_content_t "/srv/www/custom(/.*)?"
 
    # 3. Registrar regla persistente de lectura/escritura para el directorio de subidas
-   sudo semanage fcontext -a -t httpd_sys_rw_content_t "/srv/www/custom/uploads(/.*)?"
+   semanage fcontext -a -t httpd_sys_rw_content_t "/srv/www/custom/uploads(/.*)?"
 
    # 4. Simular la aplicación de etiquetas en modo de prueba (dry-run)
    restorecon -v -n -R /srv/www/custom
 
    # 5. Aplicar recursivamente los nuevos contextos a disco
-   sudo restorecon -Rv /srv/www/custom
+   restorecon -Rv /srv/www/custom
 
    # 6. Listar las reglas de contexto personalizadas registradas localmente
-   sudo semanage fcontext -l -C
+   semanage fcontext -l -C
 
 Para eliminar una regla personalizada registrada previamente:
 
 .. code:: bash
 
    # Eliminar la definición persistente
-   sudo semanage fcontext -d "/srv/www/custom(/.*)?"
+   semanage fcontext -d "/srv/www/custom(/.*)?"
 
 
 Control Persistente de Boleanos
@@ -235,24 +221,24 @@ Para activar un booleano de forma persistente a través de reinicios del sistema
 .. code:: bash
 
    # Permitir que el servidor web establezca conexiones salientes por red (ej. proxy inverso)
-   sudo setsebool -P httpd_can_network_connect on
+   setsebool -P httpd_can_network_connect on
 
    # Permitir que el servidor web se conecte a servidores de bases de datos por red
-   sudo setsebool -P httpd_can_network_connect_db on
+   setsebool -P httpd_can_network_connect_db on
 
 Para auditar qué booleanos han sido modificados localmente respecto a los valores predeterminados de la distribución:
 
 .. code:: bash
 
    # Listar modificaciones locales de booleanos
-   sudo semanage boolean -l -C
+   semanage boolean -l -C
 
 Para restablecer un booleano a su valor predeterminado original:
 
 .. code:: bash
 
    # Restaurar valor predeterminado del sistema
-   sudo semanage boolean -d httpd_can_network_connect
+   semanage boolean -d httpd_can_network_connect
 
 
 Creación y Compilación de Módulos de Políticas Personalizadas
@@ -299,7 +285,7 @@ Este método garantiza un control granular y auditabilidad del código de la pol
 
    .. code:: bash
 
-      sudo semodule -i /root/customapp.pp
+      semodule -i /root/customapp.pp
 
 Flujo 2: Generación asistida mediante audit2allow
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -308,10 +294,10 @@ Cuando se han capturado eventos de denegación legítimos en la bitácora de aud
 .. code:: bash
 
    # Filtrar los bloqueos recientes del proceso y compilar un paquete de politica
-   sudo ausearch -m avc -c customapp -ts recent | audit2allow -M customapp_fix
+   ausearch -m avc -c customapp -ts recent | audit2allow -M customapp_fix
 
    # Instalar el paquete generado
-   sudo semodule -i customapp_fix.pp
+   semodule -i customapp_fix.pp
 
 .. caution::
 
@@ -324,7 +310,7 @@ SELinux userspace compila internamente todas las políticas a CIL (*Common Inter
 .. code:: bash
 
    # 1. Generar módulo CIL directamente desde los bloqueos del proceso
-   sudo ausearch -m avc -c customapp -ts recent | audit2allow -C > /root/customapp.cil
+   ausearch -m avc -c customapp -ts recent | audit2allow -C > /root/customapp.cil
 
    # 2. Inspeccionar el contenido en sintaxis de S-expressions
    cat /root/customapp.cil
@@ -333,7 +319,7 @@ SELinux userspace compila internamente todas las políticas a CIL (*Common Inter
    secilcheck /sys/fs/selinux/policy /root/customapp.cil
 
    # 4. Instalar el modulo CIL con prioridad 400 en el almacen de politicas
-   sudo semodule -X 400 -i /root/customapp.cil
+   semodule -X 400 -i /root/customapp.cil
 
 
 Habilitación e Inicio de Servicios
@@ -343,21 +329,21 @@ Para garantizar la recolección continua de eventos de seguridad y el diagnósti
 .. code:: bash
 
    # Habilitar e iniciar inmediatamente el demonio de auditoria del kernel
-   sudo systemctl enable --now auditd.service
+   systemctl enable --now auditd.service
 
    # Habilitar e iniciar el servicio de diagnostico automatizado setroubleshoot
-   sudo systemctl enable --now setroubleshootd.service
+   systemctl enable --now setroubleshootd.service
 
 .. note::
 
-   ``auditd.service`` es un servicio de infraestructura crítica del kernel gestionado de forma especializada por ``systemd``. Si realiza cambios en las reglas de auditoría en ``/etc/audit/rules.d/``, nunca ejecute ``systemctl restart auditd``; utilice en su lugar ``sudo augenrules --load`` o ``sudo service auditd restart``.
+   ``auditd.service`` es un servicio de infraestructura crítica del kernel gestionado de forma especializada por ``systemd``. Si realiza cambios en las reglas de auditoría en ``/etc/audit/rules.d/``, nunca ejecute ``systemctl restart auditd``; utilice en su lugar ``augenrules --load`` o ``service auditd restart``.
 
 Si el entorno requiere monitoreo y restauración dinámica de contextos de archivos ante modificaciones en rutas críticas del sistema (como ``/etc/resolv.conf`` o claves de usuario), habilite opcionalmente el demonio ``restorecond``:
 
 .. code:: bash
 
    # Habilitar e iniciar el demonio de monitoreo continuo de etiquetas
-   sudo systemctl enable --now restorecond.service
+   systemctl enable --now restorecond.service
 
 
 Verificación y Pruebas
@@ -370,10 +356,10 @@ Para verificar qué módulos de políticas están cargados en el almacén del ke
 .. code:: bash
 
    # Listar modulos instalados localmente con prioridad y estado
-   sudo semodule -lfull | grep 400
+   semodule -lfull | grep 400
 
    # Verificar un modulo especifico incluyendo su suma de verificacion SHA256
-   sudo semodule -lfull -m | grep customapp
+   semodule -lfull -m | grep customapp
 
 Para extraer la representación CIL de un módulo previamente instalado en el sistema:
 
@@ -391,31 +377,31 @@ Una de las mejores prácticas para depurar aplicaciones sin comprometer la segur
 
    .. code:: bash
 
-      sudo semanage permissive -a httpd_t
+      semanage permissive -a httpd_t
 
 #. Verificar que el dominio figure en la lista de dominios permisivos:
 
    .. code:: bash
 
-      sudo semanage permissive -l
+      semanage permissive -l
 
 #. Ejecutar las operaciones de la aplicación o pruebas de estrés. En este estado, el kernel permitirá el acceso y registrará cada violación en la bitácora de auditoría con la bandera ``permissive=1``:
 
    .. code:: bash
 
-      sudo ausearch -m avc -c httpd -ts recent
+      ausearch -m avc -c httpd -ts recent
 
 #. Una vez analizadas las denegaciones y aplicadas las soluciones correspondientes (etiquetas, booleanos o módulos CIL), retire el dominio del modo permisivo para retornar a la confinación estricta:
 
    .. code:: bash
 
-      sudo semanage permissive -d httpd_t
+      semanage permissive -d httpd_t
 
 #. Realizar la prueba funcional final con el dominio en modo Enforcing y verificar que la operación se complete satisfactoriamente sin generar nuevos registros AVC:
 
    .. code:: bash
 
-      sudo ausearch -m avc -c httpd -ts recent
+      ausearch -m avc -c httpd -ts recent
 
 
 Validación del Reetiquetado de Archivos
@@ -445,10 +431,10 @@ Para solucionar esta condición, se debe programar un reetiquetado completo del 
 .. code:: bash
 
    # Metodo estandar: Crear el archivo testigo autorelabel en la raiz del sistema
-   sudo touch /.autorelabel
+   touch /.autorelabel
 
    # Reiniciar el sistema para ejecutar el proceso en el arranque temprano
-   sudo reboot
+   reboot
 
 Durante el proceso de arranque, la unidad ``selinux-autorelabel.service`` de ``systemd`` intercepta la inicialización, monta los sistemas de archivos, ejecuta ``setfiles`` recorriendo recursivamente todo el almacenamiento para restaurar las etiquetas correctas de acuerdo con la política targeted, elimina el archivo ``/.autorelabel`` y reinicia automáticamente la máquina.
 
@@ -457,8 +443,8 @@ Alternativamente, en CentOS Stream 10 y Fedora 44 puede utilizar la herramienta 
 .. code:: bash
 
    # Programar el reetiquetado forzado para el siguiente reinicio
-   sudo fixfiles -F onboot
-   sudo reboot
+   fixfiles -F onboot
+   reboot
 
 
 Problemas de Enlace de Puertos de Red
@@ -476,7 +462,7 @@ Al consultar la auditoría, encontrará una denegación AVC indicando el vector 
 .. code:: bash
 
    # Inspeccionar la denegacion de puerto
-   sudo ausearch -m avc -ts recent | grep name_bind
+   ausearch -m avc -ts recent | grep name_bind
 
 El registro mostrará que ``httpd_t`` intentó enlazar a un puerto no autorizado para su clase:
 
@@ -492,16 +478,16 @@ Para resolver esta incidencia sin relajar la seguridad global:
    semanage port -l | grep http_port_t
 
    # 2. Asignar el puerto TCP 8085 al tipo http_port_t de forma persistente
-   sudo semanage port -a -t http_port_t -p tcp 8085
+   semanage port -a -t http_port_t -p tcp 8085
 
    # 3. Si el puerto ya existia bajo otro tipo, modificar la asignacion con la bandera -m
-   # sudo semanage port -m -t http_port_t -p tcp 8085
+   # semanage port -m -t http_port_t -p tcp 8085
 
    # 4. Listar las modificaciones locales de puertos
-   sudo semanage port -l -C
+   semanage port -l -C
 
    # 5. Iniciar el servicio web
-   sudo systemctl restart nginx.service
+   systemctl restart nginx.service
 
 
 Trampas Comunes de Denegaciones AVC
@@ -520,7 +506,7 @@ Para corregir los archivos trasladados con ``mv``:
 .. code:: bash
 
    # Restaurar el contexto correcto segun la politica activa
-   sudo restorecon -Rv /var/www/html
+   restorecon -Rv /var/www/html
 
 Reglas dontaudit que silencian bloqueos
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -531,14 +517,14 @@ Si un servicio falla y sospecha de SELinux pero ``ausearch -m avc -ts recent`` n
 .. code:: bash
 
    # 1. Desactivar las reglas dontaudit para exponer todos los bloqueos
-   sudo semanage dontaudit off
+   semanage dontaudit off
 
    # 2. Reproducir la accion fallida en el servicio
    # 3. Buscar los bloqueos que anteriormente estaban ocultos
-   sudo ausearch -m avc -ts recent
+   ausearch -m avc -ts recent
 
    # 4. Reactivar inmediatamente las reglas dontaudit
-   sudo semanage dontaudit on
+   semanage dontaudit on
 
 Interacción de permisos DAC y MAC
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

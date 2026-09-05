@@ -24,7 +24,7 @@ En **CentOS Stream 10** y **Fedora 44**, el soporte de WireGuard está incorpora
 Prerrequisitos
 ==============
 * Instalación base de **CentOS Stream 10** y/o **Fedora 44** (ver: [[Instalando CentOS Stream 10 y Fedora 44|/centos/instalacion]]).
-* Privilegios de superusuario administrativo (acceso mediante ``sudo``).
+* Acceso como superusuario (cuenta root).
 * SELinux activo en modo estricto (``Enforcing``).
 * Kernel Linux con soporte nativo de WireGuard (módulo ``wireguard`` incorporado por defecto en la distribución).
 * Servicio NetworkManager activo y gestionando la conectividad del sistema.

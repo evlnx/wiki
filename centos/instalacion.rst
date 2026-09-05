@@ -54,10 +54,8 @@ En el apartado **Host Name** colocar el FQDN asignado para el nodo (ej. ``srv01.
 
 Root Password & User Creation
 -----------------------------
-* **Root Password**: Asignar una contraseña robusta (o deshabilitar acceso por contraseña y usar exclusivamente llaves SSH).
-* **User Creation**:
-  #. Crear el usuario principal y marcar **Make this user administrator** (acceso sudo).
-  #. En **Advanced**, agregar los grupos de sistema correspondientes (ej. ``wheel``, ``webdev``, ``deployer``).
+* **Root Password**: Habilitar la cuenta ``root`` y asignar una contraseña robusta (o configurar autenticación exclusiva mediante llaves SSH autorizadas).
+* **User Creation**: Crear un usuario estándar si se requiere para tareas operativas sin privilegios de administración. En **Advanced**, agregar los grupos de sistema correspondientes si aplica.
 
 
 Finalizar
