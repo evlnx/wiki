@@ -620,7 +620,7 @@ a.btn.btn-outline.text-mono:hover,
     fill: currentColor !important;
 }
 
-/* Compare / Diff View */
+/* Compare/Diff View */
 .Box.data.highlight {
     background-color: var(--eval-code-block-bg) !important;
     border: 1px solid var(--eval-border) !important;
