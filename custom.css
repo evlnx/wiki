@@ -1,70 +1,312 @@
-/* Admonitions */
+/* EVALinux Brand Theme for Gollum Wiki
+ * Visual identity aligned with https://evalinux.com
+ * Typography: Inter (body) & Outfit (headings)
+ * Theme: Auto-detecting Light and Dark palettes
+ */
 
-/* attention */
-div.attention {
-    background: rgba(255, 0, 0, 0.5);
-    box-shadow: 0 6px 8px #ccc;
-    margin-top: 1ex;
-    padding:    0.1ex 2ex;
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Outfit:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+:root {
+    --eval-font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    --eval-font-heading: 'Outfit', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    --eval-font-mono: 'JetBrains Mono', 'Fira Code', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+
+    /* Light Theme (aligned with evalinux.com) */
+    --eval-bg: #ffffff;
+    --eval-surface: #f9fafb;
+    --eval-surface-hover: #f3f4f6;
+    --eval-border: #e5e7eb;
+    --eval-border-focus: #0284c7;
+    --eval-text-primary: #111827;
+    --eval-text-body: #1f2937;
+    --eval-text-muted: #6b7280;
+    --eval-link: #0284c7;
+    --eval-link-hover: #0369a1;
+    --eval-code-bg: #f3f4f6;
+    --eval-code-block-bg: #1e1e24;
+    --eval-code-text: #111827;
+    --eval-code-block-text: #f3f4f6;
+    --eval-radius: 6px;
+    --eval-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 1px 2px 0 rgba(0, 0, 0, 0.03);
 }
 
-div.attention p.admonition-title {
-    font-weight: bold;
-    color: rgba(0, 0, 0 , 1);
-    font-size: 120%;
+@media (prefers-color-scheme: dark) {
+    :root {
+        /* Dark Theme (aligned with evalinux.com dark mode) */
+        --eval-bg: rgb(29, 30, 32);
+        --eval-surface: rgb(46, 46, 51);
+        --eval-surface-hover: rgb(55, 56, 62);
+        --eval-border: rgb(51, 51, 51);
+        --eval-border-focus: #38bdf8;
+        --eval-text-primary: rgb(243, 244, 246);
+        --eval-text-body: rgb(209, 213, 219);
+        --eval-text-muted: rgb(155, 156, 157);
+        --eval-link: #38bdf8;
+        --eval-link-hover: #7dd3fc;
+        --eval-code-bg: rgb(46, 46, 51);
+        --eval-code-block-bg: rgb(20, 21, 23);
+        --eval-code-text: rgb(243, 244, 246);
+        --eval-code-block-text: rgb(243, 244, 246);
+        --eval-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.3);
+    }
 }
 
-
-/* note */
-div.note {
-    background: rgba(255, 223, 0, 0.6);
-    box-shadow: 0 6px 8px #ccc;
-    margin-top: 1ex;
-    padding:    0.1ex 2ex;
+/* Global Reset & Base Typography */
+body {
+    background-color: var(--eval-bg) !important;
+    color: var(--eval-text-body) !important;
+    font-family: var(--eval-font-sans) !important;
+    font-size: 15px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
 }
 
-div.note p.admonition-title {
-    font-weight: bold;
-    color: rgba(0, 0, 0 , 1);
-    font-size: 120%;
+#wiki-wrapper {
+    background-color: var(--eval-bg) !important;
+    color: var(--eval-text-body) !important;
+    max-width: 1080px;
+    margin: 0 auto;
 }
 
-
-/* warning */
-div.warning {
-    background: rgba(0, 0, 0, 1);
-    box-shadow: 0 6px 8px #312;
-    margin-top: 1ex;
-    padding:    0.1ex 2ex;
+/* Headings */
+h1, h2, h3, h4, h5, h6,
+.header-title,
+.markdown-body h1,
+.markdown-body h2,
+.markdown-body h3,
+.markdown-body h4 {
+    font-family: var(--eval-font-heading) !important;
+    color: var(--eval-text-primary) !important;
+    font-weight: 700;
+    letter-spacing: -0.02em;
 }
 
-div.warning p {
-    color: rgba(255, 255, 255, 1);
+.header-title {
+    font-size: 2rem !important;
+    border-bottom: 2px solid var(--eval-border) !important;
+    padding-bottom: 0.5rem !important;
+    margin-bottom: 1.5rem !important;
 }
 
-div.warning p code {
-    color: rgba(255, 0, 0, 1);
+.markdown-body h2 {
+    border-bottom: 1px solid var(--eval-border) !important;
+    padding-bottom: 0.35rem !important;
+    margin-top: 2rem !important;
 }
 
-
-div.warning p.admonition-title {
-    font-weight: bold;
-    color: rgba(255, 0, 0 , 1);
-    font-size: 120%;
+/* Links */
+a {
+    color: var(--eval-link) !important;
+    text-decoration: none;
+    transition: color 0.15s ease-in-out;
 }
 
+a:hover, a:focus {
+    color: var(--eval-link-hover) !important;
+    text-decoration: underline;
+}
 
-/* important */
+/* Header & Navigation Bar */
+#head nav {
+    border-bottom: 1px solid var(--eval-border) !important;
+    padding: 1rem 0 !important;
+    background-color: var(--eval-bg) !important;
+}
+
+/* Buttons */
+.btn,
+.btn-sm,
+.BtnGroup-item {
+    background-color: var(--eval-surface) !important;
+    color: var(--eval-text-primary) !important;
+    border: 1px solid var(--eval-border) !important;
+    border-radius: var(--eval-radius) !important;
+    font-family: var(--eval-font-sans) !important;
+    font-weight: 500;
+    transition: all 0.15s ease-in-out;
+}
+
+.btn:hover,
+.btn-sm:hover,
+.BtnGroup-item:hover {
+    background-color: var(--eval-surface-hover) !important;
+    border-color: var(--eval-border-focus) !important;
+    color: var(--eval-link) !important;
+}
+
+/* Search Box */
+#search-query {
+    background-color: var(--eval-surface) !important;
+    color: var(--eval-text-primary) !important;
+    border: 1px solid var(--eval-border) !important;
+    border-radius: var(--eval-radius) !important;
+    font-family: var(--eval-font-sans) !important;
+    padding: 0.4rem 0.8rem;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+#search-query:focus {
+    border-color: var(--eval-border-focus) !important;
+    outline: none !important;
+    box-shadow: 0 0 0 2px rgba(2, 132, 199, 0.2) !important;
+}
+
+/* Table of Contents (TOC) */
+#wiki-toc-main .toc {
+    background-color: var(--eval-surface) !important;
+    border: 1px solid var(--eval-border) !important;
+    border-radius: var(--eval-radius) !important;
+    padding: 1rem 1.25rem !important;
+    margin-bottom: 2rem !important;
+}
+
+.toc-title {
+    font-family: var(--eval-font-heading) !important;
+    color: var(--eval-text-primary) !important;
+    font-weight: 700;
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+    border-bottom: 1px solid var(--eval-border);
+    padding-bottom: 0.35rem;
+}
+
+#wiki-toc-main .toc ul {
+    list-style-type: none;
+    padding-left: 0.5rem;
+}
+
+#wiki-toc-main .toc li {
+    margin: 0.35rem 0;
+}
+
+/* Code & Preformatted Blocks */
+code {
+    background-color: var(--eval-code-bg) !important;
+    color: var(--eval-code-text) !important;
+    font-family: var(--eval-font-mono) !important;
+    padding: 0.2em 0.4em !important;
+    border-radius: 4px !important;
+    font-size: 88%;
+}
+
+pre,
+.highlight,
+div.highlight {
+    background-color: var(--eval-code-block-bg) !important;
+    border: 1px solid var(--eval-border) !important;
+    border-radius: var(--eval-radius) !important;
+    padding: 1rem 1.25rem !important;
+    overflow-x: auto;
+}
+
+pre code {
+    background-color: transparent !important;
+    color: var(--eval-code-block-text) !important;
+    padding: 0 !important;
+    font-size: 90%;
+    line-height: 1.5;
+}
+
+/* Tables */
+.markdown-body table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 1.5rem 0;
+    background-color: var(--eval-surface) !important;
+    border: 1px solid var(--eval-border) !important;
+    border-radius: var(--eval-radius);
+    overflow: hidden;
+}
+
+.markdown-body table th {
+    background-color: var(--eval-surface-hover) !important;
+    color: var(--eval-text-primary) !important;
+    font-family: var(--eval-font-heading) !important;
+    font-weight: 600;
+    border: 1px solid var(--eval-border) !important;
+    padding: 0.75rem 1rem;
+}
+
+.markdown-body table td {
+    border: 1px solid var(--eval-border) !important;
+    padding: 0.65rem 1rem;
+    color: var(--eval-text-body) !important;
+}
+
+/* Admonitions (Callouts) */
+div.admonition,
+div.note,
+div.warning,
+div.attention,
 div.important {
-    background: rgba(245,245, 245, 1);
-    box-shadow: 0 6px 8px #ccc;
-    margin-top: 1ex;
-    padding:    0.1ex 2ex;
+    border-radius: var(--eval-radius);
+    margin: 1.25rem 0;
+    padding: 1rem 1.25rem;
+    border-left: 4px solid;
+    box-shadow: var(--eval-shadow);
 }
 
-div.important p.admonition-title {
-    font-weight: bold;
-    color: rgba(255, 0, 0 , 1);
-    font-size: 120%;
+div.admonition p,
+div.note p,
+div.warning p,
+div.attention p,
+div.important p {
+    margin: 0.35rem 0;
+    color: var(--eval-text-body) !important;
 }
+
+p.admonition-title {
+    font-family: var(--eval-font-heading) !important;
+    font-weight: 700;
+    font-size: 1.05rem;
+    margin-top: 0 !important;
+    margin-bottom: 0.5rem !important;
+}
+
+/* Note */
+div.note {
+    background-color: rgba(2, 132, 199, 0.08) !important;
+    border-left-color: #0284c7 !important;
+}
+div.note p.admonition-title {
+    color: #0284c7 !important;
+}
+
+/* Warning */
+div.warning {
+    background-color: rgba(217, 119, 6, 0.08) !important;
+    border-left-color: #d97706 !important;
+}
+div.warning p.admonition-title {
+    color: #d97706 !important;
+}
+
+/* Attention */
+div.attention {
+    background-color: rgba(220, 38, 38, 0.08) !important;
+    border-left-color: #dc2626 !important;
+}
+div.attention p.admonition-title {
+    color: #dc2626 !important;
+}
+
+/* Important */
+div.important {
+    background-color: rgba(124, 58, 237, 0.08) !important;
+    border-left-color: #7c3aed !important;
+}
+div.important p.admonition-title {
+    color: #7c3aed !important;
+}
+
+/* Footer */
+#footer {
+    border-top: 1px solid var(--eval-border) !important;
+    padding: 2rem 0 !important;
+    margin-top: 3rem !important;
+    color: var(--eval-text-muted) !important;
+    font-size: 0.9rem;
+    text-align: center;
+}
+
 
