@@ -517,8 +517,8 @@ de esa otra computadora.
 
 
 
-Troubleshooting
-===============
+Problemática
+============
 
 Referencias
 ===========

@@ -7,9 +7,7 @@ Archivo de iniciación en las artes del FOSS
 
 Descripción
 ===========
-Éste documento será el utilizado para establecer las pautas de lo que es necesario aprender en EVALinux.
-
-.. contents:: Temario
+Un intento de delimitar cuál es el conocimiento necesario para trabajar en la industria con GNU & Linux; y FOSS en general.
 
 
 Establecer canales de comunicación
@@ -18,22 +16,20 @@ Establecer canales de comunicación
 Email
 -----
 Servicio de red que permite a los usuarios enviar y recibir mensajes y archivos rápidamente, más información en
-http://en.wikipedia.org/wiki/EMail
+http://es.wikipedia.org/wiki/EMail
 
-Aprender de la etiqueta de email (netiquette)
-#############################################
-La netiquette es muy importante en los círculos de FOSS. Ve y aprende lo que puedas sobre ésta en:
+Es importante saber que hay una etiqueta a seguir, en general, en el mundo de la tecnología (netiquette):
 https://en.wikipedia.org/wiki/Etiquette_in_technology
 
-Hangouts
---------
+Google Chat
+-----------
 Aplicación multiplataforma de mensajería instantánea desarrollada por Google Inc., más información en
-https://en.wikipedia.org/wiki/Hangouts
+https://es.wikipedia.org/wiki/Google_Chat
 
-IRC (Internet Relay Chat)
--------------------------
-Protocolo de comunicación en tiempo real basado en texto, más informacón en
-https://en.wikipedia.org/wiki/Internet_Relay_Chat.
+IRC
+---
+(Internet Relay Chat) Protocolo de comunicación en tiempo real basado en texto, más información en
+https://es.wikipedia.org/wiki/Internet_Relay_Chat
 
 Registrarse en Freenode
 #######################
@@ -41,18 +37,30 @@ Red de servidores IRC orientado al software libre, más información en http://e
 
 Aprender de la etiqueta de IRC
 ##############################
+Búscala aquí: https://github.com/fizerkhan/irc-etiquette
+
+Matrix
+------
+Es, al parecer, la evolución natural de IRC (sin serlo directamente). Puedes encontrar más información aquí: https://matrix.org/.
+
+Puedes encontrar los clientes para celular y PC aquí: https://matrix.org/clients/
+
+El cliente que preferimos en EVALinux es Element.
+
+Desde Matrix puedes acceder a canales de IRC y otros protocolos.
+
+Slack
+-----
+Un cliente de trabajo bastante común. Más información en: https://slack.com/
 
 Teléfonos
 ---------
-Es muy importante registrar tu cuenta en tu teléfono celular. También, es importante que proveas tu teléfono de casa para poder
-contactarte si es necesario.
+Es importante compartir tu contacto con tus colegas; tanto el de tu casa, si tienes, como tu celular. Hay varias ocasiones en las
+que es importante estar en contacto y no siempre vemos las notificaciones de la mensajería.
 
 
-Básicos de Linux
-================
-Estos artículos fueron escritos por [[Daniel Robbins | https://en.wikipedia.org/wiki/Daniel_Robbins_(computer_programmer)]]. Los
-artículos están muy completos e incluyen muchos ejemplos. Es muy importante que
-
+Fundamentales de Linux
+======================
 * https://www.funtoo.org/Linux_Fundamentals,_Part_1
 * https://www.funtoo.org/Linux_Fundamentals,_Part_2
 * https://www.funtoo.org/Linux_Fundamentals,_Part_3
@@ -60,8 +68,9 @@ artículos están muy completos e incluyen muchos ejemplos. Es muy importante qu
 
 vim
 ---
-Vim es el editor que vamos a usar para todo. Para aprenderlo, tienes que correr el comando ``vimtutor`` y seguir las instrucciones.
-Para aprender más sobre vim, visita: [[https://en.wikipedia.org/wiki/Vim_(text_editor)]].
+Aprender vim se hace usando el comando: ``vimtutor``.
+
+Como recurso adicional, pudieras probar: https://www.openvim.com/ o buscar algún otro en Google. Hay muchos.
 
 man
 ---
@@ -69,14 +78,11 @@ El manual, por excelencia, en GNU & Linux es man. Es muy importante aprender a u
 
 info
 ----
-Info es un complemento para para man; leer documentación sobre muchos de los comandos. Para aprener info, escribe ``info`` en tu línea
+Info es un complemento para man; leer documentación sobre muchos de los comandos. Para aprender info, escribe ``info`` en tu línea
 de comando y sigue las instrucciones.
 
 Bash
 ----
-Para aprender Bash, aprendemos del gran maestro [[Daniel Robbins |
-https://en.wikipedia.org/wiki/Daniel_Robbins_(computer_programmer)]]
-
 * https://www.funtoo.org/Bash_by_Example,_Part_1
 * https://www.funtoo.org/Bash_by_Example,_Part_2
 * https://www.funtoo.org/Bash_by_Example,_Part_3
@@ -85,21 +91,17 @@ grep
 ----
 Para aprender grep, utiliza el comando ``info grep`` y sigue las instrucciones.
 
-sed
----
-Para aprender sed, vamos a usar la wiki de Funtoo:
-
-* https://www.funtoo.org/Sed_by_Example,_Part_1
-* https://www.funtoo.org/Sed_by_Example,_Part_2
-* https://www.funtoo.org/Sed_by_Example,_Part_3
-
 awk
 ---
-Para aprender awk, vamos a usar la wiki de funtoo:
-
 * https://www.funtoo.org/Awk_by_Example,_Part_1
 * https://www.funtoo.org/Awk_by_Example,_Part_2
 * https://www.funtoo.org/Awk_by_Example,_Part_3
+
+sed
+---
+* https://www.funtoo.org/Sed_by_Example,_Part_1
+* https://www.funtoo.org/Sed_by_Example,_Part_2
+* https://www.funtoo.org/Sed_by_Example,_Part_3
 
 OpenSSH
 -------
@@ -115,25 +117,39 @@ git
 Para aprender git, vamos a usar el libro oficial de git: https://git-scm.com/book/en/v2
 
 KVM/Qemu y libvirt
-------------------
+==================
+
+Contenedores
+============
+
+Docker
+------
+
+Podman
+------
+
 
 Linux (kernel)
---------------
+==============
+* https://www.kernel.org/doc/html/latest/
+
+cgroups v1 y v2
+---------------
+* man cgroups
+* https://www.kernel.org/doc/html/latest/admin-guide/cgroup-v2.html
+* https://www.kernel.org/doc/html/latest/admin-guide/cgroup-v1
 
 Syscalls
-########
+--------
 
 Procesos
-########
+--------
 
-Networking
-##########
+Seguridad
+---------
 
-Security
-########
-
-hardware
-########
+Hardware
+--------
 
 
 Redes
@@ -145,15 +161,15 @@ TCP/IP
 UDP
 ---
 
-OSI Model
----------
+Modelo OSI
+----------
+Es un modelo para conceptualizar redes muy común y muy usado. Hay que estar bien familiarizados con él.
+
+* https://en.wikipedia.org/wiki/OSI_model
 
 
 Seguridad
 =========
-
-SELinux
--------
 
 iptables
 --------
@@ -161,9 +177,8 @@ iptables
 nftables
 --------
 
-TCP wrappers
-------------
-
+SELinux
+-------
 
 
 Servicios web
@@ -185,6 +200,9 @@ Bases de datos
 MariaDB/MySQL
 -------------
 
+MongoDB
+-------
+
 PostgreSQL
 ----------
 
@@ -192,46 +210,62 @@ PostgreSQL
 Infraestructura
 ===============
 
-Salt (saltstack)
-----------------
-
-Zabbix
-------
-
-Puppet
-------
+Ansible
+-------
 
 MRTG
 ----
 
+Puppet
+------
+
+Salt (saltstack)
+----------------
+
 sFlow
 -----
+
+Terraform
+---------
+
+Zabbix
+------
 
 
 Extras
 ======
 
-Ruby
-----
+Crystal
+-------
+Lenguaje de programación compilado y fuertemente tipado. Muy rápido y muy útil. Nuestro favorito.
 
-Python
-------
+* https://crystal-lang.org/
 
 HTML, CSS, y Javascript
 -----------------------
 
-Docker
+Python
 ------
 
-Rkt
----
+Ruby
+----
 
 
 Documentación
 =============
 
+Markdown
+--------
+Es el markup principalmente usado en la comunidad al rededor de GitHub y GitLab. No es libre y no lo preferimos, pero lo usamos de
+todos modos cuando el proyecto lo requiere.
+
+* https://www.markdownguide.org/
+
 reStructured Text
 -----------------
+Es el markup preferido por ser software libre y ser bastante convertible a varios formatos; incluyendo PDF, html, man y demás.
+
+* https://docutils.sourceforge.io/rst.html
 
 Recursos válidos
 ----------------
@@ -243,3 +277,4 @@ Recursos válidos
 #. Página oficial del proyecto
 #. Red Hat Documentation
 #. Wikipedia
+
