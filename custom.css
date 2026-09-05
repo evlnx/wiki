@@ -1,7 +1,7 @@
 /* EVALinux Brand Theme for Gollum Wiki
  * Visual identity aligned with https://evalinux.com
- * Typography: Inter (body) & Outfit (headings)
- * Theme: Auto-detecting Light and Dark palettes
+ * Typography: Inter (body) & Outfit (headings) & JetBrains Mono (code)
+ * Full Primer & Gollum component coverage (Overview, History, Compare, Search)
  */
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Outfit:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
@@ -26,8 +26,31 @@
     --eval-code-block-bg: #1e1e24;
     --eval-code-text: #111827;
     --eval-code-block-text: #f3f4f6;
+    --eval-diff-add-bg: rgba(34, 197, 94, 0.12);
+    --eval-diff-add-text: #15803d;
+    --eval-diff-del-bg: rgba(239, 68, 68, 0.12);
+    --eval-diff-del-text: #b91c1c;
     --eval-radius: 6px;
     --eval-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 1px 2px 0 rgba(0, 0, 0, 0.03);
+
+    /* Primer CSS variable mapping */
+    --color-canvas-default: var(--eval-bg);
+    --color-canvas-subtle: var(--eval-surface);
+    --color-canvas-inset: var(--eval-surface);
+    --color-canvas-overlay: var(--eval-surface);
+    --color-border-default: var(--eval-border);
+    --color-border-muted: var(--eval-border);
+    --color-border-subtle: var(--eval-border);
+    --color-fg-default: var(--eval-text-primary);
+    --color-fg-muted: var(--eval-text-muted);
+    --color-fg-subtle: var(--eval-text-muted);
+    --color-accent-fg: var(--eval-link);
+    --color-accent-emphasis: var(--eval-link);
+    --color-btn-text: var(--eval-text-primary);
+    --color-btn-bg: var(--eval-surface);
+    --color-btn-border: var(--eval-border);
+    --color-btn-hover-bg: var(--eval-surface-hover);
+    --color-btn-hover-border: var(--eval-border-focus);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -47,11 +70,38 @@
         --eval-code-block-bg: rgb(20, 21, 23);
         --eval-code-text: rgb(243, 244, 246);
         --eval-code-block-text: rgb(243, 244, 246);
+        --eval-diff-add-bg: rgba(34, 197, 94, 0.18);
+        --eval-diff-add-text: #4ade80;
+        --eval-diff-del-bg: rgba(239, 68, 68, 0.18);
+        --eval-diff-del-text: #f87171;
         --eval-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.3);
+
+        /* Primer CSS dark variable overrides */
+        --color-canvas-default: var(--eval-bg);
+        --color-canvas-subtle: var(--eval-surface);
+        --color-canvas-inset: var(--eval-surface);
+        --color-canvas-overlay: var(--eval-surface);
+        --color-border-default: var(--eval-border);
+        --color-border-muted: var(--eval-border);
+        --color-border-subtle: var(--eval-border);
+        --color-fg-default: var(--eval-text-primary);
+        --color-fg-muted: var(--eval-text-muted);
+        --color-fg-subtle: var(--eval-text-muted);
+        --color-accent-fg: var(--eval-link);
+        --color-accent-emphasis: var(--eval-link);
+        --color-btn-text: var(--eval-text-primary);
+        --color-btn-bg: var(--eval-surface);
+        --color-btn-border: var(--eval-border);
+        --color-btn-hover-bg: var(--eval-surface-hover);
+        --color-btn-hover-border: var(--eval-border-focus);
     }
 }
 
-/* Global Reset & Base Typography */
+/* Base Body & Layout */
+html {
+    background-color: var(--eval-bg) !important;
+}
+
 body {
     background-color: var(--eval-bg) !important;
     color: var(--eval-text-body) !important;
@@ -59,13 +109,21 @@ body {
     font-size: 15px;
     line-height: 1.65;
     -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+}
+
+.container-lg {
+    max-width: 1120px !important;
+    margin: 0 auto !important;
+    padding: 0 1.5rem !important;
 }
 
 #wiki-wrapper {
     background-color: var(--eval-bg) !important;
     color: var(--eval-text-body) !important;
-    max-width: 1080px;
-    margin: 0 auto;
+    max-width: 100% !important;
+    margin: 0 auto !important;
+    padding-bottom: 3rem !important;
 }
 
 /* Headings */
@@ -82,10 +140,12 @@ h1, h2, h3, h4, h5, h6,
 }
 
 .header-title {
-    font-size: 2rem !important;
-    border-bottom: 2px solid var(--eval-border) !important;
-    padding-bottom: 0.5rem !important;
-    margin-bottom: 1.5rem !important;
+    font-size: 2.25rem !important;
+    border-bottom: 1px solid var(--eval-border) !important;
+    padding-bottom: 0.75rem !important;
+    margin-top: 1.25rem !important;
+    margin-bottom: 1.75rem !important;
+    color: var(--eval-text-primary) !important;
 }
 
 .markdown-body h2 {
@@ -107,10 +167,13 @@ a:hover, a:focus {
 }
 
 /* Header & Navigation Bar */
-#head nav {
+#head nav,
+#head nav.TableObject {
     border-bottom: 1px solid var(--eval-border) !important;
-    padding: 1rem 0 !important;
+    padding: 1.25rem 0 !important;
     background-color: var(--eval-bg) !important;
+    display: flex !important;
+    align-items: center !important;
 }
 
 /* Buttons */
@@ -124,6 +187,7 @@ a:hover, a:focus {
     font-family: var(--eval-font-sans) !important;
     font-weight: 500;
     transition: all 0.15s ease-in-out;
+    box-shadow: none !important;
 }
 
 .btn:hover,
@@ -134,21 +198,403 @@ a:hover, a:focus {
     color: var(--eval-link) !important;
 }
 
-/* Search Box */
-#search-query {
+.BtnGroup {
+    display: inline-flex !important;
+    border-radius: var(--eval-radius) !important;
+}
+
+.BtnGroup-item {
+    border-radius: 0 !important;
+    margin-left: -1px !important;
+}
+
+.BtnGroup-item:first-child {
+    border-top-left-radius: var(--eval-radius) !important;
+    border-bottom-left-radius: var(--eval-radius) !important;
+    margin-left: 0 !important;
+}
+
+.BtnGroup-item:last-child {
+    border-top-right-radius: var(--eval-radius) !important;
+    border-bottom-right-radius: var(--eval-radius) !important;
+}
+
+.btn-primary,
+.action-compare-revision {
+    background-color: var(--eval-link) !important;
+    border-color: var(--eval-link) !important;
+    color: #ffffff !important;
+}
+
+.btn-primary:hover,
+.action-compare-revision:hover {
+    background-color: var(--eval-link-hover) !important;
+    border-color: var(--eval-link-hover) !important;
+    color: #ffffff !important;
+}
+
+/* Search Box & Inputs */
+input[type="text"],
+input[type="search"],
+#search-query,
+textarea,
+select {
     background-color: var(--eval-surface) !important;
     color: var(--eval-text-primary) !important;
     border: 1px solid var(--eval-border) !important;
     border-radius: var(--eval-radius) !important;
     font-family: var(--eval-font-sans) !important;
-    padding: 0.4rem 0.8rem;
-    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    padding: 0.45rem 0.85rem !important;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out !important;
 }
 
-#search-query:focus {
+input[type="text"]:focus,
+input[type="search"]:focus,
+#search-query:focus,
+textarea:focus,
+select:focus {
     border-color: var(--eval-border-focus) !important;
     outline: none !important;
-    box-shadow: 0 0 0 2px rgba(2, 132, 199, 0.2) !important;
+    box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.25) !important;
+}
+
+/* Primer Box & Surface Panels (Overview, History, Search) */
+.Box {
+    background-color: var(--eval-surface) !important;
+    border: 1px solid var(--eval-border) !important;
+    border-radius: var(--eval-radius) !important;
+    box-shadow: var(--eval-shadow) !important;
+    overflow: hidden !important;
+}
+
+.Box-header {
+    background-color: var(--eval-surface-hover) !important;
+    border-bottom: 1px solid var(--eval-border) !important;
+    color: var(--eval-text-primary) !important;
+    font-family: var(--eval-font-heading) !important;
+    font-weight: 600 !important;
+    padding: 0.85rem 1.25rem !important;
+}
+
+.Box-row {
+    background-color: transparent !important;
+    border-top: 1px solid var(--eval-border) !important;
+    color: var(--eval-text-body) !important;
+    padding: 0.85rem 1.25rem !important;
+    transition: background-color 0.15s ease-in-out !important;
+}
+
+.Box-row:first-child {
+    border-top: none !important;
+}
+
+.Box-row:hover,
+.Box-row--hover-gray:hover {
+    background-color: var(--eval-surface-hover) !important;
+}
+
+.Box-row--gray {
+    background-color: var(--eval-surface) !important;
+}
+
+.Box-footer {
+    background-color: var(--eval-surface) !important;
+    border-top: 1px solid var(--eval-border) !important;
+    color: var(--eval-text-muted) !important;
+    padding: 0.85rem 1.25rem !important;
+}
+
+/* File Browser on /gollum/overview */
+#file-browser ul {
+    list-style: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+#file-browser .Box-row {
+    display: flex !important;
+    align-items: center !important;
+    font-size: 0.95rem !important;
+    gap: 0.5rem !important;
+}
+
+#file-browser .Box-row a {
+    color: var(--eval-text-primary) !important;
+    font-weight: 500 !important;
+    text-decoration: none !important;
+    transition: color 0.15s ease-in-out !important;
+}
+
+#file-browser .Box-row:hover a {
+    color: var(--eval-link) !important;
+}
+
+/* Vibrant Octicons in File Browser */
+#file-browser .octicon-file-directory-fill,
+#file-browser .octicon-file-directory {
+    fill: var(--eval-link) !important;
+    color: var(--eval-link) !important;
+    width: 18px !important;
+    height: 18px !important;
+    vertical-align: text-bottom !important;
+}
+
+#file-browser .octicon-file {
+    fill: var(--eval-text-muted) !important;
+    color: var(--eval-text-muted) !important;
+    width: 18px !important;
+    height: 18px !important;
+    vertical-align: text-bottom !important;
+}
+
+/* Breadcrumbs */
+.breadcrumb {
+    font-family: var(--eval-font-sans) !important;
+    font-size: 0.95rem !important;
+    color: var(--eval-text-muted) !important;
+    padding: 0.5rem 0 1rem 0 !important;
+    background: transparent !important;
+}
+
+.breadcrumb ol {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    list-style: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    gap: 0.35rem !important;
+    align-items: center !important;
+}
+
+.breadcrumb-item {
+    display: inline-flex !important;
+    align-items: center !important;
+    color: var(--eval-text-muted) !important;
+}
+
+.breadcrumb-item a {
+    color: var(--eval-link) !important;
+    text-decoration: none !important;
+}
+
+.breadcrumb-item a:hover {
+    text-decoration: underline !important;
+}
+
+.breadcrumb-item + .breadcrumb-item::before {
+    content: "/" !important;
+    padding: 0 0.5rem !important;
+    color: var(--eval-text-muted) !important;
+}
+
+.breadcrumb-item[aria-current="page"] {
+    color: var(--eval-text-primary) !important;
+    font-weight: 600 !important;
+}
+
+/* History and Latest Changes */
+.history .Box-row,
+#wiki-history .Box-row,
+#page-history .Box-row {
+    display: flex !important;
+    align-items: center !important;
+    gap: 0.75rem !important;
+}
+
+#user-icons {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 0.4rem !important;
+    color: var(--eval-text-primary) !important;
+    font-weight: 500 !important;
+}
+
+#user-icons .octicon-person {
+    fill: var(--eval-text-muted) !important;
+}
+
+time.color-fg-subtle,
+.color-fg-subtle {
+    color: var(--eval-text-muted) !important;
+    font-size: 0.85rem !important;
+}
+
+/* Commit SHA Badges */
+a.btn.btn-outline.text-mono,
+.btn.btn-outline {
+    background-color: var(--eval-surface-hover) !important;
+    border: 1px solid var(--eval-border) !important;
+    color: var(--eval-link) !important;
+    border-radius: var(--eval-radius) !important;
+    font-family: var(--eval-font-mono) !important;
+    font-size: 0.85rem !important;
+    padding: 0.2rem 0.55rem !important;
+    text-decoration: none !important;
+}
+
+a.btn.btn-outline.text-mono:hover,
+.btn.btn-outline:hover {
+    background-color: var(--eval-surface) !important;
+    border-color: var(--eval-border-focus) !important;
+    color: var(--eval-link-hover) !important;
+}
+
+.btn.btn-outline svg.octicon {
+    fill: currentColor !important;
+}
+
+/* Compare / Diff View */
+.Box.data.highlight {
+    background-color: var(--eval-code-block-bg) !important;
+    border: 1px solid var(--eval-border) !important;
+    border-radius: var(--eval-radius) !important;
+}
+
+.Box.data.highlight table {
+    width: 100% !important;
+    border-collapse: collapse !important;
+    font-family: var(--eval-font-mono) !important;
+    font-size: 0.88rem !important;
+    background-color: transparent !important;
+    margin: 0 !important;
+}
+
+.Box.data.highlight td {
+    padding: 0.18rem 0.5rem !important;
+    border: none !important;
+    line-height: 1.55 !important;
+}
+
+.Box.data.highlight td.line_numbers {
+    width: 45px !important;
+    min-width: 45px !important;
+    text-align: right !important;
+    color: var(--eval-text-muted) !important;
+    user-select: none !important;
+    border-right: 1px solid var(--eval-border) !important;
+    background-color: var(--eval-surface) !important;
+    padding-right: 0.6rem !important;
+}
+
+/* Diff Chunks, Additions, Deletions */
+.Box.data.highlight div.gc {
+    background-color: rgba(2, 132, 199, 0.15) !important;
+    color: var(--eval-link) !important;
+    font-weight: 600 !important;
+}
+
+.Box.data.highlight div.gi {
+    background-color: var(--eval-diff-add-bg) !important;
+    color: var(--eval-diff-add-text) !important;
+}
+
+.Box.data.highlight div.gd {
+    background-color: var(--eval-diff-del-bg) !important;
+    color: var(--eval-diff-del-text) !important;
+}
+
+.Box.data.highlight div.pl-2:not(.gc):not(.gi):not(.gd) {
+    color: var(--eval-code-block-text) !important;
+}
+
+/* Search Results */
+.search-results .search-result {
+    display: flex !important;
+    align-items: center !important;
+    gap: 0.5rem !important;
+}
+
+.search-results .Counter {
+    background-color: var(--eval-surface-hover) !important;
+    color: var(--eval-link) !important;
+    border: 1px solid var(--eval-border) !important;
+    border-radius: 9999px !important;
+    padding: 0.15rem 0.55rem !important;
+    font-size: 0.8rem !important;
+    font-family: var(--eval-font-mono) !important;
+}
+
+.search-context {
+    background-color: var(--eval-code-block-bg) !important;
+    border-top: 1px solid var(--eval-border) !important;
+    border-bottom: 1px solid var(--eval-border) !important;
+    padding: 0.5rem 1rem !important;
+}
+
+.search-context li {
+    font-family: var(--eval-font-mono) !important;
+    font-size: 0.85rem !important;
+    color: var(--eval-text-muted) !important;
+    padding: 0.2rem 0 !important;
+}
+
+/* Pagination */
+.pagination {
+    display: flex !important;
+    gap: 0.35rem !important;
+    margin: 1.5rem 0 !important;
+    justify-content: center !important;
+    list-style: none !important;
+}
+
+.pagination a,
+.pagination span,
+.pagination em {
+    padding: 0.4rem 0.85rem !important;
+    border-radius: var(--eval-radius) !important;
+    border: 1px solid var(--eval-border) !important;
+    font-size: 0.9rem !important;
+    text-decoration: none !important;
+    background-color: var(--eval-surface) !important;
+    color: var(--eval-text-primary) !important;
+}
+
+.pagination em.current {
+    background-color: var(--eval-link) !important;
+    border-color: var(--eval-link) !important;
+    color: #ffffff !important;
+    font-weight: 600 !important;
+    font-style: normal !important;
+}
+
+.pagination a:hover {
+    background-color: var(--eval-surface-hover) !important;
+    border-color: var(--eval-border-focus) !important;
+    color: var(--eval-link) !important;
+}
+
+.pagination .disabled {
+    color: var(--eval-text-muted) !important;
+    opacity: 0.45 !important;
+    pointer-events: none !important;
+}
+
+/* Mobile Select Menu */
+.SelectMenu-modal {
+    background-color: var(--eval-surface) !important;
+    border: 1px solid var(--eval-border) !important;
+    border-radius: var(--eval-radius) !important;
+    box-shadow: var(--eval-shadow) !important;
+}
+
+.SelectMenu-divider {
+    background-color: var(--eval-surface-hover) !important;
+    border-top: 1px solid var(--eval-border) !important;
+    border-bottom: 1px solid var(--eval-border) !important;
+    color: var(--eval-text-muted) !important;
+    padding: 0.5rem 1rem !important;
+}
+
+.SelectMenu-item {
+    color: var(--eval-text-body) !important;
+    background-color: transparent !important;
+    border-bottom: 1px solid var(--eval-border) !important;
+    padding: 0.6rem 1rem !important;
+}
+
+.SelectMenu-item:hover {
+    background-color: var(--eval-surface-hover) !important;
+    color: var(--eval-link) !important;
 }
 
 /* Table of Contents (TOC) */
@@ -184,7 +630,7 @@ code {
     background-color: var(--eval-code-bg) !important;
     color: var(--eval-code-text) !important;
     font-family: var(--eval-font-mono) !important;
-    padding: 0.2em 0.4em !important;
+    padding: 0.2em 0.45em !important;
     border-radius: 4px !important;
     font-size: 88%;
 }
@@ -207,7 +653,7 @@ pre code {
     line-height: 1.5;
 }
 
-/* Tables */
+/* Tables in Content */
 .markdown-body table {
     border-collapse: collapse;
     width: 100%;
@@ -222,7 +668,7 @@ pre code {
     background-color: var(--eval-surface-hover) !important;
     color: var(--eval-text-primary) !important;
     font-family: var(--eval-font-heading) !important;
-    font-weight: 600;
+    font-weight: 600 !important;
     border: 1px solid var(--eval-border) !important;
     padding: 0.75rem 1rem;
 }
@@ -299,14 +745,33 @@ div.important p.admonition-title {
     color: #7c3aed !important;
 }
 
-/* Footer */
+/* Footer & Back to Top */
 #footer {
     border-top: 1px solid var(--eval-border) !important;
-    padding: 2rem 0 !important;
-    margin-top: 3rem !important;
+    padding: 2.5rem 0 1rem !important;
+    margin-top: 3.5rem !important;
     color: var(--eval-text-muted) !important;
     font-size: 0.9rem;
     text-align: center;
 }
 
+#footer a {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 0.4rem !important;
+    padding: 0.45rem 1rem !important;
+    border-radius: var(--eval-radius) !important;
+    border: 1px solid var(--eval-border) !important;
+    background-color: var(--eval-surface) !important;
+    color: var(--eval-text-muted) !important;
+    font-size: 0.85rem !important;
+    font-weight: 500 !important;
+    text-decoration: none !important;
+    transition: all 0.15s ease-in-out !important;
+}
 
+#footer a:hover {
+    background-color: var(--eval-surface-hover) !important;
+    border-color: var(--eval-border-focus) !important;
+    color: var(--eval-link) !important;
+}
